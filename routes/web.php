@@ -31,8 +31,8 @@ Route::middleware('auth')->group(function (){
       // Route Project Menu
       Route::get('/menu_project', [MenuProjectController::class, 'index'])->name('index.menu_project');
       Route::post('/tambah',[MenuProjectController::class, 'store'])->name('tambah.menu_project');
-      Route::get('/edit{$id}/edit', [MenuProjectController::class, 'edit'])->name('edit.menu_project');
-      Route::patch('/edit{$id}/update', [MenuProjectController::class, 'edit'])->name('update.menu_project');
+      Route::get('/edit_project{id}/edit', [MenuProjectController::class, 'edit'])->name('edit_project.edit');
+      Route::patch('/edit_project{id}/update', [MenuProjectController::class, 'update'])->name('edit_project.update');
 
 
 

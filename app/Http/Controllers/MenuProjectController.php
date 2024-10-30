@@ -72,10 +72,13 @@ class MenuProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Project $project)
+    public function edit($id)
     {
         //
-        return view('menu_project.edit');
+        //  $findIdGeneralIndustri = GeneralIndustri::findOrFail($id);
+        // $data['find_id'] = Project::findOrFail($id);
+        $data['sub_title'] = 'Menu Project';
+        return view('menu_project.edit',$data);
     }
 
     /**

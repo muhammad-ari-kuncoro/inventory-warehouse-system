@@ -11,7 +11,7 @@ class Project extends Model
     use HasFactory;
 
     protected $table = 'menu_project';  // Sesuaikan dengan nama tabel di database
-    protected $guarded = ['id'];
+    // protected $guarded = ['id'];
     protected $fillable = [
 
         'nama_project',

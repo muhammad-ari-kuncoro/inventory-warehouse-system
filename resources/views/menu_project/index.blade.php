@@ -40,9 +40,9 @@
                 <th>Aksi </th>
             </tr>
 
+            <p class="d-none">{{ $i= 1; }}</p>
+            @foreach ($menu_project as $data )
             <tr class="text-center">
-                <p class="d-none">{{ $i= 1; }}</p>
-                @foreach ($menu_project as $data )
 
                 <td>{{ $i++; }}</td>
                 <td>{{ $data->nama_project }}</td>
@@ -52,7 +52,7 @@
                 <td>{{ $data->no_jo_project }}</td>
                 <td>
                     <div class="mb-1">
-                        <a href="{{ route('edit.menu_project', $data->id) }}"><span class="btn btn-warning btn-sm">Edit</a></span>
+                        <a href="{{route('edit_project.edit',$data->id)}}"><span class="btn btn-warning btn-sm">Edit</a></span>
                     </div>
 
 
@@ -61,8 +61,8 @@
                         </div> --}}
                 </td>
 
-                @endforeach
             </tr>
+            @endforeach
         </table>
     </div>
 </div>
