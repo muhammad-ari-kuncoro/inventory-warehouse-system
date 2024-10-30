@@ -32,8 +32,8 @@
       <li class="menu-header small text-uppercase">
         <span class="menu-header-text">Projet</span>
       </li>
-      <li class="menu-item">
-        <a href="{{ route('menu_project') }}" class="menu-link">
+      <li class="menu-item {{ ($sub_title === "Menu Project")  ? 'active' : ''}}">
+        <a href="{{ route('index.menu_project') }}" class="menu-link">
           <i class="menu-icon tf-icons bx bx-layout"></i>
           <div data-i18n="Layouts">Menu Project</div>
         </a>

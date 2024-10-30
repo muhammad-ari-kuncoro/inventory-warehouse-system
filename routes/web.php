@@ -29,12 +29,15 @@ Route::middleware('auth')->group(function (){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
       // Route Project Menu
-      Route::get('/menu_project', [MenuProjectController::class, 'index'])->name('menu_project');
+      Route::get('/menu_project', [MenuProjectController::class, 'index'])->name('index.menu_project');
+      Route::post('/tambah',[MenuProjectController::class, 'store'])->name('tambah.menu_project');
+      Route::get('/edit{$id}/edit', [MenuProjectController::class, 'edit'])->name('edit.menu_project');
+      Route::patch('/edit{$id}/update', [MenuProjectController::class, 'edit'])->name('update.menu_project');
 
 
 
     // Route Logout
-    Route::post('/logout',[DashboardController::class, 'logout'])->name('logout');
+    Route::post('/logout',[DashboardController::class, 'logout'])->name('logout_dashboard');
     Route::get('/logout',[DashboardController::class, 'logout'])->name('logout');
 
 });
