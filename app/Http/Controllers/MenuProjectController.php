@@ -69,6 +69,7 @@ class MenuProjectController extends Controller
      */
     public function edit($id)
     {
+        $data['title'] = 'Edit Menu halaman';
         $data['sub_title'] = 'Menu Project';
         $data['find_id'] = Project::findOrFail($id);
         return view('menu_project.edit', $data);
