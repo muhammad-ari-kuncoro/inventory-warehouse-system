@@ -1,0 +1,122 @@
+Database warehouse Manufacturing Fabrication
+Update 03 Oktober 2024
+
+	Data Menu Project
+	-Sub Menu general industry
+		Database
+		- id_projectGeneralIndustri
+		- nama_project_GeneralIndustri
+        - kode_project_generalIndustri
+		- sub_nama_project_GeneralIndustri
+		- no_jo_generalIndustry
+
+	-sub Menu oil Dan Gas Migas
+		Database
+		- id_projectOilMigas
+		- nama_project_omigas
+        - kode_project_omigas
+		- sub_nama_project_omigas
+		- no_jo_subMigas
+
+	-sub menu EBTKE Panas Bumi
+		Database
+		- id_projectPanasBumi
+		- nama_project_panasBumi
+        - kode_project_panasBumi
+		- sub_nama_project_PanasBumu
+		- no_jo_panasBumi
+
+
+	Data Menu Material
+	-sub Menu Material Besar/Berat
+		Database
+		- id_materialBesar
+		- nama_materialBesar
+        - kode_materialBesar
+		- spesifikasi_materialBesar
+		- quantity_materialBesar
+		- jenis_materialBesar
+		- kategorynamaProject (relasi ke database general industry , oil dan migas dan EBTKE Panas Bumi )
+		- subKategorynamaProject (relasi ke database general industry , oil dan migas dan EBTKE Panas Bumi )
+
+
+	-sub Menu Material Kecil/Ringan
+		Database
+		- id_materialBesar
+		- nama_materialKecil
+        - kodeMaterial_kecil
+		- spesifikasi_materialKecil
+		- kode_materialKecil
+		- Quantity_materialKecil
+		- jenis_materialKecil
+		- kategorynamaProject (relasi ke database general industry , oil dan migas dan EBTKE Panas Bumi )
+		- subKategorynamaProject (relasi ke database general industry , oil dan migas dan EBTKE Panas Bumi )
+
+	Data Menu Consumable
+	-sub Menu Consumable Bahan baku
+		Database
+		- id_bahanBaku
+        - Kode_consumable_bahanBaku
+		- nama_bahanbaku
+		- spesifikasi_bahanBaku
+        - quantity
+        - jenisQuantity
+        - kategorynamaProject (relasi ke database general industry , oil dan migas dan EBTKE Panas Bumi )
+        - subKategorynamaProject (relasi ke database general industry , oil dan migas dan EBTKE Panas Bumi )
+
+	-Sub menu Consumable Welding
+		Database
+		- id_consumable_welding
+        - Kode_consumable_welding
+		- nama_consumable_welding
+		- spesifikasi_consumable
+        - jenisQuantity
+        - kategorynamaProject (relasi ke database general industry , oil dan migas dan EBTKE Panas Bumi )
+        - subKategorynamaProject (relasi ke database general industry , oil dan migas dan EBTKE Panas Bumi )
+
+    Data Menu Tools
+    -Sub Menu Tools (Peralatan)
+        Database
+        - id_Tools_Peralatan
+        - Kode_Peralatan
+        - nama_Peralatan
+        - Spesifikasi_Peralatan
+        - Jenis_peralatan
+        - Quantity_peralatan
+        - Kondisi_peralatan (layak) / (Tidak Layak)
+
+    -Sub Menu Tools (Mesin)
+        - id_mesin
+        - Kode_Peralatan
+        - nama_mesin
+        - Spesifikasi_Mesin
+        - Jenis_Mesin
+        - Quantity_mesin
+        -Kondisi_peralatan (layak) / (Tidak layak)
+
+
+    Data Menu Surat Jalan
+    -Sub Menu Barang Masuk
+
+
+
+    -Sub Menu Pengiriman
+
+
+    -Sub Menu Barang keluar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -30,8 +30,5 @@ class Project extends Model
         });
     }
 
-    protected static function generateUniqueKodeProjectId()
-    {
-        return 'AJM-' . date('Ymd') . '-KDPAJM-' . strtoupper(Str::random(3));
-    }
+
 }

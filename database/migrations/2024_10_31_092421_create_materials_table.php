@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_material');
+            $table->string('spesifikasi_material');
+            $table->string('kode_material');
+            $table->string('jenis_quantity');
+            $table->string('quantity');
+            $table->string('jenis_material');
+            $table->bigInteger('project_id')->unsigned()->nullable();
+            $table->foreign("project_id")->references("id")->on("menu_project");
             $table->timestamps();
         });
     }

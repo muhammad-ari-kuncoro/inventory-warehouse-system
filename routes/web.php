@@ -37,7 +37,6 @@ Route::middleware('auth')->group(function (){
 
 
     //   Route Materials
-
     Route::get('materials',[MaterialController::class, 'index'])->name('materials.index');
 
 

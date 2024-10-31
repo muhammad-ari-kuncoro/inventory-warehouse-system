@@ -108,8 +108,8 @@
 
                     <div class="mb-3">
                         <label for="formFile" class="form-label" name="kategori_project">Kategori Nama Project </label>
-                        <select class="form-select rounded-top @error('nama_project') is-invalid @enderror" name="kategori_project" required>
-                            <option selected disabled>Open this select menu</option>
+                        <select class="form-select rounded-top @error('kategori_project') is-invalid @enderror" name="kategori_project" required>
+                            <option selected disabled>Pilih Kategori Nama Project</option>
                             <option value="General Industri">General Industri</option>
                             <option value="Oil Dan Migas">Oil Dan Migas</option>
                             <option value="Panas Bumi">Panas Bumi</option>

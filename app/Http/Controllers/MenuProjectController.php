@@ -12,7 +12,6 @@ class MenuProjectController extends Controller
      */
     public function index()
     {
-        //
         $data['sub_title'] = 'Menu Project';
         $data['menu_project'] = Project::paginate(5);
         return view('menu_project.index', $data);
@@ -34,7 +33,7 @@ class MenuProjectController extends Controller
         //Validasi
         $request->validate([
 
-            // $this->validate($request, [
+
             'nama_project' => 'required|min:5|max:255',
             'sub_nama_project' => 'required|min:5|max:255',
             'kategori_project' => 'required|min:5|max:255',
@@ -43,7 +42,6 @@ class MenuProjectController extends Controller
 
         // Menangani Data
         try {
-            //code...
             Project::create([
                 'nama_project' => $request->nama_project,
                 'sub_nama_project' => $request->sub_nama_project,
@@ -52,11 +50,8 @@ class MenuProjectController extends Controller
             ]);
             return redirect()->route('menu_project.index')->with('success', 'Data berhasil ditambahkan!');
         } catch (\Exception $e) {
-            //throw $th;
-            //throw $th;
             // Simpan pesan error jika terjadi kesalahan
-            session()->flash('error', 'Terjadi kesalahan saat menyimpan data!');
-            return redirect()->back();
+            return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
         }
     }
 
@@ -73,8 +68,6 @@ class MenuProjectController extends Controller
      */
     public function edit($id)
     {
-        //
-        //  $findIdGeneralIndustri = GeneralIndustri::findOrFail($id);
         $data['sub_title'] = 'Menu Project';
         $data['find_id'] = Project::findOrFail($id);
         return view('menu_project.edit', $data);
@@ -99,7 +92,7 @@ class MenuProjectController extends Controller
         $updateProject->no_jo_project = $request->no_jo_project;
         $updateProject->save();
         // Redirect ke halaman yang diinginkan
-        return redirect()->route('index.menu_project')->with('editSuccess', 'Data berhasil Di Edit!');
+        return redirect()->route('menu_project.index')->with('editSuccess', 'Data berhasil Di Edit!');
     }
 
     /**

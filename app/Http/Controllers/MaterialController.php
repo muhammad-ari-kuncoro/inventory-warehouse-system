@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\Materials;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class MaterialController extends Controller
 {
@@ -14,6 +16,7 @@ class MaterialController extends Controller
     {
         //
         $data['sub_title'] = 'Dashboard';
+        $data['data_project'] = Project::all();
         return view('materials.index',$data);
     }
 
@@ -30,7 +33,18 @@ class MaterialController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         //Validasi
+         $request->validate([
+            'nama_material' => 'required|min:5|max:255',
+            'spesifikasi_material' => 'required|min:5|max:255',
+            'kode_material' => 'required|min:5|max:255',
+            'jenis_quantity' => 'required|min:5|max:255',
+            'quantity' => 'required|min:1|max:100',
+            'jenis_material' => 'required|min:5|max:255',
+            'project_id' => 'nullable|exists:menu_project,id',
+
+        ]);
+
     }
 
     /**

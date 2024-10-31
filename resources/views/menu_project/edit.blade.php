@@ -70,7 +70,7 @@
 
             <div class="row mb-3">
                 <div class="col sm-4">
-                <a href="{{ route('index.menu_project') }}" class="btn btn-secondary">Go Back</a>
+                <a href="{{ route('menu_project.index') }}" class="btn btn-secondary">Go Back</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
 
