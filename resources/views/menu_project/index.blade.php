@@ -82,7 +82,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('tambah.menu_project') }}" method="post">
+                <form action="{{ route('menu_project.tambah') }}" method="post">
                     @csrf
                     <div class="mb-3">
                         <label for="nama_project" class="form-label">Nama Project </label>

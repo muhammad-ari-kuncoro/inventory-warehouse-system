@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MenuProjectController;
 
 /*
@@ -29,10 +30,15 @@ Route::middleware('auth')->group(function (){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
       // Route Project Menu
-      Route::get('/menu_project', [MenuProjectController::class, 'index'])->name('index.menu_project');
-      Route::post('/tambah',[MenuProjectController::class, 'store'])->name('tambah.menu_project');
+      Route::get('/menu_project', [MenuProjectController::class, 'index'])->name('menu_project.index');
+      Route::post('/tambah',[MenuProjectController::class, 'store'])->name('menu_project.tambah');
       Route::get('/edit_project{id}/edit', [MenuProjectController::class, 'edit'])->name('edit_project.edit');
       Route::patch('/edit_project{id}/update', [MenuProjectController::class, 'update'])->name('edit_project.update');
+
+
+    //   Route Materials
+
+    Route::get('materials',[MaterialController::class, 'index'])->name('materials.index');
 
 
 

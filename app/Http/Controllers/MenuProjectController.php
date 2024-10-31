@@ -50,7 +50,7 @@ class MenuProjectController extends Controller
                 'kategori_project' => $request->kategori_project,
                 'no_jo_project' => $request->no_jo_project,
             ]);
-            return redirect()->route('index.menu_project')->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('menu_project.index')->with('success', 'Data berhasil ditambahkan!');
         } catch (\Exception $e) {
             //throw $th;
             //throw $th;
