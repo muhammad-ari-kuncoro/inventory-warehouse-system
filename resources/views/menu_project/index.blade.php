@@ -29,6 +29,7 @@
         <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Tambah Data
         </button>
+        <a href="" class="btn btn-success mb-3">Print Data</a>
         <table class="table table-bordered">
             <tr class="table-info text-center">
                 <th>No</th>
@@ -64,6 +65,9 @@
             </tr>
             @endforeach
         </table>
+        <div class="mb-3 mt-3">
+            {{ $menu_project->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 </div>
 
@@ -81,31 +85,52 @@
                 <form action="{{ route('tambah.menu_project') }}" method="post">
                     @csrf
                     <div class="mb-3">
-                        <label for="formFile" class="form-label">Nama Project </label>
-                        <input class="form-control form-control" type="text" name="nama_project"
-                            placeholder="Harap Di Isi Nama Project">
+                        <label for="nama_project" class="form-label">Nama Project </label>
+                        <input class="form-control rounded-top  @error('nama_project') is-invalid @enderror" type="text" name="nama_project"
+                            placeholder="Harap Di Isi Nama Project" required>
+                            @error('nama_project')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                     </div>
 
                     <div class="mb-3">
                         <label for="formFile" class="form-label">Sub Nama Project </label>
-                        <input class="form-control form-control" type="text" name="sub_nama_project"
-                            placeholder="Harap Di Isi Sub Nama Project">
+                        <input class="form-control rounded-top @error('sub_nama_project') is-invalid @enderror" type="text" name="sub_nama_project"
+                            placeholder="Harap Di Isi Sub Nama Project" required>
+                            @error('sub_nama_project')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                     </div>
 
                     <div class="mb-3">
                         <label for="formFile" class="form-label" name="kategori_project">Kategori Nama Project </label>
-                        <select class="form-select" name="kategori_project" aria-label="Default select example">
+                        <select class="form-select rounded-top @error('nama_project') is-invalid @enderror" name="kategori_project" required>
                             <option selected disabled>Open this select menu</option>
                             <option value="General Industri">General Industri</option>
                             <option value="Oil Dan Migas">Oil Dan Migas</option>
                             <option value="Panas Bumi">Panas Bumi</option>
+                            @error('kategori_project')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+
+                            @enderror
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label for="formFile" name="no_jo_projects" class="form-label">No Jo Project </label>
-                        <input class="form-control form-control" type="text" name="no_jo_project"
-                            placeholder="Harap Di Isi Sub Nama Project">
+                        <label for="formFile" name="no_jo_project" class="form-label">No Jo Project </label>
+                        <input class="form-control rounded-top @error('no_jo_project') is-invalid @enderror" type="text" name="no_jo_project"
+                            placeholder="Harap Di Isi Sub Nama Project" required>
+                            @error('no_jo_project')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                     </div>
 
 

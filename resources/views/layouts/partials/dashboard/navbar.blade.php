@@ -9,7 +9,9 @@ id="layout-navbar">
 
 <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
 
-
+    {{-- <div class="navbar-nav-center  align items center">
+        <h5 class="text-center">as</h5>
+    </div> --}}
   <ul class="navbar-nav flex-row align-items-center ms-auto">
     <!-- Place this tag where you want the button to render. -->
 
@@ -24,16 +26,23 @@ id="layout-navbar">
       <ul class="dropdown-menu dropdown-menu-end">
         <li>
           <a class="dropdown-item" href="#">
+
+
+
+
             <div class="d-flex">
               <div class="flex-shrink-0 me-3">
                 <div class="avatar avatar-online">
                   <img src="../asset/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
                 </div>
               </div>
+
               <div class="flex-grow-1">
                 <span class="fw-semibold d-block">John Doe</span>
                 <small class="text-muted">Admin</small>
               </div>
+
+
             </div>
           </a>
         </li>

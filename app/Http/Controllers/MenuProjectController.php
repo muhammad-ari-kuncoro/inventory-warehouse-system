@@ -15,8 +15,7 @@ class MenuProjectController extends Controller
         //
         $data['sub_title'] = 'Menu Project';
         $data['menu_project'] = Project::paginate(5);
-        return view('menu_project.index',$data);
-
+        return view('menu_project.index', $data);
     }
 
     /**
@@ -36,29 +35,29 @@ class MenuProjectController extends Controller
         $request->validate([
 
             // $this->validate($request, [
-                'nama_project' => 'required|min:5|max:255',
-                'sub_nama_project' => 'required|min:5|max:255',
-                'kategori_project' => 'required|min:5|max:255',
-                'no_jo_project' => 'required|min:5|max:255'
-            ]);
+            'nama_project' => 'required|min:5|max:255',
+            'sub_nama_project' => 'required|min:5|max:255',
+            'kategori_project' => 'required|min:5|max:255',
+            'no_jo_project' => 'required|min:5|max:255'
+        ]);
 
-            // Menangani Data
-            try {
-                //code...
-                Project::create([
-                    'nama_project' => $request->nama_project,
-                    'sub_nama_project' => $request->sub_nama_project,
-                    'kategori_project' => $request->kategori_project,
-                    'no_jo_project' => $request->no_jo_project,
-                ]);
-                return redirect()->route('index.menu_project')->with('success', 'Data berhasil ditambahkan!');
-            } catch (\Exception $e) {
-                //throw $th;
-                  //throw $th;
+        // Menangani Data
+        try {
+            //code...
+            Project::create([
+                'nama_project' => $request->nama_project,
+                'sub_nama_project' => $request->sub_nama_project,
+                'kategori_project' => $request->kategori_project,
+                'no_jo_project' => $request->no_jo_project,
+            ]);
+            return redirect()->route('index.menu_project')->with('success', 'Data berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            //throw $th;
+            //throw $th;
             // Simpan pesan error jika terjadi kesalahan
             session()->flash('error', 'Terjadi kesalahan saat menyimpan data!');
             return redirect()->back();
-            }
+        }
     }
 
     /**
@@ -76,17 +75,31 @@ class MenuProjectController extends Controller
     {
         //
         //  $findIdGeneralIndustri = GeneralIndustri::findOrFail($id);
-        // $data['find_id'] = Project::findOrFail($id);
         $data['sub_title'] = 'Menu Project';
-        return view('menu_project.edit',$data);
+        $data['find_id'] = Project::findOrFail($id);
+        return view('menu_project.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, $id)
     {
-        //
+        //Validasi Update
+        $this->validate($request, [
+            'nama_project' => 'required|min:5|max:255',
+            'sub_nama_project' => 'required|min:5|max:255',
+            'kategori_project' => 'required|min:5|max:255',
+            'no_jo_project' => 'required|min:5|max:255'
+        ]);
+        $updateProject = Project::findOrFail($id);
+        $updateProject->nama_project = $request->nama_project;
+        $updateProject->sub_nama_project = $request->sub_nama_project;
+        $updateProject->kategori_project = $request->kategori_project;
+        $updateProject->no_jo_project = $request->no_jo_project;
+        $updateProject->save();
+        // Redirect ke halaman yang diinginkan
+        return redirect()->route('index.menu_project')->with('editSuccess', 'Data berhasil Di Edit!');
     }
 
     /**
