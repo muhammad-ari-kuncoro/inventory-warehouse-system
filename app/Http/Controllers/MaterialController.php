@@ -15,7 +15,8 @@ class MaterialController extends Controller
     public function index()
     {
         //
-        $data['sub_title'] = 'Dashboard';
+        $data['sub_title'] = 'Materials';
+        $data['title'] = 'Menu Material Halaman';
         $data['data_project'] = Project::all();
         return view('materials.index',$data);
     }

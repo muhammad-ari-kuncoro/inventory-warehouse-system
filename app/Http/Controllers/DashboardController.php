@@ -12,6 +12,7 @@ class DashboardController extends Controller
     public function index()
     {
         $data['sub_title'] = 'Dashboard';
+        $data['title'] = 'Dashboard Halaman';
         return view('dashboard.index',$data);
     }
 

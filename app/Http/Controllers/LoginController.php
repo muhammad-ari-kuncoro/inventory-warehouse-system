@@ -14,6 +14,7 @@ class LoginController extends Controller
      */
     public function index()
     {
+        $data['title'] = 'Login Page AJM Warehouses';
         return view('auth.login');
     }
 

@@ -1,17 +1,17 @@
   <!-- Menu -->
 
   <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-    <div class="app-brand demo">
-      <a href="index.html" class="app-brand-link">
-        <span class="app-brand-logo demo">
 
-        </span>
-        <span class="app-brand-text demo menu-text fw-bolder ms-2">Sneat</span>
-      </a>
-
-      <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-        <i class="bx bx-chevron-left bx-sm align-middle"></i>
-      </a>
+    <div class="app-brand demo justify-content-center mt-4">
+        <a href="{{ route('dashboard') }}" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <img src="{{ asset('asset/img/img-import/thumb_armindo_jaya_mandiri-removebg-preview.png') }}"
+                    style="width: 100px; height: auto;" alt="Logo">
+            </span>
+        </a>
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
     </div>
 
     <div class="menu-inner-shadow"></div>
@@ -43,7 +43,7 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Materials</span>
           </li>
-          <li class="menu-item">
+          <li class="menu-item {{ ($sub_title === "Materials")  ? 'active' : ''}}">
             <a href="{{ route('materials.index') }}" class="menu-link">
               <i class="menu-icon tf-icons bx bx-layout"></i>
               <div data-i18n="Layouts">Materials</div>

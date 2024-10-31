@@ -13,6 +13,7 @@ class MenuProjectController extends Controller
     public function index()
     {
         $data['sub_title'] = 'Menu Project';
+        $data['title'] = 'Menu Project Halaman';
         $data['menu_project'] = Project::paginate(5);
         return view('menu_project.index', $data);
     }
