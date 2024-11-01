@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function (){
     //   Route Materials
     Route::get('materials',[MaterialController::class, 'index'])->name('materials.index');
     Route::post('/tambah',[MaterialController::class, 'store'])->name('materials.tambah');
+    Route::get('edit_material{id}',[MaterialController::class, 'edit'])->name('materials.edit');
 
 
 

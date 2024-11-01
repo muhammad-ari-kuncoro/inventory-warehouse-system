@@ -37,8 +37,8 @@
                             <th>Nama Materials</th>
                             <th>Spesifikasi Materials</th>
                             <th>Kode Material</th>
-                            <th>Jenis Quantity</th>
                             <th>Quantity</th>
+                            <th>Jenis Quantity</th>
                             <th>Jenis Materials</th>
                             <th>Nama Project</th>
                             <th>Sub Nama Project</th>
@@ -53,14 +53,14 @@
                         <td>{{ $data->nama_material }}</td>
                         <td>{{ $data->spesifikasi_material }}</td>
                         <td>{{ $data->kode_material }}</td>
-                        <td>{{ $data->jenis_quantity }}</td>
-                        <td>{{ $data->quantity }}</td>
-                        <td>{{ $data->jenis_material}}</td>
+                        <td class="text-center">{{ $data->quantity }}</td>
+                        <td class="text-center">{{ $data->jenis_quantity }}</td>
+                        <td class="text-center">{{ $data->jenis_material}}</td>
                         <td>{{ $data->project->nama_project }}</td>
                         <td>{{ $data->project->sub_nama_project }}</td>
                         <td>
                             <div class="mb-1">
-                                <a href="{{  }}"><span class="btn btn-warning btn-sm mb-3">Edit</a></span>
+                                <a href="{{ route('materials.edit',$data->id) }}"><span class="btn btn-warning btn-sm mb-3">Edit</a></span>
                                 <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
                             </div>
 
@@ -165,7 +165,7 @@
                         <select class="form-select rounded-top @error('project_id') is-invalid @enderror"
                             name="project_id" required>
                             @foreach ($data_project as $data )
-                            <option selected disabled>Pilih Jenis Project</option>
+                            <option selected disabled>Pilih Kategori Project</option>
                             <option value="{{ $data->id }}">{{ $data->nama_project }} | {{ $data->sub_nama_project }} | NO JO : {{ $data->no_jo_project }} </option>
 
                             @error('project_id')

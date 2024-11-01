@@ -46,7 +46,6 @@ class MaterialController extends Controller
 
         ]);
 
-        // dd($request);
 
         try {
             Materials::create([
@@ -78,9 +77,13 @@ class MaterialController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Materials $materials)
+    public function edit($id)
     {
         //
+        $data['sub_title'] = 'Materials';
+        $data['title'] = 'Halaman Edit Material';
+        $data['data_project'] = Project::all();
+        return view('materials.edit',$data);
     }
 
     /**
