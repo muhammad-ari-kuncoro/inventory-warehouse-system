@@ -12,7 +12,7 @@
 </div>
 
 
-{{--
+
 <!-- /Logo -->
 @if (session()->has('success'))
 <div class="alert alert-primary" role="alert">{{ session('success') }}</div>
@@ -21,7 +21,7 @@
 
 @if (session()->has('loginError'))
 <div class="alert alert-danger" role="alert">{{ session('loginError') }}</div>
-@endif --}}
+@endif
 
 
 
@@ -47,7 +47,7 @@
 
         <div class="input-group input-group-merge">
             <input type="password" id="password" class="form-control @error('password') is-invalid @enderror"
-                name="password" placeholder="Enter your Password " aria-describedby="password" />
+                name="password" placeholder="Enter your Password " autofocus required value="{{ old('password') }}"/>
                 <div class="mb-3">
                     @error('password')
                     <div class="invalid-feedback">
