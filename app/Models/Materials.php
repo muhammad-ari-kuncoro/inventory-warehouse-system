@@ -22,12 +22,17 @@ class Materials extends Model
 
         'nama_material',
         'spesifikasi_material',
-        'kode_material',
-        'jenis_quantity',
         'quantity',
+        'jenis_quantity',
+        'kode_material',
         'jenis_material',
         'project_id'
     ];
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 
     protected static function boot()
     {

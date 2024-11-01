@@ -1,78 +1,82 @@
 @extends('layouts.dashboard-layout')
 @section('container')
-
-
+.
 <div class="card">
-    <h5 class="card-header text-center">
-        Dashboard Menu Material
-    </h5>
-
-    {{-- Session Notifikasi --}}
-    @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong class="text-dark">{!! session()->get('success') !!}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @elseif (session('delete'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong class="text-dark">Data Telah Dihapus</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @elseif (session('editSuccess'))
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong class="text-dark">{!! session()->get('editSuccess') !!}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-
-
-
     <div class="card-body">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Tambah Data
-        </button>
-        <a href="" class="btn btn-success mb-3">Print Data</a>
-        <table class="table table-bordered">
 
-            <tr class="table-info text-center">
-                <th>No</th>
-                <th>Nama Materials</th>
-                <th>Spesifikasi Materials</th>
-                <th>Kode Material</th>
-                <th>Jenis Quantity</th>
-                <th>Quantity</th>
-                <th>Jenis Materials</th>
-                <th>Nama Project</th>
-                <th>Sub Nama Project</th>
-                <th>Aksi </th>
-            </tr>
-            <tr>
-                <td>hello world</td>
-                <td>hello world</td>
-                <td>hello world</td>
-                <td>hello world</td>
-                <td>hello world</td>
-                <td>hello world</td>
-                <td>hello world</td>
-                <td>hello world</td>
-                <td>hello world</td>
-                <td>
-                    <div class="mb-1">
+        <h5 class="card-header text-center">Dashboard Data Material</h5>
 
-                        <a href=""><span class="btn btn-warning btn-sm">Edit</a></span>
-                    </div>
+        @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong class="text-dark">{!! session()->get('success') !!}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @elseif (session('delete'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong class="text-dark">Data Telah Dihapus</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @elseif (session('editSuccess'))
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong class="text-dark">{!! session()->get('editSuccess') !!}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+        <div class="card-body">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary mb-3 mt-3" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">
+                Tambah Data Material
+            </button>
+            <a href="" class=" btn btn-success mb-3 mt-3 ">Cetak Data </a>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr class="table-info text-center">
+                            <th>No</th>
+                            <th>Nama Materials</th>
+                            <th>Spesifikasi Materials</th>
+                            <th>Kode Material</th>
+                            <th>Jenis Quantity</th>
+                            <th>Quantity</th>
+                            <th>Jenis Materials</th>
+                            <th>Nama Project</th>
+                            <th>Sub Nama Project</th>
+                            <th>Aksi </th>
+                        </tr>
+                    </thead>
+                    <p class="d-none">{{ $i= 1; }}</p>
+                    @foreach ($data_material as $data )
+                    <tbody>
 
-                    <a href=""><span class="btn btn-danger btn-sm">Delete</a></span>
-    </div>
-    </td>
-    </tr>
-    </table>
-    <div class="mb-3 mt-3">
-        {{-- {{ $menu_project->links('pagination::bootstrap-5') }} --}}
+                        <td>{{ $i++; }}</td>
+                        <td>{{ $data->nama_material }}</td>
+                        <td>{{ $data->spesifikasi_material }}</td>
+                        <td>{{ $data->kode_material }}</td>
+                        <td>{{ $data->jenis_quantity }}</td>
+                        <td>{{ $data->quantity }}</td>
+                        <td>{{ $data->jenis_material}}</td>
+                        <td>{{ $data->project->nama_project }}</td>
+                        <td>{{ $data->project->sub_nama_project }}</td>
+                        <td>
+                            <div class="mb-1">
+                                <a href="{{  }}"><span class="btn btn-warning btn-sm mb-3">Edit</a></span>
+                                <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
+                            </div>
+
+                        </td>
+                    </tbody>
+                    @endforeach
+                </table>
+
+
+            </div>
+        </div>
     </div>
 </div>
-</div>
+
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -83,8 +87,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="post">
+                <form action="{{ route('materials.tambah') }}" method="post">
                     @csrf
+
                     <div class="mb-3">
                         <label for="nama_material" class="form-label">Nama Material</label>
                         <input class="form-control rounded-top  @error('nama_material') is-invalid @enderror"
@@ -122,11 +127,13 @@
 
                     <div class="mb-3">
                         <label for="jenis_quantity" class="form-label" name="jenis_quantity">Jenis Quantity </label>
-                        <select class="form-select rounded-top @error('jenis_quantity') is-invalid @enderror"
-                            name="jenis_quantity" required>
+                        <select class="form-select rounded-top @error('jenis_quantity') is-invalid @enderror" name="jenis_quantity" required>
                             <option selected disabled>Pilih Jenis Quantity</option>
-                            <option value="Besar">Besar</option>
-                            <option value="Kecil">Kecil</option>
+                            <option value="Pcs">Pcs</option>
+                            <option value="Batang">Batang</option>
+                            <option value="Set">Set</option>
+                            <option value="Karung">Karung</option>
+                            <option value="Box">Box</option>
                             @error('jenis_quantity')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -138,7 +145,7 @@
 
 
                     <div class="mb-3">
-                        <label for="jenis_material" class="form-label" name="jenis_material">Kode Materials </label>
+                        <label for="jenis_material" class="form-label" name="jenis_material">Jenis Materials </label>
                         <select class="form-select rounded-top @error('jenis_material') is-invalid @enderror"
                             name="jenis_material" required>
                             <option selected disabled>Pilih Jenis Material</option>
@@ -152,23 +159,12 @@
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="formFile" name="no_jo_project" class="form-label">No Jo Project </label>
-                        <input class="form-control rounded-top @error('no_jo_project') is-invalid @enderror" type="text"
-                            name="no_jo_project" placeholder="Harap Di Isi Sub Nama Project" required>
-                        @error('no_jo_project')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
 
                     <div class="mb-3">
                         <label for="project_id" class="form-label" name="project_id">Nama Kategori Project</label>
                         <select class="form-select rounded-top @error('project_id') is-invalid @enderror"
                             name="project_id" required>
                             @foreach ($data_project as $data )
-
                             <option selected disabled>Pilih Jenis Project</option>
                             <option value="{{ $data->id }}">{{ $data->nama_project }} | {{ $data->sub_nama_project }} | NO JO : {{ $data->no_jo_project }} </option>
 

@@ -15,6 +15,7 @@ class MaterialController extends Controller
     public function index()
     {
         //
+        $data['data_material'] = Materials::paginate(5);
         $data['sub_title'] = 'Materials';
         $data['title'] = 'Menu Material Halaman';
         $data['data_project'] = Project::all();
@@ -41,12 +42,14 @@ class MaterialController extends Controller
             'jenis_quantity' => 'required|min:5|max:255',
             'quantity' => 'required|min:1|max:100',
             'jenis_material' => 'required|min:5|max:255',
-            'project_id' => 'nullable|exists:menu_project,id',
+            'project_id' => 'required',
 
         ]);
 
+        // dd($request);
+
         try {
-            Project::create([
+            Materials::create([
                 'nama_material' => $request->nama_material,
                 'spesifikasi_material' => $request->spesifikasi_material,
                 'jenis_quantity' => $request->jenis_quantity,
@@ -54,7 +57,8 @@ class MaterialController extends Controller
                 'jenis_material' => $request->jenis_material,
                 'project_id' => $request->project_id
             ]);
-            return redirect()->route('menu_project.tambah')->with('success', 'Data berhasil ditambahkan!');
+            // dd($tambah);
+            return redirect()->route('materials.index')->with('success', 'Data berhasil ditambahkan!');
         } catch (\Exception $th) {
             //erros jika data tidak sesuai
             // Simpan pesan error jika terjadi kesalahan
