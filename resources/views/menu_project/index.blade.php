@@ -53,7 +53,7 @@
                 <td>{{ $data->no_jo_project }}</td>
                 <td>
                     <div class="mb-1">
-                        <a href="{{route('edit_project.edit',$data->id)}}"><span class="btn btn-warning btn-sm">Edit</a></span>
+                        <a href="{{route('project.edit',$data->id)}}"><span class="btn btn-warning btn-sm">Edit</a></span>
                     </div>
 
 
@@ -78,11 +78,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Menu Project</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('menu_project.tambah') }}" method="post">
+                <form action="{{ route('project.create') }}" method="post">
                     @csrf
                     <div class="mb-3">
                         <label for="nama_project" class="form-label">Nama Project </label>

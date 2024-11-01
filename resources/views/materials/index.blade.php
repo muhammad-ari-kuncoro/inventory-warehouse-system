@@ -60,7 +60,7 @@
                         <td>{{ $data->project->sub_nama_project }}</td>
                         <td>
                             <div class="mb-1">
-                                <a href="{{ route('materials.edit',$data->id) }}"><span class="btn btn-warning btn-sm mb-3">Edit</a></span>
+                                <a href="{{ route('material.edit',$data->id) }}"><span class="btn btn-warning btn-sm mb-3">Edit</a></span>
                                 <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
                             </div>
 
@@ -87,7 +87,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('materials.tambah') }}" method="post">
+                <form action="{{ route('material.create') }}" method="post">
                     @csrf
 
                     <div class="mb-3">

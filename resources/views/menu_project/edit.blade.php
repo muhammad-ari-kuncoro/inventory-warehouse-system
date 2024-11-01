@@ -6,7 +6,7 @@
 
     </h5>
     <div class="card-body">
-        <form action="{{ route('edit_project.update',$find_id->id) }}" method="post">
+        <form action="{{ route('project.update',$find_id->id) }}" method="post">
             @csrf
             @method('patch')
             <div class="mb-3">
@@ -70,7 +70,7 @@
 
             <div class="row mb-3">
                 <div class="col sm-4">
-                <a href="{{ route('menu_project.index') }}" class="btn btn-secondary">Go Back</a>
+                <a href="{{ route('project.index') }}" class="btn btn-secondary">Go Back</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
 

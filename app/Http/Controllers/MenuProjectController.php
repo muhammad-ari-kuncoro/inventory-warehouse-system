@@ -49,7 +49,7 @@ class MenuProjectController extends Controller
                 'kategori_project' => $request->kategori_project,
                 'no_jo_project' => $request->no_jo_project,
             ]);
-            return redirect()->route('menu_project.index')->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('project.index')->with('success', 'Data berhasil ditambahkan!');
         } catch (\Exception $e) {
             // Simpan pesan error jika terjadi kesalahan
             return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
@@ -94,7 +94,7 @@ class MenuProjectController extends Controller
         $updateProject->no_jo_project = $request->no_jo_project;
         $updateProject->save();
         // Redirect ke halaman yang diinginkan
-        return redirect()->route('menu_project.index')->with('editSuccess', 'Data berhasil Di Edit!');
+        return redirect()->route('project.index')->with('editSuccess', 'Data berhasil Di Edit!');
     }
 
     /**

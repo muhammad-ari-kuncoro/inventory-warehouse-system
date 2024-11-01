@@ -33,7 +33,7 @@
         <span class="menu-header-text">Projet</span>
       </li>
       <li class="menu-item {{ ($sub_title === "Menu Project")  ? 'active' : ''}}">
-        <a href="{{ route('menu_project.index') }}" class="menu-link">
+        <a href="{{ route('project.index') }}" class="menu-link">
           <i class="menu-icon tf-icons bx bx-layout"></i>
           <div data-i18n="Layouts">Menu Project</div>
         </a>
@@ -44,7 +44,7 @@
             <span class="menu-header-text">Materials</span>
           </li>
           <li class="menu-item {{ ($sub_title === "Materials")  ? 'active' : ''}}">
-            <a href="{{ route('materials.index') }}" class="menu-link">
+            <a href="{{ route('material.index') }}" class="menu-link">
               <i class="menu-icon tf-icons bx bx-layout"></i>
               <div data-i18n="Layouts">Materials</div>
             </a>

@@ -30,16 +30,19 @@ Route::middleware('auth')->group(function (){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
       // Route Project Menu
-      Route::get('/menu_project', [MenuProjectController::class, 'index'])->name('menu_project.index');
-      Route::post('/tambah',[MenuProjectController::class, 'store'])->name('menu_project.tambah');
-      Route::get('/edit_project{id}/edit', [MenuProjectController::class, 'edit'])->name('edit_project.edit');
-      Route::patch('/edit_project{id}/update', [MenuProjectController::class, 'update'])->name('edit_project.update');
-
+    Route::prefix('project')->name('project.')->group(function(){
+        Route::get('/', [MenuProjectController::class, 'index'])->name('index');
+        Route::post('create',[MenuProjectController::class, 'store'])->name('create');
+        Route::get('edit/{id}', [MenuProjectController::class, 'edit'])->name('edit');
+        Route::patch('update/{id}', [MenuProjectController::class, 'update'])->name('update');
+    });
 
     //   Route Materials
-    Route::get('materials',[MaterialController::class, 'index'])->name('materials.index');
-    Route::post('/tambah',[MaterialController::class, 'store'])->name('materials.tambah');
-    Route::get('edit_material{id}',[MaterialController::class, 'edit'])->name('materials.edit');
+    Route::prefix('material')->name('material.')->group(function(){
+        Route::get('/',[MaterialController::class, 'index'])->name('index');
+        Route::post('create',[MaterialController::class, 'store'])->name('create');
+        Route::get('edit/{id}',[MaterialController::class, 'edit'])->name('edit');
+    });
 
 
 
