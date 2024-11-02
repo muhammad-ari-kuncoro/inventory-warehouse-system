@@ -4,7 +4,7 @@
 <div class="card">
     <div class="card-body">
 
-        <h5 class="card-header text-center">Dashboard Data Material</h5>
+        <h5 class="card-header text-center text-bold">Dashboard Data Material</h5>
 
         @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -23,12 +23,27 @@
         </div>
         @endif
         <div class="card-body">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary mb-3 mt-3" data-bs-toggle="modal"
-                data-bs-target="#exampleModal">
-                Tambah Data Material
-            </button>
-            <a href="" class=" btn btn-success mb-3 mt-3 ">Cetak Data </a>
+
+            <div class="row">
+                <div class="col-sm-2">
+                    <a href="" class="btn btn-success mb-3">Print Data</a>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Tambah Data
+                    </button>
+                </div>
+                <div class="col-md-5">
+                    <div class="mb-3">
+                        <input class="form-control" type="text" placeholder="Pencarian ">
+                    </div>
+                </div>
+                <div class="col-md-auto">
+                    <div class="mb-3">
+                        <button type="submit" name="submit" class="btn btn-primary">Cari</button>
+                    </div>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                     <thead>

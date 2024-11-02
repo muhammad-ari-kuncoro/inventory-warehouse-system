@@ -25,46 +25,66 @@
 
 
     <div class="card-body">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Tambah Data
-        </button>
-        <a href="" class="btn btn-success mb-3">Print Data</a>
-        <table class="table table-bordered">
-            <tr class="table-info text-center">
-                <th>No</th>
-                <th>Nama Project</th>
-                <th>Sub Nama Project</th>
-                <th>Kategori Nama Project</th>
-                <th>Kode Project</th>
-                <th>No Jo Project</th>
-                <th>Aksi </th>
-            </tr>
 
-            <p class="d-none">{{ $i= 1; }}</p>
-            @foreach ($menu_project as $data )
-            <tr class="text-center">
+        <div class="row">
+            <div class="col-sm-2">
+                <a href="" class="btn btn-success mb-3">Print Data</a>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Tambah Data
+                </button>
+            </div>
+            <div class="col-md-5">
+                <div class="mb-3">
+                    <input class="form-control" type="text" placeholder="Pencarian ">
+                </div>
+            </div>
+            <div class="col-md-auto">
+                <div class="mb-3">
+                    <button type="submit" name="submit" class="btn btn-primary">Cari</button>
+                </div>
+            </div>
+        </div>
 
-                <td>{{ $i++; }}</td>
-                <td>{{ $data->nama_project }}</td>
-                <td>{{ $data->sub_nama_project }}</td>
-                <td>{{ $data->kategori_project }}</td>
-                <td>{{ $data->kode_project }}</td>
-                <td>{{ $data->no_jo_project }}</td>
-                <td>
-                    <div class="mb-1">
-                        <a href="{{route('project.edit',$data->id)}}"><span class="btn btn-warning btn-sm">Edit</a></span>
-                    </div>
+        <div class="table-responsive">
+
+            <table class="table table-bordered">
+                <tr class="table-info text-center">
+                    <th>No</th>
+                    <th>Nama Project</th>
+                    <th>Sub Nama Project</th>
+                    <th>Kategori Nama Project</th>
+                    <th>Kode Project</th>
+                    <th>No Jo Project</th>
+                    <th>Aksi </th>
+                </tr>
+
+                <p class="d-none">{{ $i= 1; }}</p>
+                @foreach ($menu_project as $data )
+                <tr class="text-center">
+
+                    <td>{{ $i++; }}</td>
+                    <td>{{ $data->nama_project }}</td>
+                    <td>{{ $data->sub_nama_project }}</td>
+                    <td>{{ $data->kategori_project }}</td>
+                    <td>{{ $data->kode_project }}</td>
+                    <td>{{ $data->no_jo_project }}</td>
+                    <td>
+                        <div class="mb-1">
+                            <a href="{{route('project.edit',$data->id)}}"><span class="btn btn-warning btn-sm">Edit</a></span>
+                        </div>
 
 
-                        {{-- <div class="mb-1">
-                            <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
-                        </div> --}}
-                </td>
+                            {{-- <div class="mb-1">
+                                <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
+                            </div> --}}
+                    </td>
 
-            </tr>
-            @endforeach
-        </table>
+                </tr>
+                @endforeach
+            </table>
+        </div>
         <div class="mb-3 mt-3">
             {{ $menu_project->links('pagination::bootstrap-5') }}
         </div>

@@ -39,7 +39,7 @@ class Materials extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->kode_material = 'AJM-' . date('Ymd') . '-KDPAJM-' . strtoupper(Str::random(3));
+            $model->kode_material = 'AJM-' . date('Ymd') . '-MPAJM-' . strtoupper(Str::random(3));
         });
     }
 }

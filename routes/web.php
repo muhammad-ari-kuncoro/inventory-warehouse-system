@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function (){
         Route::get('/',[MaterialController::class, 'index'])->name('index');
         Route::post('create',[MaterialController::class, 'store'])->name('create');
         Route::get('edit/{id}',[MaterialController::class, 'edit'])->name('edit');
+        Route::patch('update{id}',[MaterialController::class, 'update'])->name('update');
+
     });
 
 
