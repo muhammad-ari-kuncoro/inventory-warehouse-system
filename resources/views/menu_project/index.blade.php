@@ -26,26 +26,31 @@
 
     <div class="card-body">
 
-        <div class="row">
-            <div class="col-sm-2">
-                <a href="" class="btn btn-success mb-3">Print Data</a>
+        {{-- Tampilan Button Data Dan Print  --}}
+        <div class="row align-items-center mb-2">
+            <!-- Print Button -->
+            <div class="col-sm-2 mb-3">
+                <a href="" class="btn btn-success w-100">Print Data</a>
             </div>
-            <div class="col">
-                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+            <!-- Add Button -->
+            <div class="col-sm-2 mb-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Tambah Data
                 </button>
             </div>
-            <div class="col-md-5">
-                <div class="mb-3">
-                    <input class="form-control" type="text" placeholder="Pencarian ">
-                </div>
-            </div>
-            <div class="col-md-auto">
-                <div class="mb-3">
+
+            <!-- Tampilan Pencarian -->
+            <div class="col mb-3">
+                <form action="{{ route('project.index') }}" method="get" class="d-flex align-items-center">
+                    <input class="form-control me-2" type="text" name="search" placeholder="Pencarian" value="{{ $search ?? '' }}">
                     <button type="submit" name="submit" class="btn btn-primary">Cari</button>
-                </div>
+                </form>
             </div>
         </div>
+
+
+
 
         <div class="table-responsive">
 

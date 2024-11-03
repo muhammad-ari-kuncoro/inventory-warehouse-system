@@ -12,13 +12,29 @@ class MaterialController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+
+        // Ambil input pencarian
+    $search = $request->input('search');
+    // Cek apakah ada input pencarian
+    if ($search) {
+        // Jika ada, lakukan pencarian di beberapa kolom
+        $materials = Materials::where('nama_material', 'LIKE', '%' . $search . '%')
+            ->orWhere('spesifikasi_material', 'LIKE', '%' . $search . '%')
+            ->orWhere('jenis_material', 'LIKE', '%' . $search . '%')
+            ->paginate(2); // Sesuaikan jumlah data per halaman
+    } else {
+        // Jika tidak ada pencarian, tampilkan semua data
+        $materials = Project::paginate(5);
+    }
+        $data['materials'] = $materials;
         $data['data_material'] = Materials::paginate(5);
         $data['sub_title'] = 'Materials';
         $data['title'] = 'Menu Material Halaman';
         $data['data_project'] = Project::all();
+        $data['search'] = $search;
         return view('materials.index',$data);
     }
 

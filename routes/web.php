@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function (){
         Route::post('create',[MenuProjectController::class, 'store'])->name('create');
         Route::get('edit/{id}', [MenuProjectController::class, 'edit'])->name('edit');
         Route::patch('update/{id}', [MenuProjectController::class, 'update'])->name('update');
+        Route::get('/search',[MenuProjectController::class, 'index'])->name('search');
+
+
     });
 
     //   Route Materials
@@ -43,6 +46,7 @@ Route::middleware('auth')->group(function (){
         Route::post('create',[MaterialController::class, 'store'])->name('create');
         Route::get('edit/{id}',[MaterialController::class, 'edit'])->name('edit');
         Route::patch('update{id}',[MaterialController::class, 'update'])->name('update');
+        Route::get('/search',[MaterialController::class, 'index'])->name('search');
 
     });
 
