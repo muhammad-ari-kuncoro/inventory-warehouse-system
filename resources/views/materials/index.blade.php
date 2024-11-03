@@ -1,11 +1,11 @@
 @extends('layouts.dashboard-layout')
 @section('container')
-.
 <div class="card">
     <div class="card-body">
 
         <h5 class="card-header text-center text-bold">Dashboard Data Material</h5>
 
+        {{-- Session Flash Data --}}
         @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong class="text-dark">{!! session()->get('success') !!}</strong>
@@ -22,10 +22,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
+
+
         <div class="card-body">
 
             {{-- Tampilan Button Data Dan Print  --}}
-        <div class="row align-items-center mb-2">
+         <div class="row align-items-center mb-2">
             <!-- Print Button -->
             <div class="col-sm-2 mb-3">
                 <a href="" class="btn btn-success w-100">Print Data</a>
@@ -46,6 +48,8 @@
                 </form>
             </div>
         </div>
+
+
 
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">

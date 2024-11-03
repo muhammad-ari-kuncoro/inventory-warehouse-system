@@ -41,7 +41,7 @@
 
         <!-- Layouts Materials -->
         <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Materials</span>
+            <span class="menu-header-text">Stuff</span>
           </li>
           <li class="menu-item {{ ($sub_title === "Materials")  ? 'active' : ''}}">
             <a href="{{ route('material.index') }}" class="menu-link">
@@ -49,6 +49,17 @@
               <div data-i18n="Layouts">Materials</div>
             </a>
           </li>
+          <li class="menu-item {{ ($sub_title === "Consumables")  ? 'active' : ''}}">
+            <a href="{{route('consumable.index')}}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-basket"></i>
+              <div data-i18n="Layouts">Consumables</div>
+            </a>
+          </li>
+>
+
+
+
+
 
 
 

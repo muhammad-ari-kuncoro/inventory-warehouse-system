@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConsumableController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
@@ -48,6 +49,10 @@ Route::middleware('auth')->group(function (){
         Route::patch('update{id}',[MaterialController::class, 'update'])->name('update');
         Route::get('/search',[MaterialController::class, 'index'])->name('search');
 
+    });
+
+    Route::prefix('consumable')->name('consumable.')->group(function(){
+        Route::get('/',[ConsumableController::class, 'index'])->name('index');
     });
 
 
