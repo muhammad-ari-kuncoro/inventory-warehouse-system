@@ -45,7 +45,7 @@
           </li>
           <li class="menu-item {{ ($sub_title === "Materials")  ? 'active' : ''}}">
             <a href="{{ route('material.index') }}" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <i class="menu-icon tf-icons bx bx-cog"></i>
               <div data-i18n="Layouts">Materials</div>
             </a>
           </li>
@@ -55,6 +55,14 @@
               <div data-i18n="Layouts">Consumables</div>
             </a>
           </li>
+          <li class="menu-item {{ ($sub_title === "Tools")  ? 'active' : ''}}">
+            <a href="{{route('tools.index')}}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-wrench"></i>
+              <div data-i18n="Layouts">Tools</div>
+            </a>
+          </li>
+
+
 >
 
 

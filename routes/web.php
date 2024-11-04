@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MenuProjectController;
+use App\Http\Controllers\ToolsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,10 @@ Route::middleware('auth')->group(function (){
         Route::get('edit/{id}',[ConsumableController::class, 'edit'])->name('edit');
         Route::patch('update{id}',[ConsumableController::class, 'update'])->name('update');
 
+    });
+
+    Route::prefix('tools')->name('tools.')->group(function(){
+        Route::get('/',[ToolsController::class, 'index'])->name('index');
     });
 
 
