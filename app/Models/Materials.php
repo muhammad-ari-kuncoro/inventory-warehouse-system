@@ -38,6 +38,7 @@ class Materials extends Model
     {
         parent::boot();
 
+        // KDMPAJM = Kode Material Project AJM
         static::creating(function ($model) {
             $model->kode_material = 'AJM-' . date('Ymd') . '-MPAJM-' . strtoupper(Str::random(3));
         });

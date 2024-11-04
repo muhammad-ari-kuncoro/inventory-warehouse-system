@@ -25,6 +25,7 @@ class Project extends Model
     {
         parent::boot();
 
+        // KDPAJM = Kode Project AJM
         static::creating(function ($model) {
             $model->kode_project = 'AJM-' . date('Ymd') . '-KDPAJM-' . strtoupper(Str::random(3));
         });

@@ -1,7 +1,7 @@
 @extends('layouts.dashboard-layout')
 @section('container')
 <div class="card">
-    <h5 class="card-header">Dashboard Menu Consumables</h5>
+    <h5 class="card-header text-center">Dashboard Menu Consumables</h5>
      {{-- Session Flash Data --}}
      @if (session('success'))
      <div class="alert alert-success alert-dismissible fade show" role="alert">
