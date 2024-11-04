@@ -55,7 +55,7 @@ class MaterialController extends Controller
          $request->validate([
             'nama_material' => 'required|min:5|max:255',
             'spesifikasi_material' => 'required|min:5|max:255',
-            'jenis_quantity' => 'required|min:5|max:255',
+            'jenis_quantity' => 'required|min:1|max:255',
             'quantity' => 'required|min:1|max:100',
             'jenis_material' => 'required|min:5|max:255',
             'project_id' => 'required',
@@ -72,8 +72,8 @@ class MaterialController extends Controller
                 'jenis_material' => $request->jenis_material,
                 'project_id' => $request->project_id
             ]);
+            // dd($tambah);
             return redirect()->route('materials.index')->with('success', 'Data berhasil ditambahkan!');
-
         } catch (\Exception $th) {
             //erros jika data tidak sesuai
             // Simpan pesan error jika terjadi kesalahan

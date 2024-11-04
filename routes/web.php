@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('consumable')->name('consumable.')->group(function(){
         Route::get('/',[ConsumableController::class, 'index'])->name('index');
+        Route::post('create',[ConsumableController::class, 'store'])->name('create');
+
     });
 
 

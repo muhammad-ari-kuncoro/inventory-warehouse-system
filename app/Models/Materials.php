@@ -40,7 +40,7 @@ class Materials extends Model
 
         // KDMPAJM = Kode Material Project AJM
         static::creating(function ($model) {
-            $model->kode_material = 'AJM-' . date('Ymd') . '-MPAJM-' . strtoupper(Str::random(3));
+            $model->kode_material = 'AJM-' . date('Ymd') . '-KDMPAJM-' . strtoupper(Str::random(3));
         });
     }
 }

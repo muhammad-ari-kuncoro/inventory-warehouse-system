@@ -27,12 +27,18 @@ class Consumables extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+
     protected static function boot()
     {
         parent::boot();
         // KDCAJM = Kode Consumable Project AJM
         static::creating(function ($model) {
-            $model->kode_consumable = 'AJM-' . date('Ymd') . '-CPAJM-' . strtoupper(Str::random(3));
+            $model->kode_consumable = 'AJM-' . date('Ymd') . '-KDCAJM-' . strtoupper(Str::random(3));
         });
     }
+
+
+
+
 }

@@ -17,6 +17,7 @@ class ConsumableController extends Controller
         $data['sub_title'] = 'Consumables';
         $data['title'] = 'Menu Consumable Halaman';
         $data['data_project'] = Project::all();
+        $data['data_consumables'] = Consumables::paginate(5);
         return view('consumables.index',$data);
     }
 
@@ -38,12 +39,29 @@ class ConsumableController extends Controller
         $request->validate([
             'nama_consumable' => 'required|min:5|max:255',
             'spesifikasi_consumable' => 'required|min:5|max:255',
-            'jenis_quantity' => 'required|min:5|max:255',
+            'jenis_quantity' => 'required|min:1|max:255',
             'quantity' => 'required|min:1|max:100',
             'jenis_consumable' => 'required|min:5|max:255',
             'project_id' => 'required',
 
         ]);
+        try {
+            Consumables::create([
+                'nama_consumable' => $request->nama_consumable,
+                'spesifikasi_consumable' => $request->spesifikasi_consumable,
+                'jenis_quantity' => $request->jenis_quantity,
+                'quantity' => $request->quantity,
+                'jenis_consumable' => $request->jenis_consumable,
+                'project_id' => $request->project_id
+            ]);
+            return redirect()->route('consumable.index')->with('success', 'Data berhasil ditambahkan!');
+
+        } catch (\Exception $e) {
+            //erros jika data tidak sesuai
+            // Simpan pesan error jika terjadi kesalahan
+            return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
+
+        }
     }
 
     /**

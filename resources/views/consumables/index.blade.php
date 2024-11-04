@@ -37,7 +37,7 @@
 
         <!-- Tampilan Pencarian -->
         <div class="col mb-3">
-            <form action="{{ route('material.index') }}" method="get" class="d-flex align-items-center">
+            <form action="{{ route('consumable.index') }}" method="get" class="d-flex align-items-center">
                 <input class="form-control me-2" type="text" name="search" placeholder="Pencarian" value="{{ $search ?? '' }}">
                 <button type="submit" name="submit" class="btn btn-primary">Cari</button>
             </form>
@@ -52,7 +52,7 @@
                     <th>No</th>
                     <th>Nama Consumables</th>
                     <th>Spesifikasi Consumables</th>
-                    <th>Kode Materials</th>
+                    <th>Kode Consumable</th>
                     <th>Quantity</th>
                     <th>Jenis Quantity</th>
                     <th>Jenis Consumables</th>
@@ -61,17 +61,19 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
+            <p class="d-none">{{ $i= 1; }}</p>
+            @foreach ($data_consumables as $data )
             <tbody>
                 <tr>
-                    <td>Hellow world</td>
-                    <td>Hellow world</td>
-                    <td>Hellow world</td>
-                    <td>Hellow world</td>
-                    <td>Hellow world</td>
-                    <td>Hellow world</td>
-                    <td>Hellow world</td>
-                    <td>Hellow world</td>
-                    <td>Hellow world</td>
+                    <td>{{$i++;}}</td>
+                    <td>{{$data->nama_consumable}}</td>
+                    <td>{{$data->spesifikasi_consumable}}</td>
+                    <td>{{$data->kode_consumable}}</td>
+                    <td class="text-center">{{$data->quantity}}</td>
+                    <td class="text-center">{{$data->jenis_quantity}}</td>
+                    <td>{{$data->jenis_consumable}}</td>
+                    <td>{{$data->project->nama_project}}</td>
+                    <td>{{$data->project->sub_nama_project}}</td>
                     <td>
                         <div class="mb-1">
                             <a href="" class="btn btn-warning btn-sm">Edit</a>
@@ -80,9 +82,13 @@
                             <a href="" class="btn btn-danger btn-sm">Hapus</a>
                         </div>
                     </td>
+                    @endforeach
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="mb-3 mt-3">
+        {{ $data_consumables->links('pagination::bootstrap-5') }}
     </div>
 
     </div>
@@ -91,11 +97,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Form Tambah Consumable</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="post">
+                <form action="{{route('consumable.create')}}" method="post">
                     @csrf
                     <div class="mb-3">
                         <label for="nama_consumable" class="form-label">Nama Consumable</label>
@@ -133,8 +139,8 @@
 
 
                     <div class="mb-3">
-                        <label for="jenis_consumable" class="form-label" name="jenis_consumable">Jenis Quantity </label>
-                        <select class="form-select rounded-top @error('jenis_consumable') is-invalid @enderror" name="jenis_consumable" required>
+                        <label for="jenis_quantity" class="form-label" name="jenis_quantity">Jenis Quantity </label>
+                        <select class="form-select rounded-top @error('jenis_quantity') is-invalid @enderror" name="jenis_quantity" required>
                             <option selected disabled>Pilih Jenis Quantity</option>
                             <option value="Pcs">Pcs</option>
                             <option value="Batang">Batang</option>
@@ -144,7 +150,7 @@
                             <option value="Pasang">PSG</option>
                             <option value="Kilo Gram">KG</option>
                             <option value="Lusin">Lusin</option>
-                            @error('jenis_consumable')
+                            @error('jenis_quantity')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -178,7 +184,6 @@
                             <option selected disabled>Pilih Kategori Project</option>
                             @foreach ($data_project as $data )
                             <option value="{{ $data->id }}">{{ $data->nama_project }} | {{ $data->sub_nama_project }} | NO JO : {{ $data->no_jo_project }} </option>
-
                             @error('project_id')
                             <div class="invalid-feedback">
                                 {{ $message }}
