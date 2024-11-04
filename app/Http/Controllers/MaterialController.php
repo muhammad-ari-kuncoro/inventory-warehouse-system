@@ -72,8 +72,8 @@ class MaterialController extends Controller
                 'jenis_material' => $request->jenis_material,
                 'project_id' => $request->project_id
             ]);
-            // dd($tambah);
             return redirect()->route('materials.index')->with('success', 'Data berhasil ditambahkan!');
+
         } catch (\Exception $th) {
             //erros jika data tidak sesuai
             // Simpan pesan error jika terjadi kesalahan

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Consumables;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Project;
 class ConsumableController extends Controller
 {
     /**
@@ -16,6 +16,7 @@ class ConsumableController extends Controller
         //
         $data['sub_title'] = 'Consumables';
         $data['title'] = 'Menu Consumable Halaman';
+        $data['data_project'] = Project::all();
         return view('consumables.index',$data);
     }
 
@@ -33,6 +34,16 @@ class ConsumableController extends Controller
     public function store(Request $request)
     {
         //
+        //Validasi
+        $request->validate([
+            'nama_consumable' => 'required|min:5|max:255',
+            'spesifikasi_consumable' => 'required|min:5|max:255',
+            'jenis_quantity' => 'required|min:5|max:255',
+            'quantity' => 'required|min:1|max:100',
+            'jenis_consumable' => 'required|min:5|max:255',
+            'project_id' => 'required',
+
+        ]);
     }
 
     /**

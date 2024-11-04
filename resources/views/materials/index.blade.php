@@ -8,7 +8,7 @@
         {{-- Session Flash Data --}}
         @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong class="text-dark">{!! session()->get('success') !!}</strong>
+            <strong class="text-dark">{{!! session()->get('success') !!}}</strong>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @elseif (session('delete'))
@@ -18,7 +18,7 @@
         </div>
         @elseif (session('editSuccess'))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong class="text-dark">{!! session()->get('editSuccess') !!}</strong>
+            <strong class="text-dark">{{!! session()->get('editSuccess') !!}}</strong>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
