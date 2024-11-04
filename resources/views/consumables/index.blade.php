@@ -73,10 +73,10 @@
                     <td class="text-center">{{$data->jenis_quantity}}</td>
                     <td>{{$data->jenis_consumable}}</td>
                     <td>{{$data->project->nama_project}}</td>
-                    <td>{{$data->project->sub_nama_project}}</td>
+                    <td class="text-center">{{$data->project->sub_nama_project}} </td>
                     <td>
                         <div class="mb-1">
-                            <a href="" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{route('consumable.edit',$data->id)}}" class="btn btn-warning btn-sm">Edit</a>
                         </div>
                         <div class="mb-1">
                             <a href="" class="btn btn-danger btn-sm">Hapus</a>
@@ -147,7 +147,7 @@
                             <option value="Set">Set</option>
                             <option value="Karung">Karung</option>
                             <option value="Box">Box</option>
-                            <option value="Pasang">PSG</option>
+                            <option value="Pasang">Pasang</option>
                             <option value="Kilo Gram">KG</option>
                             <option value="Lusin">Lusin</option>
                             @error('jenis_quantity')

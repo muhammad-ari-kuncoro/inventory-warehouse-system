@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function (){
     Route::prefix('consumable')->name('consumable.')->group(function(){
         Route::get('/',[ConsumableController::class, 'index'])->name('index');
         Route::post('create',[ConsumableController::class, 'store'])->name('create');
+        Route::get('edit/{id}',[ConsumableController::class, 'edit'])->name('edit');
+        Route::patch('update{id}',[ConsumableController::class, 'update'])->name('update');
 
     });
 
