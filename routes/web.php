@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('tools')->name('tools.')->group(function(){
         Route::get('/',[ToolsController::class, 'index'])->name('index');
+        Route::post('create',[ToolsController::class, 'store'])->name('create');
     });
 
 

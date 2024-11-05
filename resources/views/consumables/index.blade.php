@@ -35,18 +35,11 @@
             </button>
         </div>
 
-        <!-- Tampilan Pencarian -->
-        <div class="col mb-3">
-            <form action="{{ route('consumable.index') }}" method="get" class="d-flex align-items-center">
-                <input class="form-control me-2" type="text" name="search" placeholder="Pencarian" value="{{ $search ?? '' }}">
-                <button type="submit" name="submit" class="btn btn-primary">Cari</button>
-            </form>
-        </div>
-    </div>
+
 
 
     <div class="table-responsive">
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover" id="myTable2">
             <thead>
                 <tr class="table-info text-center">
                     <th>No</th>
@@ -61,11 +54,10 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <p class="d-none">{{ $i= 1; }}</p>
             @foreach ($data_consumables as $data )
             <tbody>
                 <tr>
-                    <td>{{$i++;}}</td>
+                    <td class="text-center">{{$loop->iteration}}</td>
                     <td>{{$data->nama_consumable}}</td>
                     <td>{{$data->spesifikasi_consumable}}</td>
                     <td>{{$data->kode_consumable}}</td>
@@ -206,3 +198,9 @@
     </div>
 </div>
 @endsection
+@push('scripts')
+<script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script>
+    let table = new DataTable('#myTable2');
+</script>
+@endpush

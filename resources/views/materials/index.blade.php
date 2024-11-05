@@ -5,23 +5,23 @@
 
         <h5 class="card-header text-center text-bold">Dashboard Data Material</h5>
 
-        {{-- Session Flash Data --}}
-        @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong class="text-dark">{!! session()->get('success') !!}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        @elseif (session('delete'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong class="text-dark">Data Telah Dihapus</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        @elseif (session('editSuccess'))
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong class="text-dark">{!! session()->get('editSuccess') !!}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        @endif
+       {{-- Session Notifikasi --}}
+    @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong class="text-dark">{!! session()->get('success') !!}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @elseif (session('delete'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong class="text-dark">Data Telah Dihapus</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @elseif (session('editSuccess'))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong class="text-dark">{!! session()->get('editSuccess') !!}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
 
 
         <div class="card-body">
@@ -40,19 +40,11 @@
                 </button>
             </div>
 
-            <!-- Tampilan Pencarian -->
-            <div class="col mb-3">
-                <form action="{{ route('material.index') }}" method="get" class="d-flex align-items-center">
-                    <input class="form-control me-2" type="text" name="search" placeholder="Pencarian" value="{{ $search ?? '' }}">
-                    <button type="submit" name="submit" class="btn btn-primary">Cari</button>
-                </form>
-            </div>
-        </div>
 
 
 
             <div class="table-responsive">
-                <table class="table table-bordered table-hover">
+                <table class="table table-bordered table-hover" id="myTable2">
                     <thead>
                         <tr class="table-info text-center">
                             <th>No</th>
@@ -67,11 +59,11 @@
                             <th>Aksi </th>
                         </tr>
                     </thead>
-                    <p class="d-none">{{ $i= 1; }}</p>
-                    @foreach ($data_material as $data )
-                    <tbody>
 
-                        <td>{{ $i++; }}</td>
+                    <tbody>
+                        @foreach ($data_material as $data )
+                        <tr>
+                        <td class="text-center">{{$loop->iteration; }}</td>
                         <td>{{ $data->nama_material }}</td>
                         <td>{{ $data->spesifikasi_material }}</td>
                         <td>{{ $data->kode_material }}</td>
@@ -87,13 +79,10 @@
                             </div>
 
                         </td>
+                    </tr>
                     </tbody>
                     @endforeach
                 </table>
-
-                <div class="mb-3 mt-3">
-                    {{ $data_material->links('pagination::bootstrap-5') }}
-                </div>
             </div>
         </div>
     </div>
@@ -214,4 +203,16 @@
     </div>
 </div>
 
+
+
 @endsection
+@push('scripts')
+<script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script>
+    let table = new DataTable('#myTable2',
+
+    );
+
+
+</script>
+@endpush

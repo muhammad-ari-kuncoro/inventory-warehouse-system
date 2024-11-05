@@ -10,34 +10,15 @@ class MenuProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index(Request $request)
+   public function index()
     {
-    // Ambil input pencarian
-    $search = $request->input('search');
 
-    // Cek apakah ada input pencarian
-    if ($search) {
-        // Jika ada, lakukan pencarian di beberapa kolom
-        $menu_project = Project::where('nama_project', 'LIKE', '%' . $search . '%')
-            ->orWhere('sub_nama_project', 'LIKE', '%' . $search . '%')
-            ->orWhere('kategori_project', 'LIKE', '%' . $search . '%')
-            ->orWhere('kode_project', 'LIKE', '%' . $search . '%')
-            ->orWhere('no_jo_project', 'LIKE', '%' . $search . '%')
-            ->paginate(5); // Sesuaikan jumlah data per halaman
-    } else {
-        // Jika tidak ada pencarian, tampilkan semua data
-        $menu_project = Project::paginate(5);
+
+        $data['title'] = 'Menu Project Halaman';
+        $data['sub_title'] = 'Menu Project';
+        $data['menu_project'] = Project::all();
+        return view('menu_project.index', $data);
     }
-
-    return view('menu_project.index', [
-        'menu_project' => $menu_project,
-        'title' => 'Menu Project Halaman',
-        'sub_title' => 'Menu Project',
-        'search' => $search,
-    ]);
-
-
-}
 
 
 
@@ -57,8 +38,6 @@ class MenuProjectController extends Controller
     {
         //Validasi
         $request->validate([
-
-
             'nama_project' => 'required|min:5|max:255',
             'sub_nama_project' => 'required|min:5|max:255',
             'kategori_project' => 'required|min:5|max:255',

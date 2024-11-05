@@ -26,8 +26,8 @@
 
     <div class="card-body">
 
-        {{-- Tampilan Button Data Dan Print  --}}
-        <div class="row align-items-center mb-2">
+
+        <div class="row align-items-center">
             <!-- Print Button -->
             <div class="col-sm-2 mb-3">
                 <a href="" class="btn btn-success w-100">Print Data</a>
@@ -40,13 +40,7 @@
                 </button>
             </div>
 
-            <!-- Tampilan Pencarian -->
-            <div class="col mb-3">
-                <form action="{{ route('project.index') }}" method="get" class="d-flex align-items-center">
-                    <input class="form-control me-2" type="text" name="search" placeholder="Pencarian" value="{{ $search ?? '' }}">
-                    <button type="submit" name="submit" class="btn btn-primary">Cari</button>
-                </form>
-            </div>
+
         </div>
 
 
@@ -54,44 +48,43 @@
 
         <div class="table-responsive">
 
-            <table class="table table-bordered">
-                <tr class="table-info text-center">
-                    <th>No</th>
-                    <th>Nama Project</th>
-                    <th>Sub Nama Project</th>
-                    <th>Kategori Nama Project</th>
-                    <th>Kode Project</th>
-                    <th>No Jo Project</th>
-                    <th>Aksi </th>
-                </tr>
+            <table class="table table-bordered" id="myTable">
+                <thead>
+                    <tr class="table-info text-center">
+                        <th>No</th>
+                        <th>Nama Project</th>
+                        <th>Sub Nama Project</th>
+                        <th>Kategori Nama Project</th>
+                        <th>Kode Project</th>
+                        <th>No Jo Project</th>
+                        <th>Aksi </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($menu_project as $data )
+                    <tr class="text-center">
 
-                <p class="d-none">{{ $i= 1; }}</p>
-                @foreach ($menu_project as $data )
-                <tr class="text-center">
-
-                    <td>{{ $i++; }}</td>
-                    <td>{{ $data->nama_project }}</td>
-                    <td>{{ $data->sub_nama_project }}</td>
-                    <td>{{ $data->kategori_project }}</td>
-                    <td>{{ $data->kode_project }}</td>
-                    <td>{{ $data->no_jo_project }}</td>
-                    <td>
-                        <div class="mb-1">
-                            <a href="{{route('project.edit',$data->id)}}"><span class="btn btn-warning btn-sm">Edit</a></span>
-                        </div>
+                        <td>{{ $loop->iteration; }}</td>
+                        <td>{{ $data->nama_project }}</td>
+                        <td>{{ $data->sub_nama_project }}</td>
+                        <td>{{ $data->kategori_project }}</td>
+                        <td>{{ $data->kode_project }}</td>
+                        <td>{{ $data->no_jo_project }}</td>
+                        <td>
+                            <div class="mb-1">
+                                <a href="{{route('project.edit',$data->id)}}"><span class="btn btn-warning btn-sm">Edit</a></span>
+                            </div>
 
 
-                            {{-- <div class="mb-1">
-                                <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
-                            </div> --}}
-                    </td>
+                                {{-- <div class="mb-1">
+                                    <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
+                                </div> --}}
+                        </td>
 
-                </tr>
-                @endforeach
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
-        </div>
-        <div class="mb-3 mt-3">
-            {{ $menu_project->links('pagination::bootstrap-5') }}
         </div>
     </div>
 </div>
@@ -171,3 +164,9 @@
 </div>
 
 @endsection
+@push('scripts')
+<script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script>
+    let table = new DataTable('#myTable');
+</script>
+@endpush
