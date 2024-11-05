@@ -93,9 +93,40 @@ class ToolsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tools $tools)
+    public function update(Request $request, $id)
     {
         //
+         //Validasi Update
+        //  $this->validate($request, [
+        //     'nama_alat' => 'required|min:5|max:255',
+        //     'spesifikasi_alat' => 'required|min:5|max:255',
+        //     'jenis_alat' => 'required|min:5|max:255',
+        //     'tipe_alat' => 'required|min:5|max:255',
+        //     'quantity' => 'required|min:1|max:255',
+        //     'jenis_quantity' => 'required|min:5|max:255'
+
+        // ]);
+
+        $request->validate([
+            'nama_alat' => 'required|min:5|max:255',
+            'spesifikasi_alat' => 'required|min:5|max:255',
+            'jenis_alat' => 'required|min:1|max:255',
+            'tipe_alat' => 'required|min:1|max:100',
+            'quantity' => 'required|min:1|max:255',
+            'jenis_quantity' => 'required',
+
+        ]);
+        $updateTools = Tools::findOrFail($id);
+        $updateTools->nama_alat = $request->nama_alat;
+        $updateTools->spesifikasi_alat = $request->spesifikasi_alat;
+        $updateTools->jenis_alat = $request->jenis_alat;
+        $updateTools->tipe_alat = $request->tipe_alat;
+        $updateTools->quantity = $request->quantity;
+        $updateTools->jenis_quantity = $request->jenis_quantity;
+        $updateTools->save();
+        // Redirect ke halaman yang diinginkan
+        return redirect()->route('tools.index')->with('editSuccess', 'Data berhasil Di Edit!');
+
     }
 
     /**

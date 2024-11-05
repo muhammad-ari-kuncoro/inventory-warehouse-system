@@ -6,7 +6,7 @@
         Halaman Edit Data Edit Alat Dan Permesinan
     </h5>
     <div class="card-body">
-        <form action="" method="post">
+        <form action="{{ route('tools.update',$find_id->id) }}" method="post">
             @csrf
             @method('patch')
             <div class="mb-3">
@@ -27,7 +27,6 @@
                 <input class="form-control rounded-top @error('spesifikasi_alat') is-invalid @enderror " type="text"
                     name="spesifikasi_alat" placeholder="Harap Di Isi Spesifikasi Alat Atau Mesin"
                     value="{{ old('spesifikasi_alat', $find_id->spesifikasi_alat)}}">
-
                 @error('spesifikasi_alat')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -49,17 +48,17 @@
 
             <div class="mb-3">
                 <label for="jenis_alat" class="form-label" name="jenis_alat">Jenis Alat </label>
-                <select class="form-select" id="basic-usage" name="jenis_alat" data-placeholder="Choose one thing">
+                <select class="form-select" id="basic-usage" name="jenis_alat">
                     <option value="" disabled {{ old('jenis_alat'), $find_id->jenis_alat === null ? 'selected' : '' }}>Pilih salah satu</option>
                     <option value="Alat Pemotong"{{ old('jenis_alat') == $find_id->jenis_alat ? 'selected' : '' }}>Alat Pemotong(Cutting Tools)</option>
                     <option value="Mesin Las"{{ old('jenis_alat') == $find_id->jenis_alat ? 'selected' : '' }}>Mesin las (Machine Welding)</option>
-                    <option value="Alat Pengangkat">Alat Pengangkat</option>
-                    <option value="Alat Pemukul ">Alat Pemukul (Lifting Equipment)</option>
-                    <option value="Mesin Pembentuk">Mesin Pembentuk</option>
-                    <option value="Alat Pemukul">Mesin Pemukul(Hammer)</option>
-                    <option value="Alat Pengunci">Alat Pengunci</option>
-                    <option value="Alat Pengukur">Alat Pengunci</option>
-                    <option value="Alat Tester">Alat Tester</option>
+                    <option value="Alat Pengangkat" {{ old('jenis_alat') == $find_id->jenis_alat ? 'selected' : '' }}>Alat Pengangkat</option>
+                    <option value="Alat Pemukul" {{ old('jenis_alat') == $find_id->jenis_alat ? 'selected' : '' }}>Alat Pemukul (Lifting Equipment)</option>
+                    <option value="Mesin Pembentuk" {{ old('jenis_alat') == $find_id->jenis_alat ? 'selected' : '' }}>Mesin Pembentuk</option>
+                    <option value="Alat Pemukul"{{ old('jenis_alat') == $find_id->jenis_alat ? 'selected' : '' }}>Mesin Pemukul(Hammer)</option>
+                    <option value="Alat Pengunci"{{ old('jenis_alat') == $find_id->jenis_alat ? 'selected' : '' }}>Alat Pengunci</option>
+                    <option value="Alat Pengukur"{{ old('jenis_alat') == $find_id->jenis_alat ? 'selected' : '' }}>Alat Pengunci</option>
+                    <option value="Alat Tester" {{ old('jenis_alat') == $find_id->jenis_alat ? 'selected' : '' }}>Alat Tester</option>
 
                     @error('jenis_alat')
                     <div class="invalid-feedback">
@@ -72,45 +71,53 @@
 
 
             <div class="mb-3">
-                <label for="" class="form-label">Kategori Nama Project Lama </label>
+                <label for="" class="form-label">Tipe Data Alat lama </label>
                 <input class="form-control rounded-top" type="text"
-                    placeholder="{{ old('kategori_project', $find_id->kategori_project)}}" disabled>
+                    placeholder="{{ old('tipe_alat', $find_id->tipe_alat)}}" disabled>
             </div>
 
 
             <div class="mb-3">
                 <label for="tipe_alat" class="form-label" name="tipe_alat">Tipe Alat </label>
-                <select class="form-select" id="basic-usage2" data-placeholder="Choose one thing">
-                    <option selected disabled>Pilih Tipe Alat</option>
-                    <option>Reactive</option>
-                    <option>Solution</option>
-                    <option>Conglomeration</option>
-                    <option>Algoritm</option>
-                    <option>Holistic</option>
+                <select class="form-select" id="basic-usage2" name="tipe_alat">
+                    <option selected disabled {{ old('jenis_alat'), $find_id->jenis_alat === null ? 'selected' : '' }}>Pilih Tipe Alat</option>
+                    <option value="Kecil"{{ old('tipe_alat') == $find_id->tipe_alat ? 'selected' : '' }}>Kecil</option>
+                    <option value="Sedang"{{ old('tipe_alat') == $find_id->tipe_alat ? 'selected' : '' }}>Sedang</option>
+                    <option value="Besar"{{ old('tipe_alat') == $find_id->tipe_alat ? 'selected' : '' }}>Besar/Berat</option>
                 </select>
             </div>
 
             <div class="mb-3">
-                <label for="no_jo_project" class="form-label">No Jo Project </label>
-                <input class="form-control rounded-top @error('no_jo_project') is-invalid @enderror" type="text"
-                    name="no_jo_project" placeholder="Harap Di Isi No Jo Project"
-                    value="{{ old('no_jo_project', $find_id->no_jo_project)}}">
-
-                @error('no_jo_project')
+                <label for="quantity" class="form-label">Quantity </label>
+                <input class="form-control rounded-top @error('quantity') is-invalid @enderror " type="number"
+                    name="quantity" placeholder="Harap Di Isi Quantity Alat Atau Mesin "
+                    value="{{ old('quantity', $find_id->quantity)}}">
+                @error('quantity')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
                 @enderror
-
-
             </div>
 
+            <div class="mb-3">
+                <label for="" class="form-label">Jenis Quantity Data Lama </label>
+                <input class="form-control rounded-top" type="text"
+                    placeholder="{{ old('jenis_quantity', $find_id->jenis_quantity)}}" disabled>
+            </div>
 
-
+            <div class="mb-3">
+                <label for="jenis_quantity" class="form-label" name="jenis_quantity">Jenis Quantity  </label>
+                <select class="form-select" id="basic-usage2" name="jenis_quantity" data-placeholder="Choose one thing">
+                    <option selected disabled {{ old('jenis_quantity'), $find_id->jenis_quantity === null ? 'selected' : '' }}>Pilih Jenis Quantity</option>
+                    <option value="Unit"{{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Unit</option>
+                    <option value="Pcs"{{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Pcs</option>
+                    <option value="Set"{{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Set</option>
+                </select>
+            </div>
 
             <div class="row mb-3">
                 <div class="col sm-4">
-                    <a href="{{ route('project.index') }}" class="btn btn-secondary">Go Back</a>
+                    <a href="{{ route('tools.index') }}" class="btn btn-secondary">Go Back</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
 
