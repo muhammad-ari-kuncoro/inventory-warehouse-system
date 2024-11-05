@@ -39,9 +39,9 @@
         </a>
       </li>
 
-        <!-- Layouts Materials -->
+        <!-- Layouts Stuff -->
         <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Stuff</span>
+            <span class="menu-header-text">Stock</span>
           </li>
           <li class="menu-item {{ ($sub_title === "Materials")  ? 'active' : ''}}">
             <a href="{{ route('material.index') }}" class="menu-link">
@@ -61,9 +61,26 @@
               <div data-i18n="Layouts">Tools</div>
             </a>
           </li>
+          {{-- End Layout --}}
 
+        {{-- Layouts Document --}}
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Document</span>
+          </li>
+          <li class="menu-item {{ ($sub_title === "Barang Masuk")  ? 'active' : ''}}">
+            <a href="{{route('good-received.index')}}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-folder"></i>
+              <div data-i18n="Layouts">Barang Masuk</div>
+            </a>
+          </li>
 
->
+          <li class="menu-item {{ ($sub_title === "Pengiriman")  ? 'active' : ''}}">
+            <a href="" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-folder-open"></i>
+              <div data-i18n="Layouts">Pengiriman</div>
+            </a>
+          </li>
+
 
 
 

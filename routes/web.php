@@ -4,6 +4,7 @@ use App\Http\Controllers\ConsumableController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GoodsReceivedController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MenuProjectController;
 use App\Http\Controllers\ToolsController;
@@ -41,8 +42,7 @@ Route::middleware('auth')->group(function (){
 
 
     });
-
-    //   Route Materials
+    //   Route Stock (Menu Material , Menu Consumable , Menu Tools)
     Route::prefix('material')->name('material.')->group(function(){
         Route::get('/',[MaterialController::class, 'index'])->name('index');
         Route::post('create',[MaterialController::class, 'store'])->name('create');
@@ -64,6 +64,14 @@ Route::middleware('auth')->group(function (){
         Route::get('/',[ToolsController::class, 'index'])->name('index');
         Route::post('create',[ToolsController::class, 'store'])->name('create');
     });
+
+    // End Route Stok
+
+    Route::prefix('good-received')->name('good-received.')->group(function(){
+        Route::get('/',[GoodsReceivedController::class, 'index'])->name('index');
+    });
+
+
 
 
 

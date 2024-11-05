@@ -11,29 +11,15 @@ class ToolsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        //
-        // Ambil input pencarian
-        $search = $request->input('search');
-        // Cek apakah ada input pencarian
-        if ($search) {
-            // Jika ada, lakukan pencarian di beberapa kolom
-            $cari_alat = Tools::where('nama_alat', 'LIKE', '%' . $search . '%')
-                ->orWhere('spesifikasi_alat', 'LIKE', '%' . $search . '%')
-                ->orWhere('jenis_alat', 'LIKE', '%' . $search . '%')
-                ->paginate(2); // Sesuaikan jumlah data per halaman
-        } else {
-            // Jika tidak ada pencarian, tampilkan semua data
-            $cari_alat = Tools::paginate(5);
-        }
 
 
-        $data['cari_alat'] = $cari_alat;
+
         $data['sub_title'] = 'Tools';
         $data['title'] = 'Menu Tools Halaman';
         $data['data_tools'] = Tools::paginate(5);
-        return view('Tools.index',$data);
+        return view('tools_machine.index',$data);
 
     }
 
