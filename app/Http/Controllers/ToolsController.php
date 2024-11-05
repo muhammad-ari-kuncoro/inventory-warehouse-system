@@ -81,9 +81,13 @@ class ToolsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tools $tools)
+    public function edit($id)
     {
         //
+        $data['title'] = 'Edit Menu Alat Atau Mesin';
+        $data['sub_title'] = 'Tools';
+        $data['find_id'] = Tools::findOrFail($id);
+        return view('tools_machine.edit',$data);
     }
 
     /**

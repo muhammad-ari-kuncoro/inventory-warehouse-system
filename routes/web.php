@@ -63,9 +63,10 @@ Route::middleware('auth')->group(function (){
     Route::prefix('tools')->name('tools.')->group(function(){
         Route::get('/',[ToolsController::class, 'index'])->name('index');
         Route::post('create',[ToolsController::class, 'store'])->name('create');
+        Route::get('edit/{id}',[ToolsController::class, 'edit'])->name('edit');
     });
-
     // End Route Stok
+
 
     Route::prefix('good-received')->name('good-received.')->group(function(){
         Route::get('/',[GoodsReceivedController::class, 'index'])->name('index');
