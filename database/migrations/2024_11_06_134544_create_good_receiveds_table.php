@@ -22,6 +22,20 @@ return new class extends Migration
             $table->integer('quantity');
             $table->string('jenis_stok');
             $table->string('keterangan_barang');
+
+            $table->bigInteger('material_id')->unsigned()->nullable();
+            $table->foreign("material_id")->references("id")->on("materials");
+
+            $table->bigInteger('consumable_id')->unsigned()->nullable();
+            $table->foreign("consumable_id")->references("id")->on("consumables");
+
+
+            $table->bigInteger('tools_id')->unsigned()->nullable();
+            $table->foreign("tools_id")->references("id")->on("tools");
+
+
+
+
             $table->timestamps();
         });
     }
