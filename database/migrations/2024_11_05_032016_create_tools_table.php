@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('jenis_alat');
             $table->string('tipe_alat');
             $table->string('kode_alat');
-            $table->string('quantity');
+            $table->integer('quantity');
             $table->string('jenis_quantity');
             $table->timestamps();
         });

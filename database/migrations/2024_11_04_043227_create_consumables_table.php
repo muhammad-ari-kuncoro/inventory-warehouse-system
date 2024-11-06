@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('spesifikasi_consumable');
             $table->string('kode_consumable');
             $table->string('jenis_quantity');
-            $table->string('quantity');
+            $table->integer('quantity');
             $table->string('jenis_consumable');
             $table->bigInteger('project_id')->unsigned()->nullable();
             $table->foreign("project_id")->references("id")->on("menu_project");

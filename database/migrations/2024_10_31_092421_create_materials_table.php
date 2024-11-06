@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('spesifikasi_material');
             $table->string('kode_material');
             $table->string('jenis_quantity');
-            $table->string('quantity');
+            $table->integer('quantity');
             $table->string('jenis_material');
             $table->bigInteger('project_id')->unsigned()->nullable();
             $table->foreign("project_id")->references("id")->on("menu_project");
