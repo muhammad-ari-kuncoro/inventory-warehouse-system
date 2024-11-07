@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('nama_barang');
             $table->string('spesifikasi_barang');
             $table->integer('quantity');
+            $table->string('quantity_jenis');
             $table->string('jenis_stok');
             $table->string('keterangan_barang');
 

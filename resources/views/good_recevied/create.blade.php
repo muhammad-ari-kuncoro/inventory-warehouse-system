@@ -88,8 +88,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="quantity Jenis" class="form-label" name="quantity Jenis">Quantity Jenis </label>
-                <select class="form-select" id="basic-usage2" name="quantity Jenis" data-placeholder="Choose one thing">
+                <label for="quantity_jenis" class="form-label" name="quantity Jenis">Quantity Jenis </label>
+                <select class="form-select" id="basic-usage2" name="quantity_jenis" data-placeholder="Choose one thing">
                     <option></option>
                     <option value="Pcs">Pcs</option>
                     <option value="Unit">Unit</option>
@@ -106,6 +106,33 @@
                     </div>
                     @enderror
                 </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="jenis_stock" class="form-label" name="jenis_stock">Jenis Stock </label>
+                <select class="form-select" id="basic-usage3" name="jenis_stock" data-placeholder="Choose one thing">
+                    <option></option>
+                    <option value="Materials">Materials</option>
+                    <option value="Tools">Tools</option>
+                    <option value="Consumable">Consumable</option>
+                    @error('quantity_jenis')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Catatan Keterangan Barang" name="keterangan_barang" style="height: 100px"></textarea>
+                    <label for="floatingTextarea">Keterangan Barang </label>
+                  </div>
+                  @error('keterangan_barang')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
             </div>
 
 
@@ -140,6 +167,14 @@
         width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
         placeholder: $(this).data('placeholder'),
     });
+
+    $('#basic-usage3').select2({
+        theme: "bootstrap-5",
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $(this).data('placeholder'),
+    });
+
+
 
 </script>
 
