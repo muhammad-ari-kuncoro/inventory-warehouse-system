@@ -23,13 +23,15 @@ return new class extends Migration
             $table->string('jenis_stok');
             $table->string('keterangan_barang');
 
+            // Relasi Ke Table Materials
             $table->bigInteger('material_id')->unsigned()->nullable();
             $table->foreign("material_id")->references("id")->on("materials");
 
+            // Relasi Ke Table Consumable
             $table->bigInteger('consumable_id')->unsigned()->nullable();
             $table->foreign("consumable_id")->references("id")->on("consumables");
 
-
+            // Relasi Ke Table Alat
             $table->bigInteger('tools_id')->unsigned()->nullable();
             $table->foreign("tools_id")->references("id")->on("tools");
 

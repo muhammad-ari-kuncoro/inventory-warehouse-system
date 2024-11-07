@@ -8,6 +8,7 @@ use App\Http\Controllers\GoodsReceivedController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MenuProjectController;
 use App\Http\Controllers\ToolsController;
+use Faker\Guesser\Name;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,8 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('good-received')->name('good-received.')->group(function(){
         Route::get('/',[GoodsReceivedController::class, 'index'])->name('index');
+        Route::get('create',[GoodsReceivedController::class, 'create'])->name('create');
+
     });
 
 

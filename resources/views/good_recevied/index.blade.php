@@ -35,9 +35,10 @@
 
             <!-- Add Button -->
             <div class="col-sm-2 mb-3">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Tambah Data
-                </button>
+                </button> --}}
+                <a href="{{route('good-received.create')}}" class="btn btn-primary">Tambah Data</a>
             </div>
 
 

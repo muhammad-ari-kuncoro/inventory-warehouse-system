@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\GoodReceived;
 use App\Http\Controllers\Controller;
+use App\Models\Consumables;
+use App\Models\Materials;
+use App\Models\Tools;
 use Illuminate\Http\Request;
 
 class GoodsReceivedController extends Controller
@@ -26,6 +29,12 @@ class GoodsReceivedController extends Controller
     public function create()
     {
         //
+        $data['title'] = 'Menu Barang Masuk';
+        $data['sub_title'] = 'Barang Masuk';
+        $data['data_consumable'] = Consumables::all();
+        $data['data_tools']  = Tools::all();
+        $data['data_material'] = Materials::all();
+        return view('good_recevied.create', $data);
     }
 
     /**
