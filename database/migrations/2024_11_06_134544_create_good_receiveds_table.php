@@ -17,12 +17,6 @@ return new class extends Migration
             $table->string('no_transaksi');
             $table->string('nama_supplier');
             $table->string('kode_surat_jalan');
-            $table->string('nama_barang');
-            $table->string('spesifikasi_barang');
-            $table->integer('quantity');
-            $table->string('quantity_jenis');
-            $table->string('jenis_stok');
-            $table->string('keterangan_barang');
 
             // Relasi Ke Table Materials
             $table->bigInteger('material_id')->unsigned()->nullable();
@@ -35,6 +29,13 @@ return new class extends Migration
             // Relasi Ke Table Alat
             $table->bigInteger('tools_id')->unsigned()->nullable();
             $table->foreign("tools_id")->references("id")->on("tools");
+
+
+            $table->integer('quantity');
+            $table->string('quantity_jenis');
+            $table->string('jenis_stok');
+            $table->string('keterangan_barang');
+
 
 
 

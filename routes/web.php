@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function (){
     Route::prefix('good-received')->name('good-received.')->group(function(){
         Route::get('/',[GoodsReceivedController::class, 'index'])->name('index');
         Route::get('create',[GoodsReceivedController::class, 'create'])->name('create');
+        Route::post('store',[GoodsReceivedController::class, 'store'])->name('store');
 
     });
 

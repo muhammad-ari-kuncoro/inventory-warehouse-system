@@ -6,9 +6,8 @@
         Halaman Edit Data Edit Alat Dan Permesinan
     </h5>
     <div class="card-body">
-        <form action="" method="post">
+        <form action="{{route('good-received.store')}}" method="post">
             @csrf
-
             <div class="mb-3">
                 <label for="tanggal_masuk" class="form-label">Tanggal Masuk </label>
                 <input class="form-control rounded-top @error('tanggal_masuk') is-invalid @enderror" type="date"
@@ -22,8 +21,7 @@
 
             <div class="mb-3">
                 <label for="no_transaksi" class="form-label">No Transaksi Barang </label>
-                <input class="form-control rounded-top @error('no_transaksi') is-invalid @enderror" type="text"
-                    name="no_transaksi" placeholder="Harap Di Isi No Transaksi Barang">
+                <input class="form-control rounded-top @error('no_transaksi') is-invalid @enderror" type="text" name="no_transaksi" placeholder="Harap Di Isi No Transaksi Barang">
                 @error('no_transaksi')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -33,8 +31,7 @@
 
             <div class="mb-3">
                 <label for="nama_supplier" class="form-label">Nama Supplier </label>
-                <input class="form-control rounded-top @error('nama_supplier') is-invalid @enderror" type="date"
-                    name="nama_supplier" placeholder="Harap Di Isi Nama Supplier">
+                <input class="form-control rounded-top @error('nama_supplier') is-invalid @enderror" type="date" name="nama_supplier" placeholder="Harap Di Isi Nama Supplier">
                 @error('nama_supplier')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -47,22 +44,34 @@
 
 
             <div class="mb-3">
-                <label for="nama_barang" class="form-label" name="nama_barang">Nama Barang Masuk </label>
-                <select class="form-select" id="basic-usage" name="nama_barang" data-placeholder="Choose one thing">
+                <label for="material_id" class="form-label" name="material_id">Nama Barang Masuk </label>
+                <select class="form-select" id="basic-usage" name="material_id" data-placeholder="Choose one thing">
                     <option></option>
                     <optgroup label="Consumable">
                         @foreach ($data_consumable as $data )
-                        <option value="{{$data->id}}">{{$data->nama_consumable}}</option>
+                        <option value="{{$data->id}}">{{$data->nama_consumable}} | {{$data->spesifikasi_consumable}} | Qty Tersisa:({{$data->quantity}} {{$data->jenis_quantity}})</option>
                         @endforeach
                     </optgroup>
+
+
+                    @error('nama_barang')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </select>
+                <br>
+
+                <select class="form-select mb-3" id="basic-usage4" name="nama_barang" data-placeholder="Choose one thing">
+                    <option></option>
                     <optgroup label="Material">
                         @foreach ($data_material as $data)
-                        <option value="{{$data->id}}">{{$data->nama_material}}</option>
+                        <option value="{{$data->id}}">{{$data->nama_material}} | {{$data->spesifikasi_material}} | Qty Tersisa:({{$data->quantity}} {{$data->jenis_quantity}}) </option>
                         @endforeach
                     </optgroup>
                     <optgroup label="Tools" class="text-bold">
                         @foreach ($data_tools as $data)
-                        <option value="{{$data->id}}">{{$data->nama_alat}}</option>
+                        <option value="{{$data->id}}">{{$data->nama_alat}} | {{$data->spesifikasi_alat}} | Qty Tersisa:({{$data->quantity}} {{$data->jenis_quantity}})</option>
                         @endforeach
                     </optgroup>
 
@@ -73,6 +82,13 @@
                     @enderror
                 </select>
             </div>
+
+            <div class="mb-3">
+                <label for="nama_barang" class="form-label" name="nama_barang">Nama Barang Masuk </label>
+
+            </div>
+
+
 
 
 
@@ -174,8 +190,14 @@
         placeholder: $(this).data('placeholder'),
     });
 
-
+    $('#basic-usage4').select2({
+        theme: "bootstrap-5",
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $(this).data('placeholder'),
+    });
 
 </script>
+
+
 
 @endpush

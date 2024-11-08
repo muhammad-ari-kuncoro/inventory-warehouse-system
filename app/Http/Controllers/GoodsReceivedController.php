@@ -42,7 +42,21 @@ class GoodsReceivedController extends Controller
      */
     public function store(Request $request)
     {
-        //
+          //Validasi
+          $request->validate([
+            'tanggal_masuk' => 'required|min:3|max:255',
+            'no_transaksi' => 'required|min:5|max:255',
+            'quantity' => 'required|min:1|max:100',
+            'jenis_stok' => 'required|min:3|max:255',
+            'keterangan_barang' => 'required|min:5|max:255',
+            'material_id' => 'nullable|min:1|max:100',
+            'consumable_id' => 'nullable|min:1|max:100',
+            'tools_id' => 'nullable|min:1|max:100',
+
+        ]);
+
+        dd($request);
+
     }
 
     /**
