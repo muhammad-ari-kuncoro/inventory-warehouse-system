@@ -31,9 +31,9 @@ class GoodsReceivedController extends Controller
         //
         $data['title'] = 'Menu Barang Masuk';
         $data['sub_title'] = 'Barang Masuk';
-        $data['data_consumable'] = Consumables::all();
-        $data['data_tools']  = Tools::all();
-        $data['data_material'] = Materials::all();
+        $data['consumables'] = Consumables::all();
+        $data['tools']  = Tools::all();
+        $data['materials'] = Materials::all();
         return view('good_recevied.create', $data);
     }
 

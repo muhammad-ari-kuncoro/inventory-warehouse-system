@@ -1,4 +1,19 @@
 @extends('layouts.dashboard-layout')
+@push('styles')
+<style>
+    #div_tool{
+        display: none;
+    }
+
+    #div_consumable{
+        display: none;
+    }
+
+    #div_material{
+        display: none;
+    }
+</style>
+@endpush
 @section('container')
 
 <div class="card">
@@ -31,66 +46,53 @@
 
             <div class="mb-3">
                 <label for="nama_supplier" class="form-label">Nama Supplier </label>
-                <input class="form-control rounded-top @error('nama_supplier') is-invalid @enderror" type="date" name="nama_supplier" placeholder="Harap Di Isi Nama Supplier">
+                <input class="form-control rounded-top @error('nama_supplier') is-invalid @enderror" type="text" name="nama_supplier" placeholder="Harap Di Isi Nama Supplier">
                 @error('nama_supplier')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
                 @enderror
             </div>
 
-
-
-
-
             <div class="mb-3">
-                <label for="material_id" class="form-label" name="material_id">Nama Barang Masuk </label>
-                <select class="form-select" id="basic-usage" name="material_id" data-placeholder="Choose one thing">
-                    <option></option>
-                    <optgroup label="Consumable">
-                        @foreach ($data_consumable as $data )
-                        <option value="{{$data->id}}">{{$data->nama_consumable}} | {{$data->spesifikasi_consumable}} | Qty Tersisa:({{$data->quantity}} {{$data->jenis_quantity}})</option>
-                        @endforeach
-                    </optgroup>
-
-
-                    @error('nama_barang')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                </select>
-                <br>
-
-                <select class="form-select mb-3" id="basic-usage4" name="nama_barang" data-placeholder="Choose one thing">
-                    <option></option>
-                    <optgroup label="Material">
-                        @foreach ($data_material as $data)
-                        <option value="{{$data->id}}">{{$data->nama_material}} | {{$data->spesifikasi_material}} | Qty Tersisa:({{$data->quantity}} {{$data->jenis_quantity}}) </option>
-                        @endforeach
-                    </optgroup>
-                    <optgroup label="Tools" class="text-bold">
-                        @foreach ($data_tools as $data)
-                        <option value="{{$data->id}}">{{$data->nama_alat}} | {{$data->spesifikasi_alat}} | Qty Tersisa:({{$data->quantity}} {{$data->jenis_quantity}})</option>
-                        @endforeach
-                    </optgroup>
-
-                    @error('nama_barang')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
+                <label for="nama_supplier" class="form-label">Jenis Barang Masuk </label>
+                <select name="jenis_barang" id="jenis_barang" class="form-select">
+                    <option value="" selected disabled>-- Pilih Jenis Barang Masuk --</option>
+                    <option value="Materials">Materials</option>
+                    <option value="Consumables">Consumables</option>
+                    <option value="Tools">Tools</option>
                 </select>
             </div>
 
-            <div class="mb-3">
-                <label for="nama_barang" class="form-label" name="nama_barang">Nama Barang Masuk </label>
-
+            <div class="mb-3" id="div_material">
+                <label class="form-label">Nama Material </label>
+                <select name="material_id" id="" class="form-select select-2">
+                    @foreach ($materials as $material)
+                        <option></option>
+                        <option value="{{ $material->id }}">{{ $material->nama_material }}</option>
+                    @endforeach
+                </select>
             </div>
 
+            <div class="mb-3" id="div_consumable">
+                <label for="" class="form-label">Nama Cosumable </label>
+                <select name="consumable_id" id="" class="form-select select-2">
+                    @foreach ($consumables as $consumable)
+                        <option></option>
+                        <option value="{{ $consumable->id }}">{{ $consumable->nama_consumable }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-
-
+            <div class="mb-3" id="div_tool">
+                <label class="form-label">Nama Tool </label>
+                <select name="" id="" class="form-select select-2">
+                    @foreach ($tools as $tool)
+                        <option></option>
+                        <option value="{{ $tool->id }}">{{ $tool->nama_alat }}</option>
+                    @endforeach
+                </select>
+            </div>
 
             <div class="mb-3">
                 <label for="quantity" class="form-label">Quantity masuk </label>
@@ -117,7 +119,7 @@
                     <option value="Drum">Drum</option>
 
                     @error('quantity_jenis')
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedba  ck">
                         {{ $message }}
                     </div>
                     @enderror
@@ -172,32 +174,34 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
 
 <script>
-    $('#basic-usage').select2({
+    $('.select-2').select2({
         theme: "bootstrap-5",
         width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
         placeholder: $(this).data('placeholder'),
     });
+</script>
+<script>
+    $(document).ready(function(){
+        $('#jenis_barang').on('change', function(){
+            var value = this.value;
 
-    $('#basic-usage2').select2({
-        theme: "bootstrap-5",
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        placeholder: $(this).data('placeholder'),
-    });
-
-    $('#basic-usage3').select2({
-        theme: "bootstrap-5",
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        placeholder: $(this).data('placeholder'),
-    });
-
-    $('#basic-usage4').select2({
-        theme: "bootstrap-5",
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        placeholder: $(this).data('placeholder'),
+            if (value == 'Materials') {
+                $('#div_material').show();
+                $('#div_consumable').hide();
+                $('#div_tool').hide();
+            } else if (value == 'Consumables') {
+                $('#div_material').hide();
+                $('#div_consumable').show();
+                $('#div_tool').hide();
+            } else if (value == 'Tools') {
+                $('#div_material').hide();
+                $('#div_consumable').hide();
+                $('#div_tool').show();
+            }
+        });
     });
 
 </script>
-
 
 
 @endpush
