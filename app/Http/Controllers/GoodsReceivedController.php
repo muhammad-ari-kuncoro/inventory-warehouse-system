@@ -42,22 +42,38 @@ class GoodsReceivedController extends Controller
      */
     public function store(Request $request)
     {
-          //Validasi
-          $request->validate([
+        // Validate the incoming request
+        $request->validate([
             'tanggal_masuk' => 'required|min:3|max:255',
             'no_transaksi' => 'required|min:5|max:255',
             'quantity' => 'required|min:1|max:100',
             'jenis_stok' => 'required|min:3|max:255',
             'keterangan_barang' => 'required|min:5|max:255',
-            'material_id' => 'nullable|min:1|max:100',
-            'consumable_id' => 'nullable|min:1|max:100',
-            'tools_id' => 'nullable|min:1|max:100',
-
+            'material_id' => 'nullable|exists:materials,id',
+            'consumable_id' => 'nullable|exists:consumables,id',
+            'tools_id' => 'nullable|exists:tools,id',
         ]);
 
-        dd($request);
+        try {
+            // Check if one of the IDs (material, consumable, or tool) is null and create the record accordingly
+            GoodReceived::create([
+                'tanggal_masuk' => $request->tanggal_masuk,
+                'no_transaksi' => $request->no_transaksi,
+                'quantity' => $request->quantity,
+                'jenis_stok' => $request->jenis_stok,
+                'keterangan_barang' => $request->keterangan_barang,
+                'material_id' => $request->material_id,   // Make sure this is set or nullable
+                'consumable_id' => $request->consumable_id, // Same for this
+                'tools_id' => $request->tools_id,         // Same for this
+            ]);
 
+            return redirect()->route('good-received.index')->with('success', 'Data berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            // Handle errors if the insertion fails
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data! ' . $e->getMessage());
+        }
     }
+
 
     /**
      * Display the specified resource.

@@ -54,6 +54,7 @@
                 @enderror
             </div>
 
+            {{-- input Group Select --}}
             <div class="mb-3">
                 <label for="nama_supplier" class="form-label">Jenis Barang Masuk </label>
                 <select name="jenis_barang" id="jenis_barang" class="form-select">
@@ -66,33 +67,36 @@
 
             <div class="mb-3" id="div_material">
                 <label class="form-label">Nama Material </label>
-                <select name="material_id" id="" class="form-select select-2">
+                <select name="material_id" id="" class="form-select select-2" data-placeholder="Pilih Salah Satu">
                     @foreach ($materials as $material)
                         <option></option>
-                        <option value="{{ $material->id }}">{{ $material->nama_material }}</option>
+                        <option value="{{ $material->id }}">{{ $material->nama_material }} | {{$material->spesifikasi_material}} | ({{$material->quantity}}) {{$material->jenis_quantity}}</option>
                     @endforeach
                 </select>
             </div>
 
             <div class="mb-3" id="div_consumable">
                 <label for="" class="form-label">Nama Cosumable </label>
-                <select name="consumable_id" id="" class="form-select select-2">
+                <select name="consumable_id" id="" class="form-select select-2" data-placeholder="Pilih Salah Satu">
                     @foreach ($consumables as $consumable)
                         <option></option>
-                        <option value="{{ $consumable->id }}">{{ $consumable->nama_consumable }}</option>
+                        <option value="{{ $consumable->id }}">{{ $consumable->nama_consumable }} | {{$consumable->spesifikasi_consumable}} | ({{$consumable->quantity}}) {{$consumable->jenis_quantity}}</option>
                     @endforeach
                 </select>
             </div>
 
             <div class="mb-3" id="div_tool">
                 <label class="form-label">Nama Tool </label>
-                <select name="" id="" class="form-select select-2">
+                <select name="" id="" class="form-select select-2" data-placeholder="Pilih Salah Satu">
                     @foreach ($tools as $tool)
                         <option></option>
-                        <option value="{{ $tool->id }}">{{ $tool->nama_alat }}</option>
+                        <option value="{{ $tool->id }}">{{ $tool->nama_alat }} | {{$tool->spesifikasi_alat}} | ({{$tool->quantity}}) {{$tool->jenis_quantity}}
+                        </option>
                     @endforeach
                 </select>
             </div>
+
+            {{-- Akhir Input  --}}
 
             <div class="mb-3">
                 <label for="quantity" class="form-label">Quantity masuk </label>
@@ -107,7 +111,7 @@
 
             <div class="mb-3">
                 <label for="quantity_jenis" class="form-label" name="quantity Jenis">Quantity Jenis </label>
-                <select class="form-select" id="basic-usage2" name="quantity_jenis" data-placeholder="Choose one thing">
+                <select class="form-select select-2"  name="quantity_jenis" data-placeholder="Pilih Salah Satu">
                     <option></option>
                     <option value="Pcs">Pcs</option>
                     <option value="Unit">Unit</option>
@@ -127,8 +131,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="jenis_stock" class="form-label" name="jenis_stock">Jenis Stock </label>
-                <select class="form-select" id="basic-usage3" name="jenis_stock" data-placeholder="Choose one thing">
+                <label for="jenis_stok" class="form-label" name="jenis_stok">Jenis Stock </label>
+                <select class="form-select select-2" name="jenis_stok" data-placeholder="Pilih Salah Satu">
                     <option></option>
                     <option value="Materials">Materials</option>
                     <option value="Tools">Tools</option>
