@@ -67,29 +67,39 @@
                 </thead>
                 <tbody>
 
+                    @foreach ($data_good_received as $data )
                     <tr class="text-center">
-                        <td>Hello world</td>
-                        <td>Hello world</td>
-                        <td>Hello world</td>
-                        <td>Hello world</td>
-                        <td>Hello world</td>
-                        <td>Hello world</td>
-                        <td>Hello world</td>
-                        <td>Hello world</td>
-                        <td>Hello world</td>
-                        <td>Hello world</td>
+
+                        <td class="text-center">{{$loop->iteration}}</td>
+                        <td>{{$data->tanggal_masuk}}</td>
+                        <td>{{$data->no_transaksi}}</td>
+                        <td>{{$data->nama_supplier}}</td>
+                        <td>{{$data->kode_surat_jalan}}</td>
+                        <!-- Tampilkan Nama Material, Consumable, dan Tool -->
+                        <td>
+                            {{ optional($data->material)->nama_material
+                                ?? optional($data->consumable)->nama_consumable
+                                ?? optional($data->tool)->nama_tool
+                                ?? '-' }}
+                        </td>
+
+                        <td class="text-center">{{$data->quantity}}</td>
+                        <td>{{$data->quantity_jenis}}</td>
+                        <td>{{$data->jenis_barang}}</td>
+                        <td>{{$data->keterangan_barang}}</td>
                         <td>
                             <div class="mb-1">
                                 <a href=""><span class="btn btn-warning btn-sm">Edit</a></span>
                             </div>
 
 
-                                {{-- <div class="mb-1">
-                                    <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
-                                </div> --}}
+                            {{-- <div class="mb-1">
+                                <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
+                            </div> --}}
                         </td>
 
                     </tr>
+                    @endforeach
 
                 </tbody>
             </table>
@@ -99,82 +109,11 @@
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Menu Project</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('project.create') }}" method="post">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="nama_project" class="form-label">Nama Project </label>
-                        <input class="form-control rounded-top  @error('nama_project') is-invalid @enderror" type="text" name="nama_project"
-                            placeholder="Harap Di Isi Nama Project" required>
-                            @error('nama_project')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">Sub Nama Project </label>
-                        <input class="form-control rounded-top @error('sub_nama_project') is-invalid @enderror" type="text" name="sub_nama_project"
-                            placeholder="Harap Di Isi Sub Nama Project" required>
-                            @error('sub_nama_project')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label" name="kategori_project">Kategori Nama Project </label>
-                        <select class="form-select rounded-top @error('kategori_project') is-invalid @enderror" name="kategori_project" required>
-                            <option selected disabled>Pilih Kategori Nama Project</option>
-                            <option value="General Industri">General Industri</option>
-                            <option value="Oil Dan Migas">Oil Dan Migas</option>
-                            <option value="Panas Bumi">Panas Bumi</option>
-                            @error('kategori_project')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-
-                            @enderror
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="formFile" name="no_jo_project" class="form-label">No Jo Project </label>
-                        <input class="form-control rounded-top @error('no_jo_project') is-invalid @enderror" type="text" name="no_jo_project"
-                            placeholder="Harap Di Isi Sub Nama Project" required>
-                            @error('no_jo_project')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                    </div>
-
-
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 @endsection
 @push('scripts')
 <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
     let table = new DataTable('#myTable6');
+
 </script>
 @endpush

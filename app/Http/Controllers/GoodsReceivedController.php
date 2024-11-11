@@ -20,6 +20,7 @@ class GoodsReceivedController extends Controller
         //
         $data['title'] = 'Menu Barang Masuk';
         $data['sub_title'] = 'Barang Masuk';
+        $data['data_good_received'] = GoodReceived::all();
         return view('good_recevied.index',$data);
 
     }
