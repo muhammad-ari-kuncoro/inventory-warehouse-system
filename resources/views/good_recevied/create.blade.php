@@ -21,6 +21,13 @@
         Halaman Edit Data Edit Alat Dan Permesinan
     </h5>
     <div class="card-body">
+
+        @if(session()->has('error'))
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {!! session()->get('error') !!}
+        </div>
+        @endif
         <form action="{{route('good-received.store')}}" method="post">
             @csrf
             <div class="mb-3">
@@ -56,18 +63,23 @@
 
             {{-- input Group Select --}}
             <div class="mb-3">
-                <label for="nama_supplier" class="form-label">Jenis Barang Masuk </label>
-                <select name="jenis_barang" id="jenis_barang" class="form-select">
+                <label for="jenis_barang" class="form-label">Jenis Barang Masuk </label>
+                <select name="jenis_barang" name="jenis_barang" id="jenis_barang"@error('jenis_barang') is-invalid @enderror class="form-select">
                     <option value="" selected disabled>-- Pilih Jenis Barang Masuk --</option>
                     <option value="Materials">Materials</option>
                     <option value="Consumables">Consumables</option>
                     <option value="Tools">Tools</option>
                 </select>
+                @error('jenis_barang')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
             </div>
 
             <div class="mb-3" id="div_material">
                 <label class="form-label">Nama Material </label>
-                <select name="material_id" id="" class="form-select select-2" data-placeholder="Pilih Salah Satu">
+                <select name="material_id" name="material_id" class="form-select select-2" data-placeholder="Pilih Salah Satu">
                     @foreach ($materials as $material)
                         <option></option>
                         <option value="{{ $material->id }}">{{ $material->nama_material }} | {{$material->spesifikasi_material}} | ({{$material->quantity}}) {{$material->jenis_quantity}}</option>
@@ -76,8 +88,8 @@
             </div>
 
             <div class="mb-3" id="div_consumable">
-                <label for="" class="form-label">Nama Cosumable </label>
-                <select name="consumable_id" id="" class="form-select select-2" data-placeholder="Pilih Salah Satu">
+                <label for="consumable_id" class="form-label">Nama Cosumable </label>
+                <select name="consumable_id" name="consumable_id" class="form-select select-2" data-placeholder="Pilih Salah Satu">
                     @foreach ($consumables as $consumable)
                         <option></option>
                         <option value="{{ $consumable->id }}">{{ $consumable->nama_consumable }} | {{$consumable->spesifikasi_consumable}} | ({{$consumable->quantity}}) {{$consumable->jenis_quantity}}</option>
@@ -87,7 +99,7 @@
 
             <div class="mb-3" id="div_tool">
                 <label class="form-label">Nama Tool </label>
-                <select name="" id="" class="form-select select-2" data-placeholder="Pilih Salah Satu">
+                <select name="tools_id" name="tools_id" class="form-select select-2" data-placeholder="Pilih Salah Satu">
                     @foreach ($tools as $tool)
                         <option></option>
                         <option value="{{ $tool->id }}">{{ $tool->nama_alat }} | {{$tool->spesifikasi_alat}} | ({{$tool->quantity}}) {{$tool->jenis_quantity}}
@@ -100,8 +112,7 @@
 
             <div class="mb-3">
                 <label for="quantity" class="form-label">Quantity masuk </label>
-                <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number"
-                    name="quantity" placeholder="Harap Di Isi Quantity">
+                <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number"name="quantity" placeholder="Harap Di Isi Quantity">
                 @error('quantity')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -110,8 +121,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="quantity_jenis" class="form-label" name="quantity Jenis">Quantity Jenis </label>
-                <select class="form-select select-2"  name="quantity_jenis" data-placeholder="Pilih Salah Satu">
+                <label for="quantity_jenis" class="form-label" name="quantity_jenis">Quantity Jenis </label>
+                <select class="form-select select-2 @error('quantity_jenis') is-invalid @enderror"  name="quantity_jenis" data-placeholder="Pilih Salah Satu">
                     <option></option>
                     <option value="Pcs">Pcs</option>
                     <option value="Unit">Unit</option>
@@ -121,7 +132,6 @@
                     <option value="EA">EA</option>
                     <option value="Liter">Liter</option>
                     <option value="Drum">Drum</option>
-
                     @error('quantity_jenis')
                     <div class="invalid-feedba  ck">
                         {{ $message }}
@@ -130,25 +140,12 @@
                 </select>
             </div>
 
-            <div class="mb-3">
-                <label for="jenis_stok" class="form-label" name="jenis_stok">Jenis Stock </label>
-                <select class="form-select select-2" name="jenis_stok" data-placeholder="Pilih Salah Satu">
-                    <option></option>
-                    <option value="Materials">Materials</option>
-                    <option value="Tools">Tools</option>
-                    <option value="Consumable">Consumable</option>
-                    @error('quantity_jenis')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                </select>
-            </div>
+
 
             <div class="mb-3">
                 <div class="form-floating">
                     <textarea class="form-control" placeholder="Catatan Keterangan Barang" name="keterangan_barang" style="height: 100px"></textarea>
-                    <label for="floatingTextarea">Keterangan Barang </label>
+                    <label for="floatingTextarea @error('keterangan_barang') is-invalid @enderror" name="keterangan_barang">Keterangan Barang </label>
                   </div>
                   @error('keterangan_barang')
                     <div class="invalid-feedback">

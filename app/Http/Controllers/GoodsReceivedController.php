@@ -8,6 +8,7 @@ use App\Models\Consumables;
 use App\Models\Materials;
 use App\Models\Tools;
 use Illuminate\Http\Request;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class GoodsReceivedController extends Controller
 {
@@ -44,27 +45,31 @@ class GoodsReceivedController extends Controller
     {
         // Validate the incoming request
         $request->validate([
-            'tanggal_masuk' => 'required|min:3|max:255',
-            'no_transaksi' => 'required|min:5|max:255',
-            'quantity' => 'required|min:1|max:100',
-            'jenis_stok' => 'required|min:3|max:255',
-            'keterangan_barang' => 'required|min:5|max:255',
+            'tanggal_masuk' => 'required|min:2|max:255',
+            'no_transaksi' => 'required|min:2|max:255',
+            'nama_supplier' => 'required|min:2|max:255',
+            'jenis_barang' => 'required|min:2|max:255',
             'material_id' => 'nullable|exists:materials,id',
             'consumable_id' => 'nullable|exists:consumables,id',
             'tools_id' => 'nullable|exists:tools,id',
+            'quantity' => 'required|min:1|max:100',
+            'quantity_jenis' => 'required|min:1|max:255',
+            'keterangan_barang' => 'nullable',
         ]);
-
+        // dd($request);
         try {
             // Check if one of the IDs (material, consumable, or tool) is null and create the record accordingly
             GoodReceived::create([
                 'tanggal_masuk' => $request->tanggal_masuk,
                 'no_transaksi' => $request->no_transaksi,
-                'quantity' => $request->quantity,
-                'jenis_stok' => $request->jenis_stok,
-                'keterangan_barang' => $request->keterangan_barang,
+                'nama_supplier' => $request->nama_supplier,
+                'jenis_barang' => $request->jenis_barang,
                 'material_id' => $request->material_id,   // Make sure this is set or nullable
                 'consumable_id' => $request->consumable_id, // Same for this
                 'tools_id' => $request->tools_id,         // Same for this
+                'quantity' => $request->quantity,
+                'quantity_jenis' => $request->quantity_jenis,
+                'keterangan_barang' => $request->keterangan_barang,
             ]);
 
             return redirect()->route('good-received.index')->with('success', 'Data berhasil ditambahkan!');

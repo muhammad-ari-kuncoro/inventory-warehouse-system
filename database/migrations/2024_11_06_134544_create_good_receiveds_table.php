@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('tanggal_masuk');
             $table->string('no_transaksi');
             $table->string('nama_supplier');
+            $table->string('jenis_barang');
             $table->string('kode_surat_jalan');
 
             // Relasi Ke Table Materials
@@ -33,7 +34,6 @@ return new class extends Migration
 
             $table->integer('quantity');
             $table->string('quantity_jenis');
-            $table->string('jenis_stok');
             $table->string('keterangan_barang');
 
 
