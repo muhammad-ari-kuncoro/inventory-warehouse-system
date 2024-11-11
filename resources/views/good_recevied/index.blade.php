@@ -89,7 +89,12 @@
                         <td>{{$data->keterangan_barang}}</td>
                         <td>
                             <div class="mb-1">
-                                <a href=""><span class="btn btn-warning btn-sm">Edit</a></span>
+                                <a href="{{route('good-received.edit', $data->id)}}"><span class="btn btn-warning btn-sm mb-3">Edit</a></span>
+                                <form action="" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
+                                </form>
                             </div>
 
 
@@ -114,6 +119,7 @@
 <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
     let table = new DataTable('#myTable6');
+
 
 </script>
 @endpush

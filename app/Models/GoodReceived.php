@@ -62,6 +62,31 @@ class GoodReceived extends Model
             // Generate kode_surat_jalan
             $model->kode_surat_jalan = 'AJM-' . date('Ymd') . '-KDSJAJM-' . strtoupper(Str::random(3));
         });
+
+
+        static::updating(function ($model) {
+            // Ambil nilai quantity lama sebelum di-update
+            $originalQuantity = $model->getOriginal('quantity');
+
+            // Ambil objek terkait
+            $material = Materials::find($model->material_id);
+            $consumable = Consumables::find($model->consumable_id);
+            $tools = Tools::find($model->tools_id);
+
+            // Perbarui quantity pada objek terkait berdasarkan perubahan
+            if ($material) {
+                $material->quantity += ($model->quantity + $originalQuantity);
+                $material->save();
+            }
+            if ($consumable) {
+                $consumable->quantity += ($model->quantity + $originalQuantity);
+                $consumable->save();
+            }
+            if ($tools) {
+                $tools->quantity += ($model->quantity + $originalQuantity);
+                $tools->save();
+            }
+        });
     }
 
 

@@ -92,17 +92,54 @@ class GoodsReceivedController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(GoodReceived $goodReceive)
+    public function edit($id)
     {
         //
+        $data['title'] = 'Edit Menu Barang Masuk';
+        $data['sub_title'] = 'Barang Masuk';
+        $data['consumables'] = Consumables::all();
+        $data['tools']  = Tools::all();
+        $data['materials'] = Materials::all();
+
+        $data['find_id'] = GoodReceived::findOrFail($id);
+
+        return view('good_recevied.edit',$data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, GoodReceived $goodReceive)
+    public function update(Request $request,$id)
     {
         //
+        // Validate the incoming request
+        $request->validate([
+            'tanggal_masuk'         => 'required|min:2|max:255',
+            'no_transaksi'          => 'required|min:2|max:255',
+            'nama_supplier'         => 'required|min:2|max:255',
+            'jenis_barang'          => 'required|min:2|max:255',
+            'material_id'           => 'nullable|exists:materials,id',
+            'consumable_id'         => 'nullable|exists:consumables,id',
+            'tools_id'              => 'nullable|exists:tools,id',
+            'quantity'              => 'required|min:1|max:100',
+            'quantity_jenis'        => 'required|min:1|max:255',
+            'keterangan_barang'     => 'nullable',
+        ]);
+
+        $updateGoodReceived = GoodReceived::findOrFail($id);
+        $updateGoodReceived->tanggal_masuk             = $request->tanggal_masuk;
+        $updateGoodReceived->no_transaksi              = $request->no_transaksi;
+        $updateGoodReceived->nama_supplier             = $request->nama_supplier;
+        $updateGoodReceived->jenis_barang              = $request->jenis_barang;
+        $updateGoodReceived->material_id               = $request->material_id;
+        $updateGoodReceived->consumable_id             = $request->consumable_id;
+        $updateGoodReceived->tools_id                  = $request->tools_id;
+        $updateGoodReceived->quantity                  = $request->quantity;
+        $updateGoodReceived->quantity_jenis            = $request->quantity_jenis;
+        $updateGoodReceived->keterangan_barang         = $request->keterangan_barang;
+        $updateGoodReceived->save();
+        // Redirect ke halaman yang diinginkan
+        return redirect()->route('good-received.index')->with('editSuccess', 'Data berhasil Di Edit!');
     }
 
     /**
