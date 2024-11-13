@@ -4,6 +4,7 @@ use App\Http\Controllers\ConsumableController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeliveryOrderController;
 use App\Http\Controllers\GoodsReceivedController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MenuProjectController;
@@ -79,6 +80,11 @@ Route::middleware('auth')->group(function (){
 
     });
 
+    Route::prefix('delivery-order')->name('delivery-order.')->group(function(){
+        Route::get('/',[DeliveryOrderController::class, 'index'])->name('index');
+        Route::get('create',[DeliveryOrderController::class, 'create'])->name('create');
+
+    });
 
 
 
