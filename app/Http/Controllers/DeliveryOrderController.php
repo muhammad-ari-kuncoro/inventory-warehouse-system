@@ -18,6 +18,7 @@ class DeliveryOrderController extends Controller
 
         $data['title'] = 'Delivery Order Halaman';
         $data['sub_title'] = 'Pengiriman Delivery Order';
+        $data['data_delivery_order']  = DeliveryOrder::all();
         return view('delivery_order.index',$data);
     }
 
@@ -40,6 +41,40 @@ class DeliveryOrderController extends Controller
     public function store(Request $request)
     {
         //
+         //Validasi
+         $request->validate([
+            'tanggal_pengiriman' => 'required|min:5|max:255',
+            'pengirim' => 'required|min:5|max:255',
+            'penerima' => 'required|min:1|max:255',
+            'project_id' => 'required',
+            'deskripsi_barang' => 'required|min:10|max:255',
+            'quantity' => 'required|min:1|max:100',
+            'jenis_quantity' => 'required|min:1|max:255',
+            'keterangan_barang' => 'required|min:5|max:255',
+
+        ]);
+        // dd($request);
+        try {
+            //code...
+            DeliveryOrder::create([
+                'tanggal_pengiriman' => $request->tanggal_pengiriman,
+                'pengirim' => $request->pengirim,
+                'penerima' => $request->penerima,
+                'project_id' => $request->project_id,
+                'deskripsi_barang' => $request->deskripsi_barang,
+                'quantity' => $request->quantity,
+                'jenis_quantity' => $request->jenis_quantity,
+                'keterangan_barang' => $request->keterangan_barang
+            ]);
+
+            // dd($tambah);
+            return redirect()->route('delivery-order.index')->with('success', 'Data berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            //throw $th;
+            //erros jika data tidak sesuai
+            // Simpan pesan error jika terjadi kesalahan
+            return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
+        }
     }
 
     /**

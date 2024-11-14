@@ -47,49 +47,45 @@
 
         <div class="table-responsive">
 
-            <table class="table table-bordered" id="myTable7">
+            <table class="table table-bordered table-hover" id="myTable11">
                 <thead>
                     <tr class="table-info text-center">
                         <th>No</th>
                         <th>Tanggal Pengiriman</th>
-                        <th>PO No</th>
-                        <th>Nama Pengiriman Project</th>
+                        <th>Purchase Order No</th>
+                        <th>Delivery No</th>
+                        <th>Nama Project</th>
                         <th>Items Descriptions</th>
-                        <th>Pengirim</th>
-                        <th>Dikirim </th>
+                        <th>Alamat</th>
                         <th>Quantity </th>
                         <th>Satuan</th>
                         <th>Keterangan Item</th>
-                        <th>Delivery Order No</th>
                         <th>Aksi </th>
                     </tr>
                 </thead>
+                @foreach ($data_delivery_order as $data)
                 <tbody>
-
-                    <tr class="text-center">
-
-
-                        <td>hellow world</td>
-                        <td>hellow world</td>
-                        <td>hellow world</td>
-                        <td>hellow world</td>
-                        <td>hellow world</td>
-                        <td>hellow world</td>
-                        <td>hellow world</td>
-                        <td>hellow world</td>
-                        <td>hellow world</td>
-                        <td>hellow world</td>
-                        <td>hellow world</td>
+                    <tr>
+                        <td class="text-center">{{$loop->iteration}}</td>
+                        <td class="text-center">{{$data->tanggal_pengiriman}}</td>
+                        <td>{{$data->purchase_no}}</td>
+                        <td>{{$data->delivery_no}}</td>
+                        <td>{{$data->project->nama_project}}|{{$data->project->sub_nama_project}}</td>
+                        <td>{{$data->deskripsi_barang}}</td>
+                        <td>{{$data->penerima}}</td>
+                        <td class="text-center">{{$data->quantity}}</td>
+                        <td>{{$data->jenis_quantity}}</td>
+                        <td>{{$data->keterangan_barang}}</td>
                         <td>
                             <div class="mb-1">
                                 <a href=""><span class="btn btn-warning btn-sm">Edit</a></span>
                             </div>
-                                {{-- <div class="mb-1">
-                                    <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
-                                </div> --}}
+                            {{-- <div class="mb-1">
+                                <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
+                            </div> --}}
                         </td>
-
                     </tr>
+                    @endforeach
 
                 </tbody>
             </table>
@@ -103,6 +99,6 @@
 @push('scripts')
 <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
-    let table = new DataTable('#myTable7');
+    let table = new DataTable('#myTable11');
 </script>
 @endpush

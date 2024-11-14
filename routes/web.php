@@ -27,7 +27,7 @@ Route::get('/', function () {
 });
 
 // Route Login Dan Register Page
-Route::get('/login',[LoginController::class,'index']);
+Route::get('/login',[LoginController::class,'index'])->name('login');
 Route::post('/login_page',[LoginController::class,'authentication'])->name('login_page_dasboard');
 
 Route::middleware('auth')->group(function (){
@@ -83,6 +83,7 @@ Route::middleware('auth')->group(function (){
     Route::prefix('delivery-order')->name('delivery-order.')->group(function(){
         Route::get('/',[DeliveryOrderController::class, 'index'])->name('index');
         Route::get('create',[DeliveryOrderController::class, 'create'])->name('create');
+        Route::post('store',[DeliveryOrderController::class, 'store'])->name('store');
 
     });
 
