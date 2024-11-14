@@ -88,9 +88,14 @@ class DeliveryOrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DeliveryOrder $deliveryOrder)
+    public function edit($id)
     {
         //
+        $data['title'] = 'Edit Delivery Order Form';
+        $data['sub_title'] = 'Edit Pengiriman Delivery Order';
+        $data['data_project'] = Project::all();
+        $data['find_id'] = DeliveryOrder::findOrFail($id);
+        return view('delivery_order.edit',$data);
     }
 
     /**

@@ -84,6 +84,7 @@ Route::middleware('auth')->group(function (){
         Route::get('/',[DeliveryOrderController::class, 'index'])->name('index');
         Route::get('create',[DeliveryOrderController::class, 'create'])->name('create');
         Route::post('store',[DeliveryOrderController::class, 'store'])->name('store');
+        Route::get('edit/{id}',[DeliveryOrderController::class, 'edit'])->name('edit');
 
     });
 
