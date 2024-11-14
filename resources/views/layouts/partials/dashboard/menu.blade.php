@@ -77,7 +77,7 @@
 
           <li class="menu-item {{ ($sub_title === "Pengiriman Delivery Order")  ? 'active' : ''}}">
               <a href="{{route('delivery-order.index')}}" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-package"></i>
+                  <i class="menu-icon tf-icons bx bx-car"></i>
                   <div data-i18n="Layouts">Pengiriman Delivery Order</div>
               </a>
           </li>
@@ -85,8 +85,8 @@
 
           <li class="menu-item {{ ($sub_title === "Pengiriman")  ? 'active' : ''}}">
               <a href="" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-folder-open"></i>
-                  <div data-i18n="Layouts">Pengiriman</div>
+                  <i class="menu-icon tf-icons bx bx-log-out"></i>
+                  <div data-i18n="Layouts">Barang Keluar</div>
               </a>
           </li>
 
@@ -95,12 +95,38 @@
           </li>
 
           <li class="menu-item {{ ($sub_title === "Pengiriman")  ? 'active' : ''}}">
+              <a href="" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-arrow-to-right"></i>
+                  <div data-i18n="Layouts">Pengiriman Barang</div>
+              </a>
+              <a href="" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-arrow-to-left"></i>
+                <div data-i18n="Layouts">Pengembalian Barang</div>
+            </a>
+          </li>
+
+          {{-- Layouts Document --}}
+          <li class="menu-header small text-uppercase">
+              <span class="menu-header-text">Produksi</span>
+          </li>
+          <li class="menu-item {{ ($sub_title === "Pengambilan Consumable")  ? 'active' : ''}}">
+              <a href="" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-clipboard"></i>
+                  <div data-i18n="Analytics">Pengambilan Consumable</div>
+              </a>
+          </li>
+          <li class="menu-item {{ ($sub_title === "Pengambilan Consumable")  ? 'active' : ''}}">
             <a href="" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-folder-open"></i>
-                <div data-i18n="Layouts">Pengiriman</div>
+                <i class="menu-icon tf-icons bx bx-clipboard"></i>
+                <div data-i18n="Analytics">Peminjaman & Pengembalian Alat</div>
             </a>
         </li>
-
+        <li class="menu-item {{ ($sub_title === "Pengambilan Consumable")  ? 'active' : ''}}">
+            <a href="" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-clipboard"></i>
+                <div data-i18n="Analytics">Peminjaman & Pengembalian Materials HydroTest</div>
+            </a>
+        </li>
 
 
 

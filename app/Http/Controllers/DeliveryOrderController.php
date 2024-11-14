@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DeliveryOrder;
 use App\Http\Controllers\Controller;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class DeliveryOrderController extends Controller
@@ -29,6 +30,7 @@ class DeliveryOrderController extends Controller
         //
         $data['title'] = 'Delivery Order Form';
         $data['sub_title'] = 'Pengiriman Delivery Order';
+        $data['data_project'] = Project::all();
         return view('delivery_order.create',$data);
     }
 

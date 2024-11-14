@@ -21,43 +21,61 @@
     <div class="col-md-6">
         <div class="card mb-3">
             <h5 class="card-header text-center text-bold">
-                Data Umum
+                Form Alamat
             </h5>
             <div class="card-body">
                 <form action="" method="post">
                     @csrf
                     <div class="mb-3">
-                        <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
-                        <input class="form-control rounded-top @error('tanggal_masuk') is-invalid @enderror" type="date"
-                            name="tanggal_masuk" placeholder="Harap Di Isi Tanggal Masuk Barang">
-                        @error('tanggal_masuk')
+                        <label for="tanggal_pengiriman" class="form-label">Tanggal Pengiriman</label>
+                        <input class="form-control rounded-top @error('tanggal_pengiriman') is-invalid @enderror" type="date"
+                            name="tanggal_pengiriman" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
+                        @error('tanggal_pengiriman')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                         @enderror
                     </div>
 
+
+
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" name="pengirim"  id="floatingTextarea2Disabled" style="height: 100px">PT ARMINDO JAYA MANDIRI Kawasan Industri Jababeka 2 Blok FF 1 F Jalan Industri Selatan 7 Cikarang Baru, Pasirsari, Cikarang Sel., Kabupaten Bekasi, Jawa Barat 17550</textarea>
+                        <label for="floatingTextarea2Disabled">Pengirim</label>
+                        @error('pengirim')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                      </div>
+
+                      <div class="form-floating mb-3">
+                        <textarea class="form-control" name="penerima"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
+                        <label for="floatingTextarea2Disabled">Penerima</label>
+                        @error('penerima')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                      </div>
+
                     <div class="mb-3">
-                        <label for="no_transaksi" class="form-label">No Transaksi Barang</label>
-                        <input class="form-control rounded-top @error('no_transaksi') is-invalid @enderror" type="text"
-                            name="no_transaksi" placeholder="Harap Di Isi No Transaksi Barang">
-                        @error('no_transaksi')
+                        <label for="project_id" class="form-label">Nama Project</label>
+                        <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu">
+                            @foreach ($data_project as $data )
+
+                            <option></option>
+                            <option value="Pcs">{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
+
+                            @endforeach
+                        </select>
+                        @error('project_id')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                         @enderror
                     </div>
 
-                    <div class="mb-3">
-                        <label for="nama_supplier" class="form-label">Nama Supplier</label>
-                        <input class="form-control rounded-top @error('nama_supplier') is-invalid @enderror" type="text"
-                            name="nama_supplier" placeholder="Harap Di Isi Nama Supplier">
-                        @error('nama_supplier')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
             </div>
         </div>
     </div>
@@ -66,24 +84,34 @@
     <div class="col-md-6">
         <div class="card">
             <h5 class="card-header text-center text-bold">
-                Detail Barang
+                Data Barang
             </h5>
             <div class="card-body">
 
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" name="deskripsi_barang"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
+                        <label for="floatingTextarea2Disabled">Deskripsi Barang</label>
+                        @error('deskripsi_barang')
+                        <div class="invalid-Deskripsi">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                </div>
+
                 <div class="mb-3">
-                    <label for="jenis_barang" class="form-label">Jenis Barang Masuk</label>
-                    <select name="jenis_barang" id="jenis_barang" class="form-select @error('jenis_barang') is-invalid @enderror">
-                        <option value="" selected disabled>-- Pilih Jenis Barang Masuk --</option>
-                        <option value="Materials">Materials</option>
-                        <option value="Consumables">Consumables</option>
-                        <option value="Tools">Tools</option>
-                    </select>
-                    @error('jenis_barang')
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number"
+                        name="quantity" placeholder="Harap Di Isi Quantity ">
+                    @error('quantity')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                     @enderror
                 </div>
+
+
+
+
 
 
                 <div class="mb-3">
@@ -108,11 +136,11 @@
 
                 <div class="mb-3">
                     <label class="form-label">Keterangan Barang</label>
-                    <textarea class="form-control" placeholder="Catatan Keterangan Barang" name="keterangan_barang" style="height: 100px"></textarea>
+                    <textarea class="form-control" placeholder="Catatan Keterangan Barang (Opsional)" name="keterangan_barang"  style="height: 100px"></textarea>
                 </div>
 
                 <div class="mb-3 text-center">
-                    <a href="{{ route('good-received.index') }}" class="btn btn-secondary">Go Back</a>
+                    <a href="{{ route('delivery-order.index') }}" class="btn btn-secondary">Go Back</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
 
