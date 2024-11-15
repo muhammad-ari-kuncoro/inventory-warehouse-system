@@ -46,7 +46,7 @@
 
         <div class="card-datatable table-responsive pt-0">
 
-            <table class="datatables-basic table table-bordered" id="myTable2">
+            <table class="datatables-basic table table-bordered table-hover display" id="myTable2">
                 <thead>
                     <tr class="table-info text-center">
                         <th>No</th>

@@ -8,6 +8,7 @@ use App\Http\Controllers\DeliveryOrderController;
 use App\Http\Controllers\GoodsReceivedController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MenuProjectController;
+use App\Http\Controllers\ShippingItemController;
 use App\Http\Controllers\ToolsController;
 use Faker\Guesser\Name;
 
@@ -88,6 +89,13 @@ Route::middleware('auth')->group(function (){
         Route::patch('update/{id}',[DeliveryOrderController::class, 'update'])->name('update');
 
     });
+
+    Route::prefix('shipping-items')->name('shipping-items.')->group(function(){
+        Route::get('/',[ShippingItemController::class, 'index'])->name('index');
+
+    });
+
+
 
 
 

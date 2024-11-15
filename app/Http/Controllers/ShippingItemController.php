@@ -15,6 +15,10 @@ class ShippingItemController extends Controller
     {
         //
 
+        $data['title'] = 'Menu Barang Keluar Page';
+        $data['sub_title'] = 'Barang Keluar';
+        return view('shipping_items.index',$data);
+
     }
 
     /**

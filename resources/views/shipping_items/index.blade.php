@@ -2,7 +2,7 @@
 @section('container')
 <div class="card">
     <h5 class="card-header text-center">
-        Dashboard Menu Project
+        Dashboard Menu Barang Keluar
     </h5>
 
     {{-- Session Notifikasi --}}
@@ -36,7 +36,7 @@
             <!-- Add Button -->
             <div class="col-sm-2 mb-3">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Tambah Data
+                    Barang Keluar
                 </button>
             </div>
 
@@ -48,31 +48,37 @@
 
         <div class="table-responsive">
 
-            <table class="table table-bordered table-hover display" id="myTable">
+            <table class="table table-bordered" id="myTable10">
                 <thead>
                     <tr class="table-info text-center">
                         <th>No</th>
-                        <th>Nama Project</th>
-                        <th>Sub Nama Project</th>
-                        <th>Kategori Nama Project</th>
-                        <th>Kode Project</th>
-                        <th>No Jo Project</th>
+                        <th>Tanggal masuk</th>
+                        <th>No Transaksi</th>
+                        <th>Kode Surat Jalan barang keluar</th>
+                        <th>Nama Barang </th>
+                        <th>Dikirim Ke</th>
+                        <th>Quantity Barang Keluar</th>
+                        <th>Jenis Quantity</th>
+                        <th>Jenis Stock</th>
                         <th>Aksi </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($menu_project as $data )
+
                     <tr class="text-center">
 
-                        <td>{{ $loop->iteration; }}</td>
-                        <td>{{ $data->nama_project }}</td>
-                        <td>{{ $data->sub_nama_project }}</td>
-                        <td>{{ $data->kategori_project }}</td>
-                        <td>{{ $data->kode_project }}</td>
-                        <td>{{ $data->no_jo_project }}</td>
+                        <td>Hello wowlrd</td>
+                        <td>Hello wowlrd</td>
+                        <td>Hello wowlrd</td>
+                        <td>Hello wowlrd</td>
+                        <td>Hello wowlrd</td>
+                        <td>Hello wowlrd</td>
+                        <td>Hello wowlrd</td>
+                        <td>Hello wowlrd</td>
+                        <td>Hello wowlrd</td>
                         <td>
                             <div class="mb-1">
-                                <a href="{{route('project.edit',$data->id)}}"><span class="btn btn-warning btn-sm">Edit</a></span>
+                                <a href=""><span class="btn btn-warning btn-sm">Edit</a></span>
                             </div>
 
 
@@ -82,7 +88,7 @@
                         </td>
 
                     </tr>
-                    @endforeach
+
                 </tbody>
             </table>
         </div>
@@ -100,7 +106,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('project.create') }}" method="post">
+                <form action="" method="post">
                     @csrf
                     <div class="mb-3">
                         <label for="nama_project" class="form-label">Nama Project </label>
@@ -167,6 +173,6 @@
 @push('scripts')
 <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
-    let table = new DataTable('#myTable');
+    let table = new DataTable('#myTable10');
 </script>
 @endpush

@@ -44,7 +44,7 @@
 
 
             <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="myTable2">
+                <table class="table table-bordered table-hover display" id="myTable2">
                     <thead>
                         <tr class="table-info text-center">
                             <th>No</th>
