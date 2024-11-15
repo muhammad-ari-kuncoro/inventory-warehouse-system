@@ -25,13 +25,14 @@
                 Form Detail Delivery Order
             </h5>
             <div class="card-body">
-                <form action="{{route('delivery-order.store')}}" method="post">
+                <form action="{{route('delivery-order.update',$find_id->id)}}" method="post">
                     @csrf
+                    @method('patch')
                     <div class="mb-3">
                         <label for="tanggal_pengiriman" class="form-label">Tanggal Pengiriman</label>
                         <input class="form-control rounded-top @error('tanggal_pengiriman') is-invalid @enderror"
                             type="date" name="tanggal_pengiriman"
-                            value="{{ old('tanggal_pengiriman', $find_id->tanggal_pengiriman)}}">
+                            value="{{ old('tanggal_pengiriman', $find_id->tanggal_pengiriman)}}" disabled>
                         @error('tanggal_pengiriman')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -41,11 +42,25 @@
 
 
 
+
+
                     <div class="form-floating mb-3">
                         <textarea class="form-control" name="pengirim" id="floatingTextarea2Disabled"
-                            style="height: 100px">PT ARMINDO JAYA MANDIRI Kawasan Industri Jababeka 2 Blok FF 1 F Jalan Industri Selatan 7 Cikarang Baru, Pasirsari, Cikarang Sel., Kabupaten Bekasi, Jawa Barat 17550</textarea>
-                        <label for="floatingTextarea2Disabled">Pengirim</label>
+                            style="height: 100px" disabled>{{ old('pengirim', $find_id->pengirim)}}</textarea>
+                        <label for="floatingTextarea2Disabled">pengirim</label>
                         @error('pengirim')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" name="penerima" id="floatingTextarea2Disabled"
+                            style="height: 100px" disabled>{{ old('penerima', $find_id->penerima)}}</textarea>
+                        <label for="floatingTextarea2Disabled">penerima</label>
+                        @error('penerima')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -54,8 +69,8 @@
 
                     <div class="form-floating mb-3">
                         <textarea class="form-control" name="penerima" id="floatingTextarea2Disabled"
-                            style="height: 100px">{{ old('penerima', $find_id->penerima)}}</textarea>
-                        <label for="floatingTextarea2Disabled">penerima</label>
+                            style="height: 100px" disabled>{{ old('deskripsi_barang', $find_id->deskripsi_barang)}}</textarea>
+                        <label for="floatingTextarea2Disabled">Deskripsi barang</label>
                         @error('penerima')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -67,7 +82,7 @@
                         <label for="project_id" class="form-label">Data Lama Nama Project</label>
                         <input class="form-control rounded-top @error('project_id') is-invalid @enderror" type="text"
                             name="project_id" placeholder="Harap Di Isi project_id "
-                            value="{{ old('project_id', $find_id->project->nama_project) }} | " disabled>
+                            value="{{ old('project_id', $find_id->project->nama_project) }}  " disabled>
                         @error('project_id')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -81,23 +96,48 @@
                             placeholder="{{ old('projet_id', $find_id->project->sub_nama_project)}}" disabled>
                     </div>
 
+
+
                     <div class="mb-3">
-                        <label for="project_id" class="form-label">Nama Project</label>
-                        <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id"
-                            data-placeholder="Pilih Salah Satu">
-                            @foreach ($data_project as $data )
-
-                            <option></option>
-                            <option value="{{$data->id}}">{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
-
-                            @endforeach
-                        </select>
-                        @error('project_id')
+                        <label for="quantity" class="form-label">quantity</label>
+                        <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number"
+                            name="quantity" placeholder="Harap Di Isi quantity " value="{{ old('quantity', $find_id->quantity)}}" disabled>
+                        @error('quantity')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                         @enderror
                     </div>
+
+
+                    <div class="mb-3">
+                        <label for="jenis_quantity" class="form-label">jenis quantity</label>
+                        <input class="form-control rounded-top @error('jenis_quantity') is-invalid @enderror" type="number"
+                            name="jenis_quantity" placeholder="{{ old('jenis_quantity', $find_id->jenis_quantity)}}" disabled>
+                        @error('jenis_quantity')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" name="keterangan_barang" id="floatingTextarea2Disabled"
+                            style="height: 100px" disabled>{{ old('keterangan_barang', $find_id->keterangan_barang)}}</textarea>
+                        <label for="floatingTextarea2Disabled">keterangan_barang</label>
+                        @error('keterangan_barang')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+
+
+
+
+
 
             </div>
         </div>
@@ -111,21 +151,77 @@
             </h5>
             <div class="card-body">
 
-                <div class="form-floating mb-3">
-                    <textarea class="form-control" name="deskripsi_barang" id="floatingTextarea2Disabled"
-                        style="height: 100px"></textarea>
-                    <label for="floatingTextarea2Disabled">Deskripsi Barang</label>
-                    @error('deskripsi_barang')
-                    <div class="invalid-Deskripsi">
+
+                <div class="mb-3">
+                    <label for="tanggal_pengiriman" class="form-label">Tanggal Pengiriman</label>
+                    <input class="form-control rounded-top @error('tanggal_pengiriman') is-invalid @enderror"
+                        type="date" name="tanggal_pengiriman"
+                        value="{{ old('tanggal_pengiriman', $find_id->tanggal_pengiriman)}}">
+                    @error('tanggal_pengiriman')
+                    <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                     @enderror
                 </div>
 
+
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" name="pengirim" id="floatingTextarea2Disabled"
+                        style="height: 100px">{{ old('pengirim', $find_id->pengirim)}}</textarea>
+                    <label for="floatingTextarea2Disabled">Pengirim</label>
+                    @error('pengirim')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" name="penerima" id="floatingTextarea2Disabled"
+                        style="height: 100px">{{ old('penerima', $find_id->penerima)}}</textarea>
+                    <label for="floatingTextarea2Disabled">Penerima</label>
+                    @error('penerima')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" name="deskripsi_barang" id="floatingTextarea2Disabled"
+                        style="height: 100px">{{ old('deskripsi_barang', $find_id->deskripsi_barang)}}</textarea>
+                    <label for="floatingTextarea2Disabled">Deskripsi barang</label>
+                    @error('deskripsi_barang')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
+
+
+
+
+                <div class="mb-3">
+                    <label for="project_id" class="form-label" name="project_id">Kategori Nama Project baru </label>
+                    <select class="form-select rounded-top @error('project_id') is-invalid @enderror"  value="{{ old('project_id', $find_id->project_id)}}" name="project_id" >
+                        @foreach ($data_project as $data )
+                        <option value="" disabled {{ old('project_id'), $find_id->project_id === null ? 'selected' : '' }}>Pilih salah satu</option>
+                        <option value="{{ $data->id }}" {{ old('project_id') == $find_id->project_id ? 'selected' : '' }}>{{ $data->nama_project }} | {{ $data->sub_nama_project }} | NO JO : {{ $data->no_jo_project }}</option>
+                        @endforeach
+                    </select>
+                    @error('project_id')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+
+                </div>
+
                 <div class="mb-3">
                     <label for="quantity" class="form-label">quantity</label>
                     <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number"
-                        name="quantity" placeholder="Harap Di Isi quantity ">
+                        name="quantity"  value="{{old('quantity', $find_id->quantity)}}">
                     @error('quantity')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -133,36 +229,38 @@
                     @enderror
                 </div>
 
-
-
-
-
-
                 <div class="mb-3">
                     <label for="jenis_quantity" class="form-label">Quantity Jenis</label>
-                    <select class="form-select select-2 @error('jenis_quantity') is-invalid @enderror"
-                        name="jenis_quantity" data-placeholder="Pilih Salah Satu">
-                        <option></option>
-                        <option value="Pcs">Pcs</option>
-                        <option value="Unit">Unit</option>
-                        <option value="Set">Set</option>
-                        <option value="Kg">Kg</option>
-                        <option value="Lembar">Lembar</option>
-                        <option value="EA">EA</option>
-                        <option value="Liter">Liter</option>
-                        <option value="Drum">Drum</option>
+                    <select class="form-select select-2 @error('jenis_quantity') is-invalid @enderror"  name="jenis_quantity" data-placeholder="Pilih Salah Satu">
+                        <option value="" disabled {{ old('jenis_quantity'), $find_id->jenis_quantity === null ? 'selected' : '' }}>Pilih salah satu</option>
+                        <option value="Pcs" {{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Pcs</option>
+                        <option value="Batang" {{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Batang</option>
+                        <option value="Set" {{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Set</option>
+                        <option value="Karung" {{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Karung</option>
+                        <option value="Box" {{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Box</option>
+                        <option value="Pasang" {{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Pasang</option>
+                        <option value="Lusin" {{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Lusin</option>
+
+
+                        @error('jenis_quantity')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
                     </select>
-                    @error('jenis_quantity')
+                </div>
+
+
+
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" name="keterangan_barang" id="floatingTextarea2Disabled"
+                        style="height: 100px">{{ old('keterangan_barang', $find_id->keterangan_barang)}}</textarea>
+                    <label for="floatingTextarea2Disabled">keterangan_barang</label>
+                    @error('keterangan_barang')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                     @enderror
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Keterangan Barang</label>
-                    <textarea class="form-control" placeholder="Catatan Keterangan Barang (Opsional)"
-                        name="keterangan_barang" style="height: 100px"></textarea>
                 </div>
 
                 <div class="mb-3 text-center">

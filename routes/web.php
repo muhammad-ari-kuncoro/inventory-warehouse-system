@@ -85,6 +85,7 @@ Route::middleware('auth')->group(function (){
         Route::get('create',[DeliveryOrderController::class, 'create'])->name('create');
         Route::post('store',[DeliveryOrderController::class, 'store'])->name('store');
         Route::get('edit/{id}',[DeliveryOrderController::class, 'edit'])->name('edit');
+        Route::patch('update/{id}',[DeliveryOrderController::class, 'update'])->name('update');
 
     });
 

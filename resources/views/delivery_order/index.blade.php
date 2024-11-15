@@ -29,8 +29,22 @@
 
         <div class="row align-items-center">
             <!-- Print Button -->
-            <div class="col-sm-2 mb-3">
-                <a href="" class="btn btn-success w-100">Print Data</a>
+            <div class="col-sm-auto mb-3">
+                <!-- Example single danger button -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Print Data
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Excel</a></li>
+                        <li><a class="dropdown-item" href="#">PDF</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                    </ul>
+                </div>
             </div>
 
             <!-- Add Button -->
@@ -78,7 +92,8 @@
                         <td>{{$data->keterangan_barang}}</td>
                         <td>
                             <div class="mb-1">
-                                <a href="{{ route('delivery-order.edit',$data->id) }}"><span class="btn btn-warning btn-sm">Edit</a></span>
+                                <a href="{{ route('delivery-order.edit',$data->id) }}"><span
+                                        class="btn btn-warning btn-sm">Edit</a></span>
                             </div>
                             {{-- <div class="mb-1">
                                 <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
@@ -100,5 +115,6 @@
 <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
     let table = new DataTable('#myTable11');
+
 </script>
 @endpush

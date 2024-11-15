@@ -36,7 +36,7 @@ class DeliveryOrder extends Model
         // KDMPAJM = Kode Material Project AJM
         static::creating(function ($model) {
             $model->delivery_no = 'DO/'. 'AJM/O/VII/-'. date('Ymd') . '/' . strtoupper(Str::random(3));
-            $model->purchase_no = 'POC' . strtoupper(Str::random(3)). '/';
+            $model->purchase_no = 'POC/AJM/' . strtoupper(Str::random(3)). '/'. date('Ymd');
         });
 
     }

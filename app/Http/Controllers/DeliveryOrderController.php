@@ -57,14 +57,14 @@ class DeliveryOrderController extends Controller
         try {
             //code...
             DeliveryOrder::create([
-                'tanggal_pengiriman' => $request->tanggal_pengiriman,
-                'pengirim' => $request->pengirim,
-                'penerima' => $request->penerima,
-                'project_id' => $request->project_id,
-                'deskripsi_barang' => $request->deskripsi_barang,
-                'quantity' => $request->quantity,
-                'jenis_quantity' => $request->jenis_quantity,
-                'keterangan_barang' => $request->keterangan_barang
+                'tanggal_pengiriman'                => $request->tanggal_pengiriman,
+                'pengirim'                          => $request->pengirim,
+                'penerima'                          => $request->penerima,
+                'project_id'                        => $request->project_id,
+                'deskripsi_barang'                  => $request->deskripsi_barang,
+                'quantity'                          => $request->quantity,
+                'jenis_quantity'                    => $request->jenis_quantity,
+                'keterangan_barang'                 => $request->keterangan_barang
             ]);
 
             // dd($tambah);
@@ -92,18 +92,44 @@ class DeliveryOrderController extends Controller
     {
         //
         $data['title'] = 'Edit Delivery Order Form';
-        $data['sub_title'] = 'Edit Pengiriman Delivery Order';
+        $data['sub_title'] = 'Pengiriman Delivery Order';
         $data['data_project'] = Project::all();
         $data['find_id'] = DeliveryOrder::findOrFail($id);
+        $data['data_project'] = Project::all();
         return view('delivery_order.edit',$data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DeliveryOrder $deliveryOrder)
+    public function update(Request $request,$id)
     {
         //
+          //Validasi
+          $request->validate([
+            'tanggal_pengiriman'            => 'required|min:5|max:255',
+            'pengirim'                      => 'required|min:5|max:255',
+            'penerima'                      => 'required|min:1|max:255',
+            'project_id'                    => 'required',
+            'deskripsi_barang'              => 'required|min:10|max:255',
+            'quantity'                      => 'required|min:1|max:100',
+            'jenis_quantity'                => 'required|min:1|max:255',
+            'keterangan_barang'             => 'required|min:5|max:255',
+
+        ]);
+
+        $updateDeliveryOrder = DeliveryOrder::findOrFail($id);
+        $updateDeliveryOrder->tanggal_pengiriman          = $request->tanggal_pengiriman;
+        $updateDeliveryOrder->pengirim                    = $request->pengirim;
+        $updateDeliveryOrder->penerima                    = $request->penerima;
+        $updateDeliveryOrder->project_id                  = $request->project_id;
+        $updateDeliveryOrder->deskripsi_barang            = $request->deskripsi_barang;
+        $updateDeliveryOrder->quantity                    = $request->quantity;
+        $updateDeliveryOrder->jenis_quantity              = $request->jenis_quantity;
+        $updateDeliveryOrder->keterangan_barang           = $request->keterangan_barang;
+        $updateDeliveryOrder->save();
+        // Redirect ke halaman yang diinginkan
+        return redirect()->route('delivery-order.index')->with('editSuccess', 'Data berhasil Di Edit!');
     }
 
     /**
