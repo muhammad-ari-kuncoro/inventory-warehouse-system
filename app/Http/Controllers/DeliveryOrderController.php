@@ -19,6 +19,7 @@ class DeliveryOrderController extends Controller
         $data['title'] = 'Delivery Order Halaman';
         $data['sub_title'] = 'Pengiriman Delivery Order';
         $data['data_delivery_order']  = DeliveryOrder::all();
+        $data['data_project'] = Project::all();
         return view('delivery_order.index',$data);
     }
 

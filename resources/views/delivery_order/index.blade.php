@@ -23,45 +23,33 @@
     </div>
     @endif
 
-
     <div class="card-body">
-
-
         <div class="row align-items-center">
             <!-- Print Button -->
-            <div class="col-sm-auto mb-3">
-                <!-- Example single danger button -->
-                <div class="btn-group">
-                    <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Print Data
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Excel</a></li>
-                        <li><a class="dropdown-item" href="#">PDF</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
 
-                    </ul>
-                </div>
-            </div>
 
             <!-- Add Button -->
-            <div class="col-sm-2 mb-3">
+            <div class="col-sm-auto mb-3">
                 <a href="{{route('delivery-order.create')}}" class="btn btn-primary">Tambah Data</a>
-
             </div>
+        </div>
 
-
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="projectFilter">Filter Nama Project:</label>
+                <select id="projectFilter" class="form-select">
+                    <option value="">Semua Project</option>
+                    @foreach($data_project as $data)
+                    <option value="{{ $data->nama_project }} | {{$data->sub_nama_project}}">{{ $data->nama_project }} |
+                        {{$data->sub_nama_project}}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
 
 
-
-
         <div class="table-responsive">
-
-            <table class="table table-bordered table-hover" id="myTable11">
+            <table class="table table-bordered table-hover display" id="myTable11">
                 <thead>
                     <tr class="table-info text-center">
                         <th>No</th>
@@ -77,14 +65,14 @@
                         <th>Aksi </th>
                     </tr>
                 </thead>
-                @foreach ($data_delivery_order as $data)
                 <tbody>
+                    @foreach ($data_delivery_order as $data)
                     <tr>
                         <td class="text-center">{{$loop->iteration}}</td>
                         <td class="text-center">{{$data->tanggal_pengiriman}}</td>
                         <td>{{$data->purchase_no}}</td>
                         <td>{{$data->delivery_no}}</td>
-                        <td>{{$data->project->nama_project}}|{{$data->project->sub_nama_project}}</td>
+                        <td>{{$data->project->nama_project}} | {{$data->project->sub_nama_project}}</td>
                         <td>{{$data->deskripsi_barang}}</td>
                         <td>{{$data->penerima}}</td>
                         <td class="text-center">{{$data->quantity}}</td>
@@ -95,26 +83,67 @@
                                 <a href="{{ route('delivery-order.edit',$data->id) }}"><span
                                         class="btn btn-warning btn-sm">Edit</a></span>
                             </div>
-                            {{-- <div class="mb-1">
-                                <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
-                            </div> --}}
                         </td>
                     </tr>
                     @endforeach
-
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
-
-
 @endsection
+
 @push('scripts')
 <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script src="//cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+<script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
 <script>
-    let table = new DataTable('#myTable11');
+    $(document).ready(function () {
+        // Inisialisasi DataTable
+        var table = $('#myTable11').DataTable({
+            dom: '<"d-flex justify-content-between"lBf>rtip', // Menempatkan tombol, filter, dan search secara sejajar
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: 'Export Excel',
+                    className: 'btn btn-success btn-sm',
+                    exportOptions: {
+                        modifier: {
+                            search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
+                        }
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: 'Export PDF',
+                    className: 'btn btn-danger btn-sm',
+                    exportOptions: {
+                        modifier: {
+                            search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
+                        }
+                    }
+                },
+            ],
+            layout: {
+                topStart: 'buttons'
+            }
+        });
 
+        // Event handler untuk dropdown filter Nama Project
+        $('#projectFilter').on('change', function () {
+            var projectFilter = $(this).val(); // Mendapatkan nilai Nama Project | Sub Nama Project
+
+            // Terapkan filter pada kolom Nama Project (kolom ke-5 di tabel)
+            table.column(4).search(projectFilter).draw();
+        });
+    });
 </script>
+
+
 @endpush
