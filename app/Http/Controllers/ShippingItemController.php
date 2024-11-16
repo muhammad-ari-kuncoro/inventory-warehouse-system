@@ -27,6 +27,9 @@ class ShippingItemController extends Controller
     public function create()
     {
         //
+        $data['title'] = 'Menu Tambah Barang Keluar Page';
+        $data['sub_title'] = 'Barang Keluar';
+        return view('shipping_items.create',$data);
     }
 
     /**
@@ -34,7 +37,16 @@ class ShippingItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validasi
+        $request->validate([
+            'nama_material'         => 'required|min:5|max:255',
+            'spesifikasi_material'  => 'required|min:5|max:255',
+            'jenis_quantity'        => 'required|min:1|max:255',
+            'quantity'              => 'required|min:1|max:100',
+            'jenis_material'        => 'min:5|max:255',
+            'project_id'            => 'required',
+
+        ]);
     }
 
     /**

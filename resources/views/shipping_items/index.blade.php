@@ -27,17 +27,12 @@
     <div class="card-body">
 
 
-        <div class="row align-items-center">
-            <!-- Print Button -->
-            <div class="col-sm-2 mb-3">
-                <a href="" class="btn btn-success w-100">Print Data</a>
-            </div>
 
             <!-- Add Button -->
-            <div class="col-sm-2 mb-3">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Barang Keluar
-                </button>
+            <div class="col-sm-2">
+                <a  class="btn btn-primary" data-bs-target="#exampleModal" href="{{route('shipping-items.create')}}">
+                    Tambah
+                </a>
             </div>
 
 
@@ -48,18 +43,17 @@
 
         <div class="table-responsive">
 
-            <table class="table table-bordered" id="myTable10">
+            <table class="table table-bordered  table-hover display" id="myTable10">
                 <thead>
                     <tr class="table-info text-center">
                         <th>No</th>
-                        <th>Tanggal masuk</th>
+                        <th>Tanggal Keluar</th>
                         <th>No Transaksi</th>
                         <th>Kode Surat Jalan barang keluar</th>
-                        <th>Nama Barang </th>
-                        <th>Dikirim Ke</th>
+                        <th>Deskripsi Barang </th>
+                        <th>Alamat</th>
                         <th>Quantity Barang Keluar</th>
                         <th>Jenis Quantity</th>
-                        <th>Jenis Stock</th>
                         <th>Aksi </th>
                     </tr>
                 </thead>
@@ -67,8 +61,7 @@
 
                     <tr class="text-center">
 
-                        <td>Hello wowlrd</td>
-                        <td>Hello wowlrd</td>
+                        <td class="text-center">1</td>
                         <td>Hello wowlrd</td>
                         <td>Hello wowlrd</td>
                         <td>Hello wowlrd</td>
@@ -96,7 +89,7 @@
 </div>
 
 
-
+{{--
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -167,7 +160,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 @endsection
 @push('scripts')

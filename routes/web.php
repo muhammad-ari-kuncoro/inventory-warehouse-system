@@ -92,6 +92,8 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('shipping-items')->name('shipping-items.')->group(function(){
         Route::get('/',[ShippingItemController::class, 'index'])->name('index');
+        Route::get('/create',[ShippingItemController::class, 'create'])->name('create');
+
 
     });
 
