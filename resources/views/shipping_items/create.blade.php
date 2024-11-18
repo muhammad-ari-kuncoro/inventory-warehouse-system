@@ -24,13 +24,13 @@
                 Form Alamat Pengiriman
             </h5>
             <div class="card-body">
-                <form action="" method="post">
+                <form action="{{route('shipping-items.store')}}" method="post">
                     @csrf
                     <div class="mb-3">
-                        <label for="tanggal_pengiriman" class="form-label">Tanggal Pengiriman</label>
-                        <input class="form-control rounded-top @error('tanggal_pengiriman') is-invalid @enderror" type="date"
-                            name="tanggal_pengiriman" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
-                        @error('tanggal_pengiriman')
+                        <label for="tgl_kirim" class="form-label">Tanggal Pengiriman</label>
+                        <input class="form-control rounded-top @error('tgl_kirim') is-invalid @enderror" type="date"
+                            name="tgl_kirim" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
+                        @error('tgl_kirim')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -74,9 +74,9 @@
             <div class="card-body">
 
                 <div class="form-floating mb-3">
-                    <textarea class="form-control" name="deskripsi_barang"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
+                    <textarea class="form-control" name="deskripsi_brg"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
                         <label for="floatingTextarea2Disabled">Deskripsi Barang</label>
-                        @error('deskripsi_barang')
+                        @error('deskripsi_brg')
                         <div class="invalid-Deskripsi">
                             {{ $message }}
                         </div>
@@ -92,10 +92,6 @@
                     </div>
                     @enderror
                 </div>
-
-
-
-
 
 
                 <div class="mb-3">
@@ -118,9 +114,28 @@
                     @enderror
                 </div>
 
+
+
+
+                <div class="mb-3">
+                    <label for="project_id" class="form-label">Nama Project </label>
+                    <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Nama Project ">
+                        <option></option>
+                        @foreach ($data_project as $data )
+
+                        <option value="{{$data->id}}">{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
+                        @endforeach
+                    </select>
+                    @error('project_id')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
                 <div class="mb-3">
                     <label class="form-label">Keterangan Barang</label>
-                    <textarea class="form-control" placeholder="Catatan Keterangan Barang (Opsional)" name="keterangan_barang"  style="height: 100px"></textarea>
+                    <textarea class="form-control" placeholder="Catatan Keterangan Barang (Opsional)" name="keterangan_brg"  style="height: 100px"></textarea>
                 </div>
 
                 <div class="mb-3 text-center">

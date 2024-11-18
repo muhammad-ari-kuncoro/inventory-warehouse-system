@@ -31,7 +31,7 @@
             <!-- Add Button -->
             <div class="col-sm-2">
                 <a  class="btn btn-primary" data-bs-target="#exampleModal" href="{{route('shipping-items.create')}}">
-                    Tambah
+                    Tambah Data
                 </a>
             </div>
 
@@ -45,42 +45,48 @@
 
             <table class="table table-bordered  table-hover display" id="myTable10">
                 <thead>
-                    <tr class="table-info text-center">
+                    <tr class="table-info">
                         <th>No</th>
                         <th>Tanggal Keluar</th>
-                        <th>No Transaksi</th>
                         <th>Kode Surat Jalan barang keluar</th>
-                        <th>Deskripsi Barang </th>
+                        <th class="text-center">Pengirim </th>
                         <th>Alamat</th>
+                        <th>Deskripsi Barang</th>
                         <th>Quantity Barang Keluar</th>
                         <th>Jenis Quantity</th>
+                        <th>Keterangan Barang</th>
+                        <th>Nama Project</th>
                         <th>Aksi </th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($data_shipping as $data )
 
                     <tr class="text-center">
 
-                        <td class="text-center">1</td>
-                        <td>Hello wowlrd</td>
-                        <td>Hello wowlrd</td>
-                        <td>Hello wowlrd</td>
-                        <td>Hello wowlrd</td>
-                        <td>Hello wowlrd</td>
-                        <td>Hello wowlrd</td>
-                        <td>Hello wowlrd</td>
+                        <td class="text-center">{{$loop->iteration}}</td>
+                        <td>{{$data->tgl_kirim}}</td>
+                        <td>{{$data->kd_sj_brg_keluar}}</td>
+                        <td>{{$data->pengirim}}</td>
+                        <td>{{$data->tujuan}}</td>
+                        <td>{{$data->deskripsi_brg}}</td>
+                        <td class="text-center">{{$data->quantity}}</td>
+                        <td>{{$data->jenis_quantity}}</td>
+                        <td>{{$data->keterangan_brg}}</td>
+                        <td>{{$data->project->nama_project}} | {{$data->project->sub_nama_project}}</td>
                         <td>
                             <div class="mb-1">
                                 <a href=""><span class="btn btn-warning btn-sm">Edit</a></span>
                             </div>
 
 
-                                {{-- <div class="mb-1">
-                                    <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
-                                </div> --}}
+                            {{-- <div class="mb-1">
+                                <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
+                            </div> --}}
                         </td>
 
                     </tr>
+                    @endforeach
 
                 </tbody>
             </table>

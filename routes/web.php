@@ -93,6 +93,10 @@ Route::middleware('auth')->group(function (){
     Route::prefix('shipping-items')->name('shipping-items.')->group(function(){
         Route::get('/',[ShippingItemController::class, 'index'])->name('index');
         Route::get('/create',[ShippingItemController::class, 'create'])->name('create');
+        Route::post('store',[ShippingItemController::class, 'store'])->name('store');
+        Route::get('edit/{id}',[ShippingItemController::class, 'edit'])->name('edit');
+
+
 
 
     });
