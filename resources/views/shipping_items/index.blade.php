@@ -76,7 +76,7 @@
                         <td>{{$data->project->nama_project}} | {{$data->project->sub_nama_project}}</td>
                         <td>
                             <div class="mb-1">
-                                <a href=""><span class="btn btn-warning btn-sm">Edit</a></span>
+                                <a href="{{  route('shipping-items.edit',$data->id) }}"><span class="btn btn-warning btn-sm">Edit</a></span>
                             </div>
 
 

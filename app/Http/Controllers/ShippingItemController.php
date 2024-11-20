@@ -84,17 +84,46 @@ class ShippingItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ShippingItem $shippingItem)
+    public function edit($id)
     {
-        //
+        $data['title'] = 'Menu Edit Barang Keluar Page';
+        $data['sub_title'] = 'Barang Keluar';
+        $data['find_id'] = ShippingItem::findOrFail($id);
+        $data['data_project'] = Project::all();
+        return view('shipping_items.edit',$data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ShippingItem $shippingItem)
+    public function update(Request $request,$id)
     {
         //
+        $request->validate([
+            'tgl_kirim'                  => 'required|min:3|max:255',
+            'pengirim'                   => 'required|min:3|max:255',
+            'tujuan'                     => 'required|min:10|max:255',
+            'deskripsi_brg'              => 'required|min:10|max:100',
+            'quantity'                   => 'min:1|max:50',
+            'jenis_quantity'              => 'min:1|max:50',
+            'project_id'                 => 'required',
+            'keterangan_brg'             => 'required|min:5|max:100',
+
+        ]);
+
+        $updateShippingItems                     = ShippingItem::findOrFail($id);
+        $updateShippingItems->tgl_kirim          = $request->tgl_kirim;
+        $updateShippingItems->pengirim           = $request->pengirim;
+        $updateShippingItems->tujuan             = $request->tujuan;
+        $updateShippingItems->quantity           = $request->quantity;
+        $updateShippingItems->deskripsi_brg      = $request->deskripsi_brg;
+        $updateShippingItems->quantity           = $request->quantity;
+        $updateShippingItems->jenis_quantity     = $request->jenis_quantity;
+        $updateShippingItems->keterangan_brg     = $request->keterangan_brg;
+        $updateShippingItems->project_id         = $request->project_id;
+        $updateShippingItems->save();
+        // Redirect ke halaman yang diinginkan
+        return redirect()->route('shipping-items.index')->with('editSuccess', 'Data berhasil Di Edit!');
     }
 
     /**
