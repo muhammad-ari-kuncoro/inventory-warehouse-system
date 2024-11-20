@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ConsumableController;
+use App\Http\Controllers\ConsumableIssuanceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MenuProjectController;
 use App\Http\Controllers\ShippingItemController;
 use App\Http\Controllers\ToolsController;
+use App\Models\ConsumableIssuance;
 use Faker\Guesser\Name;
 
 /*
@@ -97,11 +99,13 @@ Route::middleware('auth')->group(function (){
         Route::get('edit/{id}',[ShippingItemController::class, 'edit'])->name('edit');
         Route::patch('update/{id}',[ShippingItemController::class,'update'])->name('update');
 
-
-
-
     });
 
+    Route::prefix('consumable-issuance')->name('consumable-issuance.')->group(function(){
+        Route::get('/',[ConsumableIssuanceController::class, 'index'])->name('index');
+        Route::get('create',[ConsumableIssuanceController::class, 'create'])->name('create');
+
+    });
 
 
 

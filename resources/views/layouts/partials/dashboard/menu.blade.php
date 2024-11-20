@@ -110,18 +110,26 @@
               <span class="menu-header-text">Produksi</span>
           </li>
           <li class="menu-item {{ ($sub_title === "Pengambilan Consumable")  ? 'active' : ''}}">
-              <a href="" class="menu-link">
+              <a href="{{ route('consumable-issuance.index') }}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-clipboard"></i>
                   <div data-i18n="Analytics">Pengambilan Consumable</div>
               </a>
           </li>
-          <li class="menu-item {{ ($sub_title === "Pengambilan Consumable")  ? 'active' : ''}}">
+
+        <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
+            <a href="" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-clipboard"></i>
+                <div data-i18n="Analytics">Pengambilan Materials</div>
+            </a>
+        </li>
+
+          <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
             <a href="" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-clipboard"></i>
                 <div data-i18n="Analytics">Peminjaman & Pengembalian Alat</div>
             </a>
         </li>
-        <li class="menu-item {{ ($sub_title === "Pengambilan Consumable")  ? 'active' : ''}}">
+        <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
             <a href="" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-clipboard"></i>
                 <div data-i18n="Analytics">Peminjaman & Pengembalian Materials HydroTest</div>
