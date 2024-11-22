@@ -42,6 +42,33 @@ class ConsumableIssuanceController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'tanggal_pengambilan' => 'required|min:3|max:100',
+            'nama_pengambil' => 'required|min:3|max:100',
+            'consumable_id' => 'required|exists:consumables,id',
+            'quantity' => 'required|numeric|min:1',
+            'jenis_quantity' => 'required|min:1|max:100',
+            'keterangan_consumable' => 'required|min:3|max:100',
+        ]);
+        dd($request);
+        try {
+            //code...
+            ConsumableIssuance::create([
+                'tanggal_pengambilan'               => $request->tanggal_pengambilan,
+                'nama_pengambil'                    => $request->nama_pengambil,
+                'consumable_id'                     => $request->consumable_id,
+                'quantity'                          => $request->quantity,
+                'jenis_quantity'                    => $request->jenis_quantity,
+                'keterangan_consumable'             => $request->keterangan_consumable
+            ]);
+            return redirect()->route('consumable-issuance.index')->with('success', 'Data berhasil ditambahkan!');
+
+        } catch (\Exception $e) {
+            //throw $th;
+            //erros jika data tidak sesuai
+            // Simpan pesan error jika terjadi kesalahan
+            return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
+        }
     }
 
     /**

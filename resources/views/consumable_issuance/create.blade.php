@@ -24,7 +24,7 @@
                 Form Data Diri
             </h5>
             <div class="card-body">
-                <form action="{{route('delivery-order.store')}}" method="post">
+                <form action="{{route('consumable-issuance.store')}}" method="post">
                     @csrf
                     <div class="mb-3">
                         <label for="tanggal_pengambilan" class="form-label">Tanggal pengambilan</label>
@@ -41,9 +41,9 @@
 
 
                     <div class="mb-3">
-                        <label for="nama_pengmbil" class="form-label">Nama Pengambil Consumable </label>
-                        <input class="form-control rounded-top @error('nama_pengmbil') is-invalid @enderror" type="text" name="nama_pengmbil" placeholder="Harap Di Isi Nama Pengambil Consumable ">
-                        @error('nama_pengmbil')
+                        <label for="nama_pengambil" class="form-label">Nama Pengambil Consumable </label>
+                        <input class="form-control rounded-top @error('nama_pengambil') is-invalid @enderror" type="text" name="nama_pengambil" placeholder="Harap Di Isi Nama Pengambil Consumable ">
+                        @error('nama_pengambil')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -64,14 +64,14 @@
             <div class="card-body">
 
                 <div class="mb-3">
-                    <label for="project_id" class="form-label">Nama Consumable</label>
-                    <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu">
+                    <label for="consumable_id" class="form-label">Nama Consumable</label>
+                    <select class="form-select select-2 @error('consumable_id') is-invalid @enderror" name="consumable_id" data-placeholder="Pilih Salah Satu">
                         @foreach ($data_consumables as $data )
                         <option></option>
-                        <option value="{{$data->id}}">{{$data->nama_consumable}} | {{$data->spesifikasi_consumable}}</option>
+                        <option value="{{$data->id}}">{{$data->nama_consumable}} | {{$data->spesifikasi_consumable}} | {{$data->quantity}} ({{$data->jenis_quantity}})</option>
                         @endforeach
                     </select>
-                    @error('project_id')
+                    @error('consumable_id')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
@@ -79,14 +79,20 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="quantity" class="form-label">quantity</label>
-                    <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number" name="quantity" placeholder="Harap Di Isi quantity ">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input class="form-control rounded-top @error('quantity') is-invalid @enderror"
+                           type="number"
+                           name="quantity"
+                           value="{{ old('quantity') }}"
+                           placeholder="Harap diisi quantity"
+                           min="1">
                     @error('quantity')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
+
 
 
 
@@ -115,7 +121,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Keterangan Barang</label>
-                    <textarea class="form-control" placeholder="Catatan Keterangan Barang (Opsional)" name="keterangan_barang"  style="height: 100px"></textarea>
+                    <textarea class="form-control" placeholder="Catatan Keterangan Barang (Opsional)" name="keterangan_consumable"  style="height: 100px"></textarea>
                 </div>
 
                 <div class="mb-3 text-center">

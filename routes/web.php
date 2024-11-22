@@ -104,6 +104,7 @@ Route::middleware('auth')->group(function (){
     Route::prefix('consumable-issuance')->name('consumable-issuance.')->group(function(){
         Route::get('/',[ConsumableIssuanceController::class, 'index'])->name('index');
         Route::get('create',[ConsumableIssuanceController::class, 'create'])->name('create');
+        Route::post('store',[ConsumableIssuanceController::class, 'store'])->name('store');
 
     });
 
