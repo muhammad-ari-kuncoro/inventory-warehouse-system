@@ -12,8 +12,10 @@ class ConsumableIssuance extends Model
     protected $fillable = [
         'tanggal_pengambilan',
         'nama_pengambil',
+        'bagian_divisi',
         'kd_consumable_item',
         'consumable_id',
+        'project_id',
         'quantity',
         'jenis_quantity',
         'keterangan_consumable',
@@ -24,40 +26,69 @@ class ConsumableIssuance extends Model
         return $this->belongsTo(Consumables::class);
     }
 
-    protected static function boot()
+    public function project()
     {
-        parent::boot();
-
-        static::creating(function ($model) {
-            // Ambil objek terkait
-            $consumable = Consumables::find($model->consumable_id);
-
-            // Lakukan decrement hanya jika objek tidak null
-            if ($consumable && $consumable->quantity >= $model->quantity) {
-                $consumable->increment('quantity', $model->quantity);
-            }
-
-
-            // Generate kode_surat_jalan
-            // KDCIAJM = KODE CONSUMABLE ITEM ARMINDO JAYA MANDIRI
-            $model->kd_consumable_item = 'AJM-' . date('Ymd') . '-KDCIAJM-' . strtoupper(Str::random(3));
-        });
-
-
-        static::updating(function ($model) {
-            // Ambil nilai quantity lama sebelum di-update
-            $originalQuantity = $model->getOriginal('quantity');
-
-            // Ambil objek terkait
-            $consumable = Consumables::find($model->consumable_id);
-
-            // Perbarui quantity pada objek terkait berdasarkan perubahan
-
-            if ($consumable) {
-                $consumable->quantity += ($model->quantity - $originalQuantity);
-                $consumable->save();
-            }
-        });
+        return $this->belongsTo(Project::class);
     }
+
+    protected static function boot()
+{
+    parent::boot();
+
+    // Saat membuat data baru
+    static::creating(function ($model) {
+        // Ambil objek Consumables terkait
+        $consumable = Consumables::find($model->consumable_id);
+
+        // Pastikan quantity mencukupi
+        if ($consumable && $consumable->quantity >= $model->quantity) {
+            $consumable->decrement('quantity', $model->quantity);
+        } else {
+            // Jika stok tidak mencukupi, batalkan pembuatan model
+            throw new \Exception('Insufficient stock for the selected consumable item.');
+        }
+
+        // Generate kode_surat_jalan
+        $model->kd_consumable_item = 'AJM-' . date('Ymd') . '-KDCIAJM-' . strtoupper(Str::random(3));
+    });
+
+    // Saat memperbarui data
+    static::updating(function ($model) {
+        // Ambil quantity sebelum perubahan
+        $originalQuantity = $model->getOriginal('quantity');
+
+        // Ambil objek Consumables terkait
+        $consumable = Consumables::find($model->consumable_id);
+
+        if ($consumable) {
+            // Hitung selisih perubahan quantity
+            $difference = $model->quantity - $originalQuantity;
+
+            if ($difference > 0) {
+                // Jika quantity bertambah, kurangi stok
+                if ($consumable->quantity >= $difference) {
+                    $consumable->decrement('quantity', $difference);
+                } else {
+                    // Batalkan jika stok tidak mencukupi
+                    throw new \Exception('Insufficient stock for the selected consumable item.');
+                }
+            } elseif ($difference < 0) {
+                // Jika quantity berkurang, tambahkan kembali stok
+                $consumable->increment('quantity', abs($difference));
+            }
+        }
+    });
+
+    // Saat menghapus data
+    static::deleting(function ($model) {
+        // Ambil objek Consumables terkait
+        $consumable = Consumables::find($model->consumable_id);
+
+        if ($consumable) {
+            // Kembalikan stok yang digunakan
+            $consumable->increment('quantity', $model->quantity);
+        }
+    });
+}
 
 }

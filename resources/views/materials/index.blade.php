@@ -3,7 +3,11 @@
 <div class="card">
     <div class="card-body">
 
-        <h5 class="card-header text-center text-bold">Dashboard Data Material</h5>
+        <h5 class="card-header text-center mb-3">
+            Dashboard Menu Material Saat ini
+            <br>
+            <span id="currentDateTime" class="ms-2 text-muted"></span>
+        </h5>
 
        {{-- Session Notifikasi --}}
     @if (session('success'))
@@ -213,6 +217,22 @@
 
     );
 
+
+
+    function updateDateTime() {
+        const now = new Date();
+        const options = {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+            hour: '2-digit', minute: '2-digit', second: '2-digit'
+        };
+        document.getElementById('currentDateTime').textContent = now.toLocaleDateString('id-ID', options);
+    }
+
+    // Jalankan fungsi pertama kali
+    updateDateTime();
+
+    // Perbarui waktu setiap detik
+    setInterval(updateDateTime, 1000);
 
 </script>
 @endpush

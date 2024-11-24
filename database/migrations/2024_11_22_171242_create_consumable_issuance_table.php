@@ -16,9 +16,14 @@ return new class extends Migration
             $table->string('tanggal_pengambilan');
             $table->string('nama_pengambil');
             $table->string('kd_consumable_item');
+            $table->string('bagian_divisi');
 
             $table->bigInteger('consumable_id')->unsigned()->nullable();
             $table->foreign("consumable_id")->references("id")->on("consumables");
+
+
+            $table->bigInteger('project_id')->unsigned()->nullable();
+            $table->foreign("project_id")->references("id")->on('menu_project');
 
             $table->integer('quantity');
             $table->string('jenis_quantity');

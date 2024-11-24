@@ -105,6 +105,7 @@ Route::middleware('auth')->group(function (){
         Route::get('/',[ConsumableIssuanceController::class, 'index'])->name('index');
         Route::get('create',[ConsumableIssuanceController::class, 'create'])->name('create');
         Route::post('store',[ConsumableIssuanceController::class, 'store'])->name('store');
+        Route::get('detail/{id}',[ConsumableIssuanceController::class, 'show'])->name('show');
 
     });
 

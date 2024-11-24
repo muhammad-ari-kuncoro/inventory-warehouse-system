@@ -37,6 +37,17 @@
                         @enderror
                     </div>
 
+                    <div class="mb-3">
+                        <label for="bagian_divisi" class="form-label">Bagian Divisi</label>
+                        <input class="form-control rounded-top @error('bagian_divisi') is-invalid @enderror" type="text"
+                            name="bagian_divisi" placeholder="Harap Di Isi Bagian Divisi Pengambil ">
+                        @error('bagian_divisi')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
 
 
 
@@ -93,26 +104,39 @@
                     @enderror
                 </div>
 
-
-
+                <div class="mb-3">
+                    <label for="jenis_quantity" class="form-label" name="jenis_quantity">Jenis Quantity </label>
+                    <select class="form-select select-2 rounded-top @error('jenis_quantity') is-invalid @enderror" name="jenis_quantity" data-placeholder="Pilih Salah Satu " required>
+                        <option selected disabled></option>
+                        <option value="Pcs">Pcs</option>
+                        <option value="Batang">Batang</option>
+                        <option value="Set">Set</option>
+                        <option value="Karung">Karung</option>
+                        <option value="Box">Box</option>
+                        <option value="Pasang">Pasang</option>
+                        <option value="Kilo Gram">KG</option>
+                        <option value="Lusin">Lusin</option>
+                        @error('jenis_quantity')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </select>
+                </div>
 
 
 
 
                 <div class="mb-3">
-                    <label for="jenis_quantity" class="form-label">Quantity Jenis</label>
-                    <select class="form-select select-2 @error('jenis_quantity') is-invalid @enderror" name="jenis_quantity" data-placeholder="Pilih Salah Satu">
+                    <label for="project_id" class="form-label">Keterangan Project</label>
+                    <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu">
+                        @foreach ($data_project as $data )
                         <option></option>
-                        <option value="Pcs">Pcs</option>
-                        <option value="Unit">Unit</option>
-                        <option value="Set">Set</option>
-                        <option value="Kg">Kg</option>
-                        <option value="Lembar">Lembar</option>
-                        <option value="EA">EA</option>
-                        <option value="Liter">Liter</option>
-                        <option value="Drum">Drum</option>
+                        <option value="{{$data->id}}">{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
+                        @endforeach
+
                     </select>
-                    @error('jenis_quantity')
+                    @error('project_id')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>

@@ -1,7 +1,13 @@
 @extends('layouts.dashboard-layout')
 @section('container')
 <div class="card">
-    <h5 class="card-header text-center">Dashboard Menu Consumables</h5>
+    <h5 class="card-header text-center mb-3">
+        Dashboard Menu Consumables Stok Saat ini
+        <br>
+        <span id="currentDateTime" class="ms-2 text-muted"></span>
+    </h5>
+
+
      {{-- Session Flash Data --}}
      @if (session('success'))
      <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -202,5 +208,22 @@
 <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
     let table = new DataTable('#myTable2');
+
+    function updateDateTime() {
+        const now = new Date();
+        const options = {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+            hour: '2-digit', minute: '2-digit', second: '2-digit'
+        };
+        document.getElementById('currentDateTime').textContent = now.toLocaleDateString('id-ID', options);
+    }
+
+    // Jalankan fungsi pertama kali
+    updateDateTime();
+
+    // Perbarui waktu setiap detik
+    setInterval(updateDateTime, 1000);
+
+
 </script>
 @endpush

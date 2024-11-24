@@ -19,8 +19,10 @@ class ConsumableIssuanceController extends Controller
         $data['title'] = 'Formulir Pengambilan Consumable';
         $data['sub_title'] = 'Pengambilan Consumable';
         $data['data_project'] = Project::all();
+        $data['data_consumable_issuance'] = ConsumableIssuance::all();
         return view('consumable_issuance.index',$data);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -44,19 +46,23 @@ class ConsumableIssuanceController extends Controller
         //
         $request->validate([
             'tanggal_pengambilan' => 'required|min:3|max:100',
+            'bagian_divisi' => 'required|min:3|max:100',
             'nama_pengambil' => 'required|min:3|max:100',
             'consumable_id' => 'required|exists:consumables,id',
+            'project_id' => 'required|exists:menu_project,id',
             'quantity' => 'required|numeric|min:1',
             'jenis_quantity' => 'required|min:1|max:100',
             'keterangan_consumable' => 'required|min:3|max:100',
         ]);
-        dd($request);
+        // dd($request);
         try {
             //code...
             ConsumableIssuance::create([
                 'tanggal_pengambilan'               => $request->tanggal_pengambilan,
+                'bagian_divisi'                     => $request->bagian_divisi,
                 'nama_pengambil'                    => $request->nama_pengambil,
                 'consumable_id'                     => $request->consumable_id,
+                'project_id'                        => $request->project_id,
                 'quantity'                          => $request->quantity,
                 'jenis_quantity'                    => $request->jenis_quantity,
                 'keterangan_consumable'             => $request->keterangan_consumable
@@ -74,9 +80,14 @@ class ConsumableIssuanceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ConsumableIssuance $consumableIssuance)
+    public function show($id)
     {
         //
+        $data['title'] = 'Formulir Pengambilan Consumable';
+        $data['sub_title'] = 'Pengambilan Consumable';
+        $data['data_consumables'] = Consumables::all();
+        $data['data_project'] = Project::all();
+        return view('consumable_issuance.show',$data);
     }
 
     /**

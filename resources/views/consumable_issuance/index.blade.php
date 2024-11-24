@@ -1,8 +1,10 @@
 @extends('layouts.dashboard-layout')
 @section('container')
 <div class="card">
-    <h5 class="card-header text-center">
-        Dashboard Menu Pengambilan Consumable
+    <h5 class="card-header text-center mb-3">
+        Dashboard Menu Pengambilan Consumable Saat ini
+        <br>
+        <span id="currentDateTime" class="ms-2 text-muted"></span>
     </h5>
 
     {{-- Session Notifikasi --}}
@@ -55,8 +57,9 @@
                         <th>No</th>
                         <th>Tanggal Pengambilan</th>
                         <th>Nama Consumable</th>
+                        <th>Tipe Consumable</th>
                         <th>Nama Pengambil</th>
-                        <th>Ukuran</th>
+                        <th>Bagian Divisi</th>
                         <th>Quantity</th>
                         <th>Jenis Quantity</th>
                         <th>Keperluan projet</th>
@@ -65,22 +68,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($data_consumable_issuance as $data )
+
                     <tr>
-                        <td class="text-center">hellow world </td>
-                        <td class="text-center">Hellow wolrd</td>
-                        <td>Hello world</td>
-                        <td>Nama Pengambil</td>
-                        <td>Hello world</td>
-                        <td>Hello world</td>
-                        <td>Hellow wolrd</td>
-                        <td>Hello world</td>
-                        <td class="text-center">hellow world</td>
+                        <td class="text-center">{{$loop->iteration}} </td>
+                        <td class="text-center">{{$data->tanggal_pengambilan}}</td>
+                        <td>{{$data->consumable->nama_consumable}}</td>
+                        <td>{{$data->consumable->spesifikasi_consumable}}</td>
+                        <td>{{$data->nama_pengambil}}</td>
+                        <td>{{$data->bagian_divisi}}</td>
+                        <td>{{$data->quantity}}</td>
+                        <td>{{$data->jenis_quantity}}</td>
+                        <td>{{$data->project->nama_project}}</td>
+                        <td class="text-center">{{$data->keterangan_consumable}}</td>
                         <td>
                             <div class="mb-1">
-                                <a href=""><span class="btn btn-warning btn-sm">Edit</a></span>
+                                <a href=""><span class="btn btn-warning btn-sm">Detail</a></span>
                             </div>
                         </td>
                     </tr>
+                    @endforeach
 
                 </tbody>
             </table>
@@ -139,6 +146,21 @@
             table.column(4).search(projectFilter).draw();
         });
     });
+
+    function updateDateTime() {
+        const now = new Date();
+        const options = {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+            hour: '2-digit', minute: '2-digit', second: '2-digit'
+        };
+        document.getElementById('currentDateTime').textContent = now.toLocaleDateString('id-ID', options);
+    }
+
+    // Jalankan fungsi pertama kali
+    updateDateTime();
+
+    // Perbarui waktu setiap detik
+    setInterval(updateDateTime, 1000);
 </script>
 
 
