@@ -90,20 +90,7 @@
               </a>
           </li>
 
-          <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">Project Luar</span>
-          </li>
 
-          <li class="menu-item {{ ($sub_title === "Pengiriman")  ? 'active' : ''}}">
-              <a href="" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-arrow-to-right"></i>
-                  <div data-i18n="Layouts">Pengiriman Barang</div>
-              </a>
-              <a href="" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-arrow-to-left"></i>
-                <div data-i18n="Layouts">Pengembalian Barang</div>
-            </a>
-          </li>
 
           {{-- Layouts Document --}}
           <li class="menu-header small text-uppercase">
@@ -116,8 +103,8 @@
               </a>
           </li>
 
-        <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
-            <a href="" class="menu-link">
+        <li class="menu-item {{ ($sub_title === "Pengambilan Material")  ? 'active' : ''}}">
+            <a href="{{route('material-issuance.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-clipboard"></i>
                 <div data-i18n="Analytics">Pengambilan Materials</div>
             </a>
@@ -135,7 +122,20 @@
                 <div data-i18n="Analytics">Peminjaman & Pengembalian Materials HydroTest</div>
             </a>
         </li>
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Project Luar</span>
+        </li>
 
+        <li class="menu-item {{ ($sub_title === "Pengiriman")  ? 'active' : ''}}">
+            <a href="" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-arrow-to-right"></i>
+                <div data-i18n="Layouts">Pengiriman Barang</div>
+            </a>
+            <a href="" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-arrow-to-left"></i>
+              <div data-i18n="Layouts">Pengembalian Barang</div>
+          </a>
+        </li>
 
 
 

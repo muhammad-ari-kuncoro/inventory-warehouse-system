@@ -149,7 +149,7 @@
                 </div>
 
                 <div class="mb-3 text-center">
-                    <a href="{{ route('delivery-order.index') }}" class="btn btn-secondary">Go Back</a>
+                    <a href="{{ route('consumable-issuance.index') }}" class="btn btn-secondary">Go Back</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
 

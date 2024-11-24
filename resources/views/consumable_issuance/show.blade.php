@@ -124,33 +124,41 @@
                         @enderror
                 </div>
 
-
-
+                <div class="mb-3">
+                    <label for="bagian_divisi" class="form-label">Keterangan Project </label>
+                    <input class="form-control rounded-top @error('project_id') is-invalid @enderror " type="text" name="project_id"
+                        placeholder="Harap Di Isi Spesifikasi Consumable" value="{{ old('nama_project', $find_id->project->nama_project)}}" disabled>
+                        @error('project_id')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                </div>
 
                 <div class="mb-3">
-                    <label for="project_id" class="form-label">Keterangan Project</label>
-                    <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu">
-                        @foreach ($data_project as $data )
-                        <option></option>
-                        <option value="{{$data->id}}">{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
-                        @endforeach
-
-                    </select>
-                    @error('project_id')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
+                    <label for="bagian_divisi" class="form-label">Sub Nama Project </label>
+                    <input class="form-control rounded-top @error('project_id') is-invalid @enderror " type="text" name="project_id"
+                        placeholder="Harap Di Isi Spesifikasi Consumable" value="{{ old('sub_nama_project', $find_id->project->sub_nama_project)}}" disabled>
+                        @error('project_id')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
                 </div>
+
+
+
+
+
 
                 <div class="mb-3">
                     <label class="form-label">Keterangan Barang</label>
-                    <textarea class="form-control" placeholder="Catatan Keterangan Barang (Opsional)" name="keterangan_consumable"  style="height: 100px"></textarea>
+                    <textarea class="form-control" placeholder="{{ old('keterangan_consumable', $find_id->keterangan_consumable)}}" name="keterangan_consumable"  style="height: 100px" disabled></textarea>
                 </div>
 
                 <div class="mb-3 text-center">
-                    <a href="{{ route('delivery-order.index') }}" class="btn btn-secondary">Go Back</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{{ route('consumable-issuance.index') }}" class="btn btn-secondary">Go Back</a>
+
                 </div>
 
                 </form>
