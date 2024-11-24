@@ -39,7 +39,7 @@
         <div class="row">
             <div class="col-sm-3">
                 <label for="projectFilter">Filter Nama Project:</label>
-                <select id="projectFilter" class="form-select">
+                <select id="projectFilter" class="form-select select-2">
                     <option value="">Semua Project</option>
                     @foreach($data_project as $data)
                     <option value="{{ $data->nama_project }} | {{$data->sub_nama_project}}">{{ $data->nama_project }} |
@@ -83,7 +83,7 @@
                         <td class="text-center">{{$data->keterangan_consumable}}</td>
                         <td>
                             <div class="mb-1">
-                                <a href=""><span class="btn btn-warning btn-sm">Detail</a></span>
+                                <a href="{{route('consumable-issuance.show',$data->id)}}"><span class="btn btn-primary btn-sm">Detail</a></span>
                             </div>
                         </td>
                     </tr>
@@ -109,6 +109,7 @@
 <script>
     $(document).ready(function () {
         // Inisialisasi DataTable
+
         var table = $('#myTable11').DataTable({
             dom: '<"d-flex justify-content-between"lBf>rtip', // Menempatkan tombol, filter, dan search secara sejajar
             buttons: [
@@ -161,6 +162,16 @@
 
     // Perbarui waktu setiap detik
     setInterval(updateDateTime, 1000);
+
+
+
+</script>
+<script>
+      $('.select-2').select2({
+        theme: "bootstrap-5",
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $(this).data('placeholder'),
+    });
 </script>
 
 

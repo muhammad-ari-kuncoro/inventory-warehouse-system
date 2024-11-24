@@ -87,6 +87,7 @@ class ConsumableIssuanceController extends Controller
         $data['sub_title'] = 'Pengambilan Consumable';
         $data['data_consumables'] = Consumables::all();
         $data['data_project'] = Project::all();
+        $data['find_id'] = ConsumableIssuance::findOrFail($id);
         return view('consumable_issuance.show',$data);
     }
 
