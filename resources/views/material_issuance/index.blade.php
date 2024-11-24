@@ -32,7 +32,7 @@
 
             <!-- Add Button -->
             <div class="col-sm-auto mb-3">
-                <a href="{{ route('consumable-issuance.create') }}" class="btn btn-primary">Tambah Data</a>
+                <a href="{{ route('material-issuance.create') }}" class="btn btn-primary">Tambah Data</a>
             </div>
         </div>
 
@@ -63,7 +63,7 @@
                         <th>Quantity</th>
                         <th>Jenis Quantity</th>
                         <th>Keperluan project</th>
-                        <th>Keterangan Barang3</th>
+                        <th>Keterangan Barang</th>
                         <th>Aksi </th>
                     </tr>
                 </thead>

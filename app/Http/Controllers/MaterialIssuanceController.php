@@ -15,7 +15,7 @@ class MaterialIssuanceController extends Controller
     public function index()
     {
         $data['sub_title'] = 'Pengambilan Material';
-        $data['title'] = 'Menu Consumable Halaman';
+        $data['title'] = 'Menu Material Halaman';
         $data['data_project'] = Project::all();
         $data['data_materials'] = Materials::paginate(5);
         return view('material_issuance.index',$data);
@@ -27,6 +27,11 @@ class MaterialIssuanceController extends Controller
     public function create()
     {
         //
+        $data['sub_title'] = 'Pengambilan Material';
+        $data['title'] = 'Menu  tambah Material Halaman';
+        $data['data_project'] = Project::all();
+        $data['data_materials'] = Materials::paginate(5);
+        return view('material_issuance.create',$data);
     }
 
     /**
@@ -35,6 +40,17 @@ class MaterialIssuanceController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'tanggal_pengambilan' => 'required|min:3|max:100',
+            'nama_pengambil' => 'required|min:3|max:100',
+            'bagian_divisi' => 'required|min:3|max:100',
+            'material_id' => 'required|exists:materials,id',
+            'project_id' => 'required|exists:menu_project,id',
+            'quantity' => 'required|numeric|min:1',
+            'jenis_quantity' => 'required|min:1|max:100',
+            'keterangan_material' => 'required|min:3|max:100',
+        ]);
+        dd($request);
     }
 
     /**

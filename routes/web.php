@@ -113,8 +113,8 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('material-issuance')->name('material-issuance.')->group(function(){
         Route::get('/',[MaterialIssuanceController::class, 'index'])->name('index');
-        // Route::get('create',[ConsumableIssuanceController::class, 'create'])->name('create');
-        // Route::post('store',[ConsumableIssuanceController::class, 'store'])->name('store');
+        Route::get('create',[MaterialIssuanceController::class, 'create'])->name('create');
+        Route::post('store',[MaterialIssuanceController::class, 'store'])->name('store');
         // Route::get('detail/{id}',[ConsumableIssuanceController::class, 'show'])->name('show');
 
     });

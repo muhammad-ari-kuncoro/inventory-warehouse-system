@@ -49,6 +49,7 @@ class ConsumableIssuance extends Model
         }
 
         // Generate kode_surat_jalan
+        // KDCIAJM = KODE CONSUMABLE ISSUANCE (PENGAMBILAN CONSUMABLE) AJM
         $model->kd_consumable_item = 'AJM-' . date('Ymd') . '-KDCIAJM-' . strtoupper(Str::random(3));
     });
 
