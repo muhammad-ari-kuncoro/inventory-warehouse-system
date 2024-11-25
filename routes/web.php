@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CheckOutToolsController;
 use App\Http\Controllers\ConsumableController;
 use App\Http\Controllers\ConsumableIssuanceController;
 use Illuminate\Support\Facades\Route;
@@ -116,6 +117,15 @@ Route::middleware('auth')->group(function (){
         Route::get('create',[MaterialIssuanceController::class, 'create'])->name('create');
         Route::post('store',[MaterialIssuanceController::class, 'store'])->name('store');
         Route::get('detail/{id}',[MaterialIssuanceController::class, 'show'])->name('show');
+
+    });
+
+    Route::prefix('check-out-tools')->name('check-out-tools.')->group(function(){
+
+        Route::get('/',[CheckOutToolsController::class, 'index'])->name('index');
+        Route::get('create',[CheckOutToolsController::class, 'create'])->name('create');
+        Route::post('store',[CheckOutToolsController::class, 'store'])->name('store');
+        Route::get('detail/{id}',[CheckOutToolsController::class, 'show'])->name('show');
 
     });
 

@@ -110,16 +110,25 @@
             </a>
         </li>
 
-          <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
-            <a href="" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-clipboard"></i>
-                <div data-i18n="Analytics">Peminjaman & Pengembalian Alat</div>
+          <li class="menu-item {{ ($sub_title === "Peminjaman Alat")  ? 'active' : ''}}">
+            <a href="{{ route('check-out-tools.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-archive-out"></i>
+                <div data-i18n="Analytics">Peminjaman  Alat</div>
             </a>
         </li>
+
+        <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
+            <a href="" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-archive-in"></i>
+                <div data-i18n="Analytics">Pengembalian Alat </div>
+            </a>
+        </li>
+
+
         <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
             <a href="" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-clipboard"></i>
-                <div data-i18n="Analytics">Peminjaman & Pengembalian Materials HydroTest</div>
+                <div data-i18n="Analytics">Pengembalian Materials HydroTest</div>
             </a>
         </li>
         <li class="menu-header small text-uppercase">
