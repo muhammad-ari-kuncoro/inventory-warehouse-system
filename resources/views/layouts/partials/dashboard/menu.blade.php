@@ -103,48 +103,63 @@
               </a>
           </li>
 
-        <li class="menu-item {{ ($sub_title === "Pengambilan Material")  ? 'active' : ''}}">
-            <a href="{{route('material-issuance.index')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-clipboard"></i>
-                <div data-i18n="Analytics">Pengambilan Materials</div>
-            </a>
-        </li>
+          <li class="menu-item {{ ($sub_title === "Pengambilan Material")  ? 'active' : ''}}">
+              <a href="{{route('material-issuance.index')}}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-clipboard"></i>
+                  <div data-i18n="Analytics">Pengambilan Materials</div>
+              </a>
+          </li>
+
+          {{-- Equipment Produksi --}}
+          <li class="menu-header small text-uppercase">
+              <span class="menu-header-text">Equipment Produksi</span>
+          </li>
 
           <li class="menu-item {{ ($sub_title === "Peminjaman Alat")  ? 'active' : ''}}">
-            <a href="{{ route('check-out-tools.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-archive-out"></i>
-                <div data-i18n="Analytics">Peminjaman  Alat</div>
-            </a>
-        </li>
+              <a href="{{ route('check-out-tools.index') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-archive-out"></i>
+                  <div data-i18n="Analytics">Peminjaman Alat</div>
+              </a>
+          </li>
 
-        <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
+          <li class="menu-item {{ ($sub_title === "Pengembalian Alat")  ? 'active' : ''}}">
+              <a href="{{ route('check-in-tools.index') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-archive-in"></i>
+                  <div data-i18n="Analytics">Pengembalian Alat </div>
+              </a>
+          </li>
+          {{-- Equipment Hydrotest --}}
+          <li class="menu-header small text-uppercase ">
+              <span class="menu-header-text">Equipment Hydrotest</span>
+          </li>
+
+          <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
+              <a href="" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-minus-back"></i>
+                  <div data-i18n="Analytics">Peminjaman Materials HydroTest</div>
+              </a>
+          </li>
+
+          <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
             <a href="" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-archive-in"></i>
-                <div data-i18n="Analytics">Pengembalian Alat </div>
-            </a>
-        </li>
-
-
-        <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
-            <a href="" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-clipboard"></i>
+                <i class="menu-icon tf-icons bx bx-minus-front"></i>
                 <div data-i18n="Analytics">Pengembalian Materials HydroTest</div>
             </a>
         </li>
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Project Luar</span>
-        </li>
+          <li class="menu-header small text-uppercase">
+              <span class="menu-header-text">Project Luar</span>
+          </li>
 
-        <li class="menu-item {{ ($sub_title === "Pengiriman")  ? 'active' : ''}}">
-            <a href="" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-arrow-to-right"></i>
-                <div data-i18n="Layouts">Pengiriman Barang</div>
-            </a>
-            <a href="" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-arrow-to-left"></i>
-              <div data-i18n="Layouts">Pengembalian Barang</div>
-          </a>
-        </li>
+          <li class="menu-item {{ ($sub_title === "Pengiriman")  ? 'active' : ''}}">
+              <a href="" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-arrow-to-right"></i>
+                  <div data-i18n="Layouts">Pengiriman Barang</div>
+              </a>
+              <a href="" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-arrow-to-left"></i>
+                  <div data-i18n="Layouts">Pengembalian Barang</div>
+              </a>
+          </li>
 
 
 

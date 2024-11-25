@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CheckInToolsController;
 use App\Http\Controllers\CheckOutToolsController;
 use App\Http\Controllers\ConsumableController;
 use App\Http\Controllers\ConsumableIssuanceController;
@@ -128,6 +129,15 @@ Route::middleware('auth')->group(function (){
         Route::get('detail/{id}',[CheckOutToolsController::class, 'show'])->name('show');
 
     });
+
+    Route::prefix('check-in-tools')->name('check-in-tools.')->group(function(){
+
+        Route::get('/',[CheckInToolsController::class, 'index'])->name('index');
+        Route::get('create',[CheckInToolsController::class, 'create'])->name('create');
+
+
+    });
+
 
 
 

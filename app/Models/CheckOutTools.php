@@ -70,12 +70,14 @@ class CheckOutTools extends Model
                     if ($tool->quantity >= $difference) {
                         $tool->decrement('quantity', $difference);
                     } else {
-                        throw new \Exception('Stok tool tidak mencukupi untuk perubahan.');
+                        // Berikan flash data jika stok tidak mencukupi
+                        return redirect()->route('check-out-tools.index')->with('error', 'Data tidak bisa ditambahkan Dikarenakan Habis!');
                     }
                 } elseif ($difference < 0) {
                     // Jika ada pengurangan quantity, kembalikan stok
                     $tool->increment('quantity', abs($difference));
                 }
+
             }
         });
 

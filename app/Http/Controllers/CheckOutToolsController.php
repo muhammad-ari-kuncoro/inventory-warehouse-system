@@ -19,7 +19,7 @@ class CheckOutToolsController extends Controller
         //
         $data['sub_title'] = 'Peminjaman Alat';
         $data['title'] = 'Menu Peminjaman Alat Halaman';
-        $data['data_project'] = Project::all();
+        // $data['data_project'] = Project::all();
         $data['data_tools'] = CheckOutTools::all();
         return view('control_tools.check_out_tools.index',$data);
     }
@@ -32,7 +32,7 @@ class CheckOutToolsController extends Controller
         //
         $data['sub_title'] = 'Peminjaman Alat';
         $data['title'] = 'Menu Tambah Peminjaman Alat Halaman';
-        $data['data_project'] = Project::all();
+        // $data['data_project'] = Project::all();
         $data['data_tools'] = Tools::all();
         return view('control_tools.check_out_tools.create',$data);
     }
@@ -79,9 +79,13 @@ class CheckOutToolsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CheckOutTools $checkOutTools)
+    public function show($id)
     {
         //
+        $data['sub_title'] = 'Peminjaman Alat';
+        $data['title'] = 'Menu Tambah Peminjaman Alat Halaman';
+         $data['find_id'] = CheckOutTools::findOrFail($id);
+         return view('control_tools.check_out_tools.show',$data);
     }
 
     /**

@@ -21,15 +21,15 @@
     <div class="col-md-6">
         <div class="card mb-3">
             <h5 class="card-header text-center text-bold">
-                Form Data Diri
+                Form Data Diri Pengembalian Alat
             </h5>
             <div class="card-body">
                 <form action="{{ route('check-out-tools.store') }}" method="post">
                     @csrf
                     <div class="mb-3">
-                        <label for="tanggal_pengambilan" class="form-label">Tanggal pengambilan</label>
+                        <label for="tanggal_pengambilan" class="form-label">Tanggal Pengembalian</label>
                         <input class="form-control rounded-top @error('tanggal_pengambilan') is-invalid @enderror" type="date"
-                            name="tanggal_pengambilan" placeholder="Harap Di Isi Tanggal pengambilan Consumbable">
+                            name="tanggal_pengambilan" placeholder="Harap Di Isi Tanggal Pengembalian Consumbable">
                         @error('tanggal_pengambilan')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -52,7 +52,7 @@
 
 
                     <div class="mb-3">
-                        <label for="nama_peminjam_alat" class="form-label">Nama Peminjam</label>
+                        <label for="nama_peminjam_alat" class="form-label">Nama Pengembalian</label>
                         <input class="form-control rounded-top @error('nama_peminjam_alat') is-invalid @enderror" type="text" name="nama_peminjam_alat" placeholder="Harap Di Isi Nama Pengambil Consumable ">
                         @error('nama_peminjam_alat')
                         <div class="invalid-feedback">

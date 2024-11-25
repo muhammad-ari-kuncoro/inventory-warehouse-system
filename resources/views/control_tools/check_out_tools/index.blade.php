@@ -2,7 +2,7 @@
 @section('container')
 <div class="card">
     <h5 class="card-header text-center mb-3">
-        Dashboard Menu Pengambilan Alat dan Mesin  Saat ini
+        Dashboard Menu Peminjaman Alat dan Mesin  Saat ini
         <br>
         <span id="currentDateTime" class="ms-2 text-muted"></span>
     </h5>
@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-sm-3 mb-3">
                 <label for="projectFilter">Filter Nama Pengambil:</label>
                 <select id="projectFilter" class="form-select select-2">
@@ -46,7 +46,7 @@
                     @endforeach
                 </select>
             </div>
-        </div>
+        </div> --}}
 
 
         <div class="table-responsive">
@@ -55,7 +55,7 @@
                     <tr class="table-info text-center">
                         <th>No</th>
                         <th>Kode Peminjam Alat</th>
-                        <th>Tanggal Pengambilan</th>
+                        <th>Tanggal Peminjaman</th>
                         <th>Nama Alat </th>
                         <th>Spesifikasi Alat</th>
                         <th>Nama Peminjam</th>
