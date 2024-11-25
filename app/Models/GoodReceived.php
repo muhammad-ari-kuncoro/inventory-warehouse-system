@@ -35,27 +35,28 @@ class GoodReceived extends Model
     }
     public function tool()
     {
-        return $this->belongsTo(Tools::class);
+        return $this->belongsTo(Tools::class, 'tools_id', 'id'); // Pastikan 'tools_id' benar
     }
 
     protected static function boot()
     {
         parent::boot();
 
+        // Saat membuat data baru
         static::creating(function ($model) {
             // Ambil objek terkait
             $material = Materials::find($model->material_id);
             $consumable = Consumables::find($model->consumable_id);
             $tools = Tools::find($model->tools_id);
 
-            // Lakukan decrement hanya jika objek tidak null
-            if ($material && $material->quantity <= $model->quantity) {
+            // Lakukan increment stok
+            if ($material) {
                 $material->increment('quantity', $model->quantity);
             }
-            if ($consumable && $consumable->quantity <= $model->quantity) {
+            if ($consumable) {
                 $consumable->increment('quantity', $model->quantity);
             }
-            if ($tools && $tools->quantity <= $model->quantity) {
+            if ($tools) {
                 $tools->increment('quantity', $model->quantity);
             }
 
@@ -63,31 +64,36 @@ class GoodReceived extends Model
             $model->kode_surat_jalan = 'AJM-' . date('Ymd') . '-KDSJAJM-' . strtoupper(Str::random(3));
         });
 
-
+        // Saat memperbarui data
         static::updating(function ($model) {
             // Ambil nilai quantity lama sebelum di-update
             $originalQuantity = $model->getOriginal('quantity');
+            $quantityDifference = $model->quantity - $originalQuantity;
 
             // Ambil objek terkait
             $material = Materials::find($model->material_id);
             $consumable = Consumables::find($model->consumable_id);
             $tools = Tools::find($model->tools_id);
 
-            // Perbarui quantity pada objek terkait berdasarkan perubahan
-            if ($material) {
-                $material->quantity += ($model->quantity + $originalQuantity);
-                $material->save();
+            // Perbarui stok berdasarkan perubahan quantity
+            if ($material && $quantityDifference != 0) {
+                $quantityDifference > 0
+                    ? $material->increment('quantity', $quantityDifference)
+                    : $material->decrement('quantity', abs($quantityDifference));
             }
-            if ($consumable) {
-                $consumable->quantity += ($model->quantity + $originalQuantity);
-                $consumable->save();
+            if ($consumable && $quantityDifference != 0) {
+                $quantityDifference > 0
+                    ? $consumable->increment('quantity', $quantityDifference)
+                    : $consumable->decrement('quantity', abs($quantityDifference));
             }
-            if ($tools) {
-                $tools->quantity += ($model->quantity + $originalQuantity);
-                $tools->save();
+            if ($tools && $quantityDifference != 0) {
+                $quantityDifference > 0
+                    ? $tools->increment('quantity', $quantityDifference)
+                    : $tools->decrement('quantity', abs($quantityDifference));
             }
-        });
+            });
     }
+
 
 
 }

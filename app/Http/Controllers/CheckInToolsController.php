@@ -19,7 +19,7 @@ class CheckInToolsController extends Controller
          $data['sub_title'] = 'Pengembalian Alat';
          $data['title'] = 'Menu Pengembalian Alat Halaman';
          // $data['data_project'] = Project::all();
-        //  $data['data_tools_in'] = CheckInTools::all();
+         $data['data_tools_in'] = CheckInTools::all();
          return view('control_tools.check_in_tools.index',$data);
     }
 
@@ -42,14 +42,48 @@ class CheckInToolsController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'tanggal_pengembalian'   => 'required|min:3|max:100',
+            'bagian_divisi'         => 'required|min:3|max:100',
+            'nama_pengembalian'     => 'required|min:3|max:100',
+            'tool_id'               => 'required|exists:tools,id',
+            'quantity'              => 'required|numeric|min:1',
+            'jenis_quantity'        => 'required|min:1|max:100',
+            'keterangan_alat'       => 'required|min:3|max:100',
+        ]);
+
+        // dd($request);
+        try {
+            //code...
+            CheckInTools::create([
+                'tanggal_pengembalian'              => $request->tanggal_pengembalian,
+                'bagian_divisi'                     => $request->bagian_divisi,
+                'nama_pengembalian'                 => $request->nama_pengembalian,
+                'tool_id'                           => $request->tool_id,
+                'quantity'                          => $request->quantity,
+                'jenis_quantity'                    => $request->jenis_quantity,
+                'keterangan_alat'                   => $request->keterangan_alat,
+            ]);
+            return redirect()->route('check-in-tools.index')->with('success', 'Data berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            //throw $th;
+            //erros jika data tidak sesuai
+            // Simpan pesan error jika terjadi kesalahan
+            return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(CheckInTools $checkInTools)
+    public function show($id)
     {
         //
+        //
+        $data['sub_title'] = 'Pengembalian Alat';
+        $data['title'] = 'Menu Detail Pengembalian Alat Halaman';
+        $data['find_id_check_in_tool'] = CheckInTools::findOrFail($id);
+         return view('control_tools.check_in_tools.show',$data);
     }
 
     /**

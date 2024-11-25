@@ -62,31 +62,31 @@
                         <th>Bagian Divisi</th>
                         <th>Quantity</th>
                         <th>Jenis Quantity</th>
-                        <th>Keterangan Barang</th>
+                        <th>Keterangan Alat</th>
                         <th>Aksi </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach ($data_tools as $data ) --}}
+                    @foreach ($data_tools_in as $data )
 
                     <tr>
-                        <td class="text-center"></td>
-                        <td></td>
-                        <td class="text-center"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-center"></td>
-                        <td class="text-center "></td>
-                        <td></td>
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td>{{ $data->kd_pengembalian_alat }}</td>
+                        <td class="text-center">{{ $data->tanggal_pengembalian }}</td>
+                        <td>{{ $data->tool->nama_alat }}</td>
+                        <td>{{ $data->tool->spesifikasi_alat }}</td>
+                        <td class="text-center">{{ $data->bagian_divisi }}</td>
+                        <td>{{ $data->nama_pengembalian }}</td>
+                        <td class="text-center">{{ $data->quantity }}</td>
+                        <td class="text-center">{{ $data->jenis_quantity }}</td>
+                        <td class="text-center ">{{ $data->keterangan_alat }}</td>
                         <td>
                             <div class="mb-1">
-                                <a href=""><span class="btn btn-primary btn-sm">Detail</a></span>
+                                <a href="{{ route('check-in-tools.show',$data->id) }}"><span class="btn btn-primary btn-sm">Detail</a></span>
                             </div>
                         </td>
                     </tr>
-                    {{-- @endforeach --}}
+                    @endforeach
 
                 </tbody>
             </table>

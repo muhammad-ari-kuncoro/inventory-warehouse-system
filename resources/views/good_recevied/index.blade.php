@@ -79,9 +79,7 @@
                         <td>{{$data->kode_surat_jalan}}</td>
                         <!-- Tampilkan Nama Material, Consumable, dan Tool -->
                         <td>
-                            {{ optional($data->material)->nama_material
-                                ?? optional($data->consumable)->nama_consumable
-                                ?? optional($data->tool)->nama_tool
+                            {{ optional($data->material)->nama_material ?? optional($data->consumable)->nama_consumable ?? optional($data->tool)->nama_alat
                                 ?? '-' }}
                         </td>
 

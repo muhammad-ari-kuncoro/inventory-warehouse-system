@@ -134,7 +134,8 @@ Route::middleware('auth')->group(function (){
 
         Route::get('/',[CheckInToolsController::class, 'index'])->name('index');
         Route::get('create',[CheckInToolsController::class, 'create'])->name('create');
-
+        Route::post('store',[CheckInToolsController::class, 'store'])->name('store');
+        Route::get('detail/{id}',[CheckInToolsController::class, 'show'])->name('show');
 
     });
 

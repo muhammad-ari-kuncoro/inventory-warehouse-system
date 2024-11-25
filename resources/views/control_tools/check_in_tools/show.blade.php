@@ -26,21 +26,27 @@
             <div class="card-body">
                 <form action="{{ route('check-in-tools.store') }}" method="post">
                     @csrf
+
+
+
+
                     <div class="mb-3">
                         <label for="tanggal_pengembalian" class="form-label">Tanggal Pengembalian</label>
-                        <input class="form-control rounded-top @error('tanggal_pengembalian') is-invalid @enderror" type="date"
-                            name="tanggal_pengembalian" placeholder="Harap Di Isi Tanggal Pengembalian Consumbable">
-                        @error('tanggal_pengembalian')
+                        <input class="form-control rounded-top @error('tanggal_pengembalian') is-invalid @enderror" type="text"
+                            name="tanggal_pengembalian" placeholder="Harap Di Isi Bagian Divisi Pengambil" value="{{ old('tanggal_pengembalian',$find_id_check_in_tool->tanggal_pengembalian) }}" disabled>
+                        @error('bagian_divisi')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                         @enderror
                     </div>
 
+
+
                     <div class="mb-3">
-                        <label for="bagian_divisi" class="form-label">Bagian Divisi</label>
-                        <input class="form-control rounded-top @error('bagian_divisi') is-invalid @enderror" type="text"
-                            name="bagian_divisi" placeholder="Harap Di Isi Bagian Divisi Pengambil ">
+                        <label for="kd_pengembalian_alat" class="form-label">Kode Pengembalian</label>
+                        <input class="form-control rounded-top @error('kd_pengembalian_alat') is-invalid @enderror" type="text"
+                            name="kd_pengembalian_alat" placeholder="Harap Di Isi Bagian Divisi Pengambil" value="{{ old('kd_pengembalian_alat',$find_id_check_in_tool->kd_pengembalian_alat) }}" disabled>
                         @error('bagian_divisi')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -52,8 +58,9 @@
 
                     <div class="mb-3">
                         <label for="nama_pengembalian" class="form-label">Nama Pengembalian</label>
-                        <input class="form-control rounded-top @error('nama_pengembalian') is-invalid @enderror" type="text" name="nama_pengembalian" placeholder="Harap Di Isi Nama Pengambil Consumable ">
-                        @error('nama_pengembalian')
+                        <input class="form-control rounded-top @error('nama_pengembalian') is-invalid @enderror" type="text"
+                            name="nama_pengembalian" placeholder="Harap Di Isi Bagian Divisi Pengambil" value="{{ old('nama_pengembalian',$find_id_check_in_tool->nama_pengembalian) }}" disabled>
+                        @error('bagian_divisi')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -71,15 +78,13 @@
             </h5>
             <div class="card-body">
 
+
+
                 <div class="mb-3">
-                    <label for="tool_id" class="form-label">Nama Alat</label>
-                    <select class="form-select select-2 @error('tool_id') is-invalid @enderror" name="tool_id" data-placeholder="Pilih Salah Satu">
-                        @foreach ($data_tools as $data )
-                        <option></option>
-                        <option value="{{$data->id}}">{{$data->nama_alat}} | {{$data->spesifikasi_alat}} | {{$data->quantity}} ({{$data->jenis_quantity}})</option>
-                        @endforeach
-                    </select>
-                    @error('tool_id')
+                    <label for="nama_alat" class="form-label">Nama Pengembalian</label>
+                    <input class="form-control rounded-top @error('nama_alat') is-invalid @enderror" type="text"
+                        name="nama_alat" placeholder="Harap Di Isi Bagian Divisi Pengambil" value="{{ old('nama_alat',$find_id_check_in_tool->tool->nama_alat) }}" disabled>
+                    @error('bagian_divisi')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
@@ -87,52 +92,48 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="quantity" class="form-label">quantity</label>
-                    <input class="form-control rounded-top @error('quantity') is-invalid @enderror"
-                           type="number"
-                           name="quantity"
-                           value="{{ old('quantity') }}"
-                           placeholder="Harap diisi quantity"
-                           min="1">
-                    @error('quantity')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
+                    <label for="spesifikasi_alat" class="form-label">Nama Pengembalian</label>
+                    <input class="form-control rounded-top @error('spesifikasi_alat') is-invalid @enderror" type="text"
+                        name="spesifikasi_alat" placeholder="Harap Di Isi Bagian Divisi Pengambil" value="{{ old('spesifikasi_alat',$find_id_check_in_tool->tool->spesifikasi_alat) }}" disabled>
+                    @error('bagian_divisi')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
                     @enderror
                 </div>
 
                 <div class="mb-3">
-                    <label for="jenis_quantity" class="form-label" name="jenis_quantity">Jenis quantity </label>
-                    <select class="form-select select-2 rounded-top @error('jenis_quantity') is-invalid @enderror" name="jenis_quantity" data-placeholder="Pilih Salah Satu " required>
-                        <option selected disabled></option>
-                        <option value="Pcs">Pcs</option>
-                        <option value="Unit">Unit</option>
-                        <option value="KLG">Kaleng</option>
-                        <option value="Batang">Batang</option>
-                        <option value="Set">Set</option>
-                        <option value="Karung">Karung</option>
-                        <option value="Box">Box</option>
-                        <option value="Pasang">Pasang</option>
-                        <option value="Kilo Gram">KG</option>
-                        <option value="Lusin">Lusin</option>
-                        @error('jenis_quantity')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </select>
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="text"
+                        name="quantity" placeholder="Harap Di Isi Bagian Divisi Pengambil" value="{{ old('quantity',$find_id_check_in_tool->tool->quantity) }}" disabled>
+                    @error('bagian_divisi')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="jenis_quantity" class="form-label">Quantity</label>
+                    <input class="form-control rounded-top @error('jenis_quantity') is-invalid @enderror" type="text"
+                        name="jenis_quantity" placeholder="Harap Di Isi Bagian Divisi Pengambil" value="{{ old('jenis_quantity',$find_id_check_in_tool->tool->jenis_quantity) }}" disabled>
+                    @error('bagian_divisi')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
 
 
 
                 <div class="mb-3">
                     <label class="form-label">Keterangan Alat</label>
-                    <textarea class="form-control" placeholder="Catatan Keterangan Barang (Opsional)" name="keterangan_alat"  style="height: 100px"></textarea>
+                    <textarea class="form-control" placeholder="{{ old('jenis_quantity',$find_id_check_in_tool->tool->jenis_quantity) }}" name="keterangan_alat"  style="height: 100px" disabled></textarea>
                 </div>
 
                 <div class="mb-3 text-center">
                     <a href="{{ route('check-in-tools.index') }}" class="btn btn-secondary">Go Back</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+
                 </div>
 
                 </form>
