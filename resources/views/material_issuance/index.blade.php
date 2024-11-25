@@ -56,10 +56,10 @@
                     <tr class="table-info text-center">
                         <th>No</th>
                         <th>Tanggal Pengambilan</th>
+                        <th>Bagian Divisi</th>
+                        <th>Nama Pengambil</th>
                         <th>Nama Materials</th>
                         <th>Tipe Material</th>
-                        <th>Nama Pengambil</th>
-                        <th>Bagian Divisi</th>
                         <th>Quantity</th>
                         <th>Jenis Quantity</th>
                         <th>Keperluan project</th>
@@ -69,25 +69,27 @@
                 </thead>
                 <tbody>
 
+                    @foreach ($data_material_issuance as $data )
 
                     <tr>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-center"></td>
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td class="text-center">{{ $data->tanggal_pengambilan }}</td>
+                        <td>{{ $data->bagian_divisi }}</td>
+                        <td>{{ $data->nama_pengambil }}</td>
+                        <td>{{ $data->material->nama_material }}</td>
+                        <td class="text-center">{{ $data->material->spesifikasi_material }}</td>
+                        <td class="text-center">{{ $data->quantity }}</td>
+                        <td class="text-center">{{ $data->jenis_quantity }}</td>
+                        <td>{{ $data->project->nama_project }}</td>
+                        <td>{{ $data->keterangan_material }}</td>
                         <td>
                             <div class="mb-1">
-                                <a href=""><span class="btn btn-primary btn-sm">Detail</a></span>
+                                <a href="{{ route('material-issuance.show',$data->id) }}"><span class="btn btn-primary btn-sm">Detail</a></span>
                             </div>
                         </td>
                     </tr>
 
+                    @endforeach
 
                 </tbody>
             </table>

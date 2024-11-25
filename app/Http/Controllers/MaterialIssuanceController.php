@@ -17,7 +17,8 @@ class MaterialIssuanceController extends Controller
         $data['sub_title'] = 'Pengambilan Material';
         $data['title'] = 'Menu Material Halaman';
         $data['data_project'] = Project::all();
-        $data['data_materials'] = Materials::paginate(5);
+        $data['data_materials'] = Materials::all();
+        $data['data_material_issuance'] = MaterialIssuance::all();
         return view('material_issuance.index',$data);
     }
 
@@ -41,24 +42,47 @@ class MaterialIssuanceController extends Controller
     {
         //
         $request->validate([
-            'tanggal_pengambilan' => 'required|min:3|max:100',
-            'nama_pengambil' => 'required|min:3|max:100',
-            'bagian_divisi' => 'required|min:3|max:100',
-            'material_id' => 'required|exists:materials,id',
-            'project_id' => 'required|exists:menu_project,id',
-            'quantity' => 'required|numeric|min:1',
-            'jenis_quantity' => 'required|min:1|max:100',
-            'keterangan_material' => 'required|min:3|max:100',
+            'tanggal_pengambilan'        => 'required|min:3|max:100',
+            'nama_pengambil'             => 'required|min:3|max:100',
+            'bagian_divisi'              => 'required|min:3|max:100',
+            'material_id'                => 'required|exists:materials,id',
+            'project_id'                 => 'required|exists:menu_project,id',
+            'quantity'                   => 'required|numeric|min:1',
+            'jenis_quantity'             => 'required|min:1|max:100',
+            'keterangan_material'        => 'required|min:3|max:100',
         ]);
-        dd($request);
+        // dd($request);
+        try {
+            //code...
+            MaterialIssuance::create([
+                'tanggal_pengambilan'               => $request->tanggal_pengambilan,
+                'nama_pengambil'                    => $request->nama_pengambil,
+                'bagian_divisi'                     => $request->bagian_divisi,
+                'material_id'                       => $request->material_id,
+                'project_id'                        => $request->project_id,
+                'quantity'                          => $request->quantity,
+                'jenis_quantity'                    => $request->jenis_quantity,
+                'keterangan_material'               => $request->keterangan_material
+            ]);
+            return redirect()->route('material-issuance.index')->with('success', 'Data berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            //throw $th;
+            return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(MaterialIssuance $materialIssuance)
+    public function show($id)
     {
         //
+        $data['title'] = 'Formulir Detail Pengambilan Consumable';
+        $data['sub_title'] = 'Pengambilan Material';
+        $data['data_materials'] = Materials::all();
+        $data['data_project'] = Project::all();
+        $data['find_id'] = MaterialIssuance::findOrFail($id);
+        return view('material_issuance.show ',$data);
     }
 
     /**
