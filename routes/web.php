@@ -9,12 +9,14 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryOrderController;
 use App\Http\Controllers\GoodsReceivedController;
+use App\Http\Controllers\HydrotestMaterialLendingController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialIssuanceController;
 use App\Http\Controllers\MenuProjectController;
 use App\Http\Controllers\ShippingItemController;
 use App\Http\Controllers\ToolsController;
 use App\Models\ConsumableIssuance;
+use App\Models\HydrotestMaterialLending;
 use Faker\Guesser\Name;
 
 /*
@@ -137,6 +139,13 @@ Route::middleware('auth')->group(function (){
         Route::get('create',[CheckInToolsController::class, 'create'])->name('create');
         Route::post('store',[CheckInToolsController::class, 'store'])->name('store');
         Route::get('detail/{id}',[CheckInToolsController::class, 'show'])->name('show');
+
+    });
+
+    Route::prefix('hydrotest-material-lending')->name('hydrotest-material-lending.')->group(function(){
+        Route::get('/',[HydrotestMaterialLendingController::class, 'index'])->name('index');
+        Route::get('create',[HydrotestMaterialLendingController::class, 'create'])->name('create');
+        Route::post('store',[HydrotestMaterialLendingController::class,'store'])->name('store');
 
     });
 

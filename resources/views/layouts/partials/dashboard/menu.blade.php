@@ -133,8 +133,8 @@
               <span class="menu-header-text">Equipment Hydrotest</span>
           </li>
 
-          <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
-              <a href="" class="menu-link">
+          <li class="menu-item {{ ($sub_title === "Peminjaman Materials Hydrotest")  ? 'active' : ''}}">
+              <a href="{{route('hydrotest-material-lending.index')}}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-minus-back"></i>
                   <div data-i18n="Analytics">Peminjaman Materials HydroTest</div>
               </a>

@@ -55,9 +55,6 @@
 
 
 
-
-
-
             <div class="table-responsive">
 
 
@@ -226,7 +223,7 @@
                 var projectFilter = $(this).val(); // Ambil nilai dropdown
 
                 // Terapkan filter pada kolom Kategori Project (index 3)
-                table.column(3).search(projectFilter).draw();
+                table.column(4).search(projectFilter).draw();
             });
 
         });
