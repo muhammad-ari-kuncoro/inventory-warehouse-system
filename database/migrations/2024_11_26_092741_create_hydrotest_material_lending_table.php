@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('hydrotest_material_lending', function (Blueprint $table) {
             $table->id();
+            $table->string('tgl_pinjam_material');
             $table->string('bagian_divisi');
             $table->string('nama_peminjam');
-
+            $table->string('kd_hydrotest_material_lending');
 
             $table->bigInteger('material_id')->unsigned()->nullable();
             $table->foreign("material_id")->references("id")->on('materials');

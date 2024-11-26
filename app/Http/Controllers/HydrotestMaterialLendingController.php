@@ -52,7 +52,28 @@ class HydrotestMaterialLendingController extends Controller
             'keterangan_material'       => 'required|min:3|max:100',
         ]);
 
-        dd($request);
+        // dd($request);
+
+        try {
+            //code...
+            HydrotestMaterialLending::create([
+                'tgl_pinjam_material'               => $request->tgl_pinjam_material,
+                'bagian_divisi'                     => $request->bagian_divisi,
+                'nama_peminjam'                => $request->nama_peminjam,
+                'material_id'                           => $request->material_id,
+                'quantity'                          => $request->quantity,
+                'jenis_quantity'                    => $request->jenis_quantity,
+                'jenis_material'                    => $request->jenis_material,
+                'keterangan_material'                   => $request->keterangan_material
+            ]);
+            return redirect()->route('hydrotest-material-lending.index')->with('success', 'Data berhasil ditambahkan!');
+
+        } catch (\Exception $e) {
+            //throw $th;
+            //erros jika data tidak sesuai
+            // Simpan pesan error jika terjadi kesalahan
+            return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
+        }
 
 
     }
