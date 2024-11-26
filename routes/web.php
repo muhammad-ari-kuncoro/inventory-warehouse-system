@@ -82,6 +82,7 @@ Route::middleware('auth')->group(function (){
         Route::post('store',[GoodsReceivedController::class, 'store'])->name('store');
         Route::get('edit/{id}',[GoodsReceivedController::class, 'edit'])->name('edit');
         Route::patch('update/{id}',[GoodsReceivedController::class, 'update'])->name('update');
+        Route::delete('/destroy/{id}',[GoodsReceivedController::class,'destroy'])->name('destroy');
 
 
     });

@@ -288,7 +288,7 @@
                     </div>
                     {{-- Row 4 --}}
                     <div class="row">
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="quantity" class="form-label">Quantity masuk </label>
                                 <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number"name="quantity" placeholder="Harap Di Isi Quantity" value="{{ old('quantity', $find_id->quantity)}}">
@@ -299,7 +299,7 @@
                                 @enderror
                             </div>
 
-                        </div>
+                        </div> --}}
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="quantity_jenis" class="form-label" name="quantity_jenis">Quantity Jenis </label>

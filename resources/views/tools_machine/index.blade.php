@@ -1,11 +1,12 @@
 @extends('layouts.dashboard-layout')
 @section('container')
 <div class="card">
-    <h5 class="card-header text-center mb-3">
-        Dashboard Menu Mesin & Tools Saat ini
+    <h5 class="card-header text-center">
+        Dashboard Menu Project
         <br>
         <span id="currentDateTime" class="ms-2 text-muted"></span>
     </h5>
+
     {{-- Session Notifikasi --}}
     @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -27,79 +28,91 @@
 
     <div class="card-body">
 
-        {{-- Tampilan Button Data Dan Print  --}}
-        <div class="row align-items-center mb-2">
+
+        <div class="row align-items-center">
             <!-- Print Button -->
-            <div class="col-sm-2 mb-3">
-                <a href="" class="btn btn-success w-100">Print Data</a>
+            <div class="row">
+                <!-- Dropdown Filter -->
+                <div class="col-sm-auto mb-3">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Tambah Data
+                    </button>
+                </div>
             </div>
+                <div class="row">
 
+                    <div class="col-md-3 mb-3">
+                        <label for="projectFilter" class="form-label">Filter Kategori Tipe Alat:</label>
+                        <select id="projectFilter" class="form-select">
+                            <option value="">Semua Kategori</option>
+                            <option value="Alat Pemotong">Alat Pemotong(Cutting Tools)</option>
+                            <option value="Mesin Las">Mesin las (Machine Welding)</option>
+                            <option value="Alat Pengangkat">Alat Pengangkat</option>
+                            <option value="Alat Pemukul ">Alat Pemukul (Lifting Equipment)</option>
+                            <option value="Mesin Pembentuk">Mesin Pembentuk</option>
+                            <option value="Alat Pemukul">Mesin Pemukul(Hammer)</option>
+                            <option value="Alat Pengunci">Alat Pengunci</option>
+                            <option value="Alat Pengukur">Alat Pengunci</option>
+                            <option value="Alat Tester">Alat Tester</option>
+                    </select>
+                </div>
+            </div>
             <!-- Add Button -->
-            <div class="col-sm-2 mb-3">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Tambah Data
-                </button>
+
+
+
+
+
+
+            <div class="table-responsive">
+
+
+                <table class="table table-bordered table-hover display" id="myTable7">
+                    <thead>
+                        <tr class="table-info text-center">
+                            <th>No</th>
+                            <th>Kode Alat</th>
+                            <th>Nama Alat</th>
+                            <th>Spesifikasi Alat</th>
+                            <th>Jenis Alat</th>
+                            <th>Tipe Alat</th>
+                            <th class="text-center">Quantity Alat</th>
+                            <th>Jenis Quantity</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data_tools as $data )
+                        <tr>
+                            <td class="text-center">{{$loop->iteration;}}</td>
+                            <td>{{$data->kode_alat}}</td>
+                            <td>{{$data->nama_alat}}</td>
+                            <td>{{$data->spesifikasi_alat}}</td>
+                            <td>{{$data->jenis_alat}}</td>
+                            <td>{{$data->tipe_alat}}</td>
+                            <td class="text-center">{{$data->quantity}}</td>
+                            <td>{{$data->jenis_quantity}}</td>
+                            <td>
+                                <div class="mb-1">
+                                    <a href="{{route('tools.edit',$data->id)}}"><span class="btn btn-warning btn-sm">Edit</a></span>
+                                </div>
+
+                            </td>
+                            {{-- <div class="mb-1">
+                                         <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
+                                     </div> --}}
+
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-
-
-
-
-
-        <div class="card-datatable table-responsive pt-0">
-
-            <table class="datatables-basic table table-bordered table-hover display" id="myTable2">
-                <thead>
-                    <tr class="table-info text-center">
-                        <th>No</th>
-                        <th>Nama Alat</th>
-                        <th>Spesifikasi Alat</th>
-                        <th>Kode Alat</th>
-                        <th>Jenis Alat</th>
-                        <th>Tipe Alat</th>
-                        <th class="text-center">Quantity Alat</th>
-                        <th>Jenis Quantity</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-
-
-                <tbody>
-                    @foreach ($data_tools as $data )
-                    <tr>
-                        <td class="text-center">{{$loop->iteration;}}</td>
-                        <td>{{$data->nama_alat}}</td>
-                        <td>{{$data->spesifikasi_alat}}</td>
-                        <td>{{$data->kode_alat}}</td>
-                        <td>{{$data->jenis_alat}}</td>
-                        <td>{{$data->tipe_alat}}</td>
-                        <td class="text-center">{{$data->quantity}}</td>
-                        <td>{{$data->jenis_quantity}}</td>
-                        <td>
-                            <div class="mb-1">
-                                <a href="{{route('tools.edit',$data->id)}}"><span class="btn btn-warning btn-sm">Edit</a></span>
-                            </div>
-
-                        </td>
-                        {{-- <div class="mb-1">
-                                     <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
-                                 </div> --}}
-
-                    </tr>
-                    @endforeach
-                </tbody>
-
-
-            </table>
-        </div>
-        <div class="mb-3 mt-3">
-            {{-- {{ $menu_project->links('pagination::bootstrap-5') }} --}}
         </div>
     </div>
-</div>
 
 
 
-<!-- Modal -->
+ <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -209,27 +222,79 @@
     </div>
 </div>
 
-@endsection
-@push('scripts')
-<script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-<script>
-    let table = new DataTable('#myTable2');
 
-    function updateDateTime() {
-        const now = new Date();
-        const options = {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-            hour: '2-digit', minute: '2-digit', second: '2-digit'
-        };
-        document.getElementById('currentDateTime').textContent = now.toLocaleDateString('id-ID', options);
-    }
+    @endsection
 
-    // Jalankan fungsi pertama kali
-    updateDateTime();
+    @push('scripts')
+    <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+    <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Inisialisasi DataTable
+            var table = $('#myTable7').DataTable({
+                dom: '<"d-flex justify-content-between"lBf>rtip', // Menempatkan tombol, filter, dan search secara sejajar
+                buttons: [{
+                        extend: 'excel',
+                        text: 'Export Excel',
+                        className: 'btn btn-success btn-sm',
+                        exportOptions: {
+                            modifier: {
+                                search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
+                            }
+                        }
+                    },
+                    // {
+                    //     extend: 'pdf',
+                    //     text: 'Export PDF',
+                    //     className: 'btn btn-danger btn-sm',
+                    //     exportOptions: {
+                    //         modifier: {
+                    //             search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
+                    //         }
+                    //     }
+                    // },
+                ],
+                layout: {
+                    topStart: 'buttons'
+                }
+            });
 
-    // Perbarui waktu setiap detik
-    setInterval(updateDateTime, 1000);
-</script>
-@endpush
+            $('#projectFilter').on('change', function () {
+                var projectFilter = $(this).val(); // Ambil nilai dropdown
+
+                // Terapkan filter pada kolom Kategori Project (index 3)
+                table.column(4).search(projectFilter).draw();
+            });
+
+        });
+
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('currentDateTime').textContent = now.toLocaleDateString('id-ID', options);
+        }
+
+        // Jalankan fungsi pertama kali
+        updateDateTime();
+
+        // Perbarui waktu setiap detik
+        setInterval(updateDateTime, 1000);
+
+    </script>
 
 
+    @endpush

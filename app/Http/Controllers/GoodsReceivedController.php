@@ -121,7 +121,7 @@ class GoodsReceivedController extends Controller
             'material_id'           => 'nullable|exists:materials,id',
             'consumable_id'         => 'nullable|exists:consumables,id',
             'tools_id'              => 'nullable|exists:tools,id',
-            'quantity'              => 'required|min:1|max:100',
+            // 'quantity'              => 'required|min:1|max:100',
             'quantity_jenis'        => 'required|min:1|max:255',
             'keterangan_barang'     => 'nullable',
         ]);
@@ -134,7 +134,7 @@ class GoodsReceivedController extends Controller
         $updateGoodReceived->material_id               = $request->material_id;
         $updateGoodReceived->consumable_id             = $request->consumable_id;
         $updateGoodReceived->tools_id                  = $request->tools_id;
-        $updateGoodReceived->quantity                  = $request->quantity;
+        // $updateGoodReceived->quantity                  = $request->quantity;
         $updateGoodReceived->quantity_jenis            = $request->quantity_jenis;
         $updateGoodReceived->keterangan_barang         = $request->keterangan_barang;
         $updateGoodReceived->save();
@@ -145,8 +145,17 @@ class GoodsReceivedController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(GoodReceived $goodReceive)
+    public function destroy($id)
     {
         //
+        $goodReceive = GoodReceived::find($id);
+
+        if ($goodReceive) {
+            $goodReceive->delete(); // Menghapus data
+            return redirect()->back()->with('delete', 'Data berhasil dihapus.');
+        }
+
+        return redirect()->back()->with('delete', 'Data tidak ditemukan.');
+
     }
 }
