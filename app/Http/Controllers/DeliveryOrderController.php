@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\DeliveryOrder;
 use App\Http\Controllers\Controller;
+use App\Models\DeliveryOrderDetail;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DeliveryOrderController extends Controller
 {
@@ -18,8 +22,8 @@ class DeliveryOrderController extends Controller
 
         $data['title'] = 'Delivery Order Halaman';
         $data['sub_title'] = 'Pengiriman Delivery Order';
-        $data['data_delivery_order']  = DeliveryOrder::all();
-        $data['data_project'] = Project::all();
+        $data['data_delivery_order']  = DeliveryOrder::where('do_no', '!=', 'draft')->get();
+        $data['data_project'] = Project::get();
         return view('delivery_order.index',$data);
     }
 
@@ -32,49 +36,75 @@ class DeliveryOrderController extends Controller
         //
         $data['title'] = 'Delivery Order Form';
         $data['sub_title'] = 'Pengiriman Delivery Order';
-        $data['data_project'] = Project::all();
+        $data['data_project'] = Project::get();
+        $data['do_draft'] = DeliveryOrder::where('user_id', Auth::user()->id)->where('do_no', 'draft')->first();
         return view('delivery_order.create',$data);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function storeItem(Request $request)
     {
-        //
-         //Validasi
          $request->validate([
-            'tanggal_pengiriman' => 'required|min:5|max:255',
-            'pengirim' => 'required|min:5|max:255',
-            'penerima' => 'required|min:1|max:255',
-            'project_id' => 'required',
-            'deskripsi_barang' => 'required|min:10|max:255',
-            'quantity' => 'required|min:1|max:100',
-            'jenis_quantity' => 'required|min:1|max:255',
-            'keterangan_barang' => 'required|min:5|max:255',
+            'item_description' => 'required',
+            'item_size' => 'required',
+            'item_qty' => 'required|min:1',
+            'satuan_barang' => 'required',
 
         ]);
-        // dd($request);
+        DB::beginTransaction();
         try {
-            //code...
-            DeliveryOrder::create([
-                'tanggal_pengiriman'                => $request->tanggal_pengiriman,
-                'pengirim'                          => $request->pengirim,
-                'penerima'                          => $request->penerima,
-                'project_id'                        => $request->project_id,
-                'deskripsi_barang'                  => $request->deskripsi_barang,
-                'quantity'                          => $request->quantity,
-                'jenis_quantity'                    => $request->jenis_quantity,
-                'keterangan_barang'                 => $request->keterangan_barang
-            ]);
+            // Cek Apakah DO Draft Sudah ada
+            $doDraft = DeliveryOrder::where('user_id', Auth::user()->id)->where('do_no', 'draft')->first();
+            if (!$doDraft) {
+                $doDraft = new DeliveryOrder();
+                $doDraft->do_no = 'draft';
+                $doDraft->user_id = Auth::user()->id;
+                $doDraft->save();
+            }
 
-            // dd($tambah);
+            $doDraftDetail = new DeliveryOrderDetail();
+            $doDraftDetail->delivery_order_id = $doDraft->id;
+            $doDraftDetail->item_description = $request->item_description;
+            $doDraftDetail->item_size = $request->item_size;
+            $doDraftDetail->item_weight = $request->item_weight;
+            $doDraftDetail->item_qty = $request->item_qty;
+            $doDraftDetail->item_measurement = $request->satuan_barang;
+            $doDraftDetail->save();
+            
+            DB::commit();
+            return redirect()->route('delivery-order.create')->with('success', 'Item berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'tanggal_pengiriman' => 'required',
+            'penerima' => 'required|min:1|max:255',
+            'project_id' => 'required',
+        ]);
+        try {
+
+            $doDraft = DeliveryOrder::where('user_id', Auth::user()->id)->where('do_no', 'draft')->first();
+            if (!$doDraft) {
+                return redirect()->back()->with('error','Harap Masukkan Barang!');
+            }
+
+            $doDraft->do_no             = $this->generateDoNo();
+            $doDraft->do_date           = $request->tanggal_pengiriman;
+            $doDraft->project_id        = $request->project_id;
+            $doDraft->shipment_address  = $request->penerima;
+
+            $doDraft->save();
+            
             return redirect()->route('delivery-order.index')->with('success', 'Data berhasil ditambahkan!');
         } catch (\Exception $e) {
-            //throw $th;
-            //erros jika data tidak sesuai
-            // Simpan pesan error jika terjadi kesalahan
-            return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
+            return redirect()->back()->with('failed', 'Terjadi kesalahan saat menyimpan data!');
         }
     }
 
@@ -95,7 +125,7 @@ class DeliveryOrderController extends Controller
         $data['title'] = 'Edit Delivery Order Form';
         $data['sub_title'] = 'Pengiriman Delivery Order';
         $data['data_project'] = Project::all();
-        $data['find_id'] = DeliveryOrder::findOrFail($id);
+        $data['do'] = DeliveryOrder::findOrFail($id);
         $data['data_project'] = Project::all();
         return view('delivery_order.edit',$data);
     }
@@ -105,31 +135,18 @@ class DeliveryOrderController extends Controller
      */
     public function update(Request $request,$id)
     {
-        //
-          //Validasi
-          $request->validate([
+        $request->validate([
             'tanggal_pengiriman'            => 'required|min:5|max:255',
-            'pengirim'                      => 'required|min:5|max:255',
             'penerima'                      => 'required|min:1|max:255',
             'project_id'                    => 'required',
-            'deskripsi_barang'              => 'required|min:10|max:255',
-            'quantity'                      => 'required|min:1|max:100',
-            'jenis_quantity'                => 'required|min:1|max:255',
-            'keterangan_barang'             => 'required|min:5|max:255',
-
         ]);
 
-        $updateDeliveryOrder = DeliveryOrder::findOrFail($id);
-        $updateDeliveryOrder->tanggal_pengiriman          = $request->tanggal_pengiriman;
-        $updateDeliveryOrder->pengirim                    = $request->pengirim;
-        $updateDeliveryOrder->penerima                    = $request->penerima;
-        $updateDeliveryOrder->project_id                  = $request->project_id;
-        $updateDeliveryOrder->deskripsi_barang            = $request->deskripsi_barang;
-        $updateDeliveryOrder->quantity                    = $request->quantity;
-        $updateDeliveryOrder->jenis_quantity              = $request->jenis_quantity;
-        $updateDeliveryOrder->keterangan_barang           = $request->keterangan_barang;
+        $updateDeliveryOrder                    = DeliveryOrder::findOrFail($id);
+        $updateDeliveryOrder->do_date           = $request->tanggal_pengiriman;
+        $updateDeliveryOrder->project_id        = $request->project_id;
+        $updateDeliveryOrder->shipment_address  = $request->penerima;
         $updateDeliveryOrder->save();
-        // Redirect ke halaman yang diinginkan
+        
         return redirect()->route('delivery-order.index')->with('editSuccess', 'Data berhasil Di Edit!');
     }
 
@@ -139,5 +156,24 @@ class DeliveryOrderController extends Controller
     public function destroy(DeliveryOrder $deliveryOrder)
     {
         //
+    }
+
+    public function deleteDraft()
+    {
+        try {
+            $doDraft = DeliveryOrder::where('user_id', Auth::user()->id)->where('do_no', 'draft')->first();
+            DeliveryOrderDetail::where('delivery_order_id', $doDraft->id)->delete();
+            $doDraft->delete();
+
+            return redirect()->back()->with('success', 'Success Delete Draft');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('success', $th->getMessage());
+        }
+
+    }
+
+    private function generateDoNo()
+    {
+        return 'DO/'. 'AJM/O/VII/-'. date('Ymd') . '/' . strtoupper(Str::random(3));
     }
 }

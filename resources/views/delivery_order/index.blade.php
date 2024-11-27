@@ -56,14 +56,9 @@
                     <tr class="table-info text-center">
                         <th>No</th>
                         <th>Tanggal Pengiriman</th>
-                        <th>Purchase Order No</th>
+                        <th>Project No</th>
                         <th>Delivery No</th>
                         <th>Nama Project</th>
-                        <th>Items Descriptions</th>
-                        <th>Alamat</th>
-                        <th>Quantity </th>
-                        <th>Satuan</th>
-                        <th>Keterangan Item</th>
                         <th>Aksi </th>
                     </tr>
                 </thead>
@@ -71,19 +66,13 @@
                     @foreach ($data_delivery_order as $data)
                     <tr>
                         <td class="text-center">{{$loop->iteration}}</td>
-                        <td class="text-center">{{$data->tanggal_pengiriman}}</td>
-                        <td>{{$data->purchase_no}}</td>
-                        <td>{{$data->delivery_no}}</td>
+                        <td class="text-center">{{$data->do_date}}</td>
+                        <td>{{$data->project->kode_project}}</td>
+                        <td>{{$data->do_no}}</td>
                         <td>{{$data->project->nama_project}} | {{$data->project->sub_nama_project}}</td>
-                        <td>{{$data->deskripsi_barang}}</td>
-                        <td>{{$data->penerima}}</td>
-                        <td class="text-center">{{$data->quantity}}</td>
-                        <td>{{$data->jenis_quantity}}</td>
-                        <td>{{$data->keterangan_barang}}</td>
                         <td>
                             <div class="mb-1">
-                                <a href="{{ route('delivery-order.edit',$data->id) }}"><span
-                                        class="btn btn-warning btn-sm">Edit</a></span>
+                                <a href="{{ route('delivery-order.edit',$data->id) }}"><span class="btn btn-warning btn-sm">Edit</a></span>
                             </div>
                         </td>
                     </tr>

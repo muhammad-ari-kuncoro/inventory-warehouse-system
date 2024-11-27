@@ -93,6 +93,8 @@ Route::middleware('auth')->group(function (){
         Route::get('/',[DeliveryOrderController::class, 'index'])->name('index');
         Route::get('create',[DeliveryOrderController::class, 'create'])->name('create');
         Route::post('store',[DeliveryOrderController::class, 'store'])->name('store');
+        Route::post('store/item',[DeliveryOrderController::class, 'storeItem'])->name('store.item');
+        Route::post('delete-draft',[DeliveryOrderController::class, 'deleteDraft'])->name('delete-draft');
         Route::get('edit/{id}',[DeliveryOrderController::class, 'edit'])->name('edit');
         Route::patch('update/{id}',[DeliveryOrderController::class, 'update'])->name('update');
 
