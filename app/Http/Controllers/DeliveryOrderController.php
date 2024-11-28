@@ -6,6 +6,7 @@ use App\Models\DeliveryOrder;
 use App\Http\Controllers\Controller;
 use App\Models\DeliveryOrderDetail;
 use App\Models\Project;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -118,7 +119,6 @@ class DeliveryOrderController extends Controller
         $data['sub_title'] = 'Pengiriman Delivery Order';
         $data['data_project'] = Project::all();
         $data['do'] = DeliveryOrder::findOrFail($id);
-        $data['data_project'] = Project::all();
         return view('delivery_order.show',$data);
     }
 
@@ -176,6 +176,15 @@ class DeliveryOrderController extends Controller
             return redirect()->back()->with('success', $th->getMessage());
         }
 
+    }
+
+    public function printPDF($id)
+    {
+        $deliveryOrder = DeliveryOrder::findOrFail($id);
+        $data['deliveryOrder'] = $deliveryOrder;
+        $pdf = Pdf::loadView('delivery_order.pdf', $data);
+        $fileName = preg_replace('/[\/\\\\]/', '_', $deliveryOrder->do_no);
+        return $pdf->stream($fileName . '.pdf');
     }
 
     private function generateDoNo()

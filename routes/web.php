@@ -96,6 +96,7 @@ Route::middleware('auth')->group(function (){
         Route::post('store/item',[DeliveryOrderController::class, 'storeItem'])->name('store.item');
         Route::post('delete-draft',[DeliveryOrderController::class, 'deleteDraft'])->name('delete-draft');
         Route::get('edit/{id}',[DeliveryOrderController::class, 'edit'])->name('edit');
+        Route::get('print-pdf/{id}',[DeliveryOrderController::class, 'printPDF'])->name('print-pdf');
         Route::get('show/{id}',[DeliveryOrderController::class, 'show'])->name('show');
         Route::patch('update/{id}',[DeliveryOrderController::class, 'update'])->name('update');
 

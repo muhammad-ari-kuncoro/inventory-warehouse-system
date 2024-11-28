@@ -74,9 +74,9 @@
                         <td>{{$data->project->nama_project}} | {{$data->project->sub_nama_project}}</td>
                         <td>
                             <div class="mb-1">
-                                <a href="{{ route('delivery-order.edit',$data->id) }}"><span class="btn btn-warning btn-sm">Edit</a></span>
-                                <a href="{{ route('delivery-order.show',$data->id) }}"><span class="btn btn-primary btn-sm">Details</a></span>
-
+                                <a href="{{ route('delivery-order.edit',$data->id) }}"><span class="btn btn-warning btn-sm"><i class='bx bx-edit-alt' ></i></a></span>
+                                <a href="{{ route('delivery-order.show',$data->id) }}"><span class="btn btn-info btn-sm"><i class='bx bx-show' ></i></a></span>
+                                <a href="{{ route('delivery-order.print-pdf',$data->id) }}" target="_blank"><span class="btn btn-success btn-sm"><i class='bx bxs-file-pdf'></i></a></span>
                             </div>
                         </td>
                     </tr>

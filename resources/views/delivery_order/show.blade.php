@@ -34,118 +34,47 @@
         <div class="card">
             <div class="card-body row">
                 <div class="col-lg-12">
-                    <form action="{{ route('delivery-order.update', $do->id) }}" method="post" id="formSubmit">
-                        @csrf
-                        @method('patch')
-                        <h4>Form Detail Delivery Order</h4>
-                        <div class="mb-3">
-                            <label for="tanggal_pengiriman" class="form-label">Delivery Order Number</label>
-                            <input class="form-control rounded-top" type="text" value="{{ $do->do_no }}" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="tanggal_pengiriman" class="form-label">Tanggal Pengiriman</label>
-                            <input class="form-control rounded-top @error('tanggal_pengiriman') is-invalid @enderror" type="date" value="{{ $do->do_date }}" name="tanggal_pengiriman" placeholder="Harap Di Isi Tanggal Pengiriman Barang" disabled>
-                            @error('tanggal_pengiriman')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" name="penerima"  id="floatingTextarea2Disabled" style="height: 100px" disabled>{{ $do->shipment_address }}</textarea>
-                            <label for="floatingTextarea2Disabled">Alamat Penerima</label>
-                            @error('penerima')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="project_id" class="form-label">Nama Project</label>
-                            <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu" disabled>
-                                <option></option>
-                                @foreach ($data_project as $data )
-                                    <option value="{{$data->id}}"{{ $do->project_id == $data->id ? 'selected' : '' }}>{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
-                                @endforeach
-                            </select>
-                            @error('project_id')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                    </form>
+                    <h4>Form Detail Delivery Order</h4>
                 </div>
                 <div class="col-lg-6">
-                    {{-- <form action="{{ route('delivery-order.store.item') }}" method="post">
-                        @csrf
-                        <h4>Form Barang</h4>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Deskripsi Barang</label>
-                            <input type="text" name="item_description" class="form-control" id="" placeholder="Harap Masukkan Deskripsi Barang">
-                            @error('deskripsi_barang')
-                            <div class="invalid-Deskripsi">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label class="form-label">Ukuran Barang</label>
-                            <input class="form-control @error('item_size') is-invalid @enderror" type="text" name="item_size" placeholder="Harap Masukkan Ukuran Barang (123 X 123 X 123) ">
-                            @error('item_size')
+                    <div class="mb-3">
+                        <label for="tanggal_pengiriman" class="form-label">Delivery Order Number</label>
+                        <input class="form-control rounded-top" type="text" value="{{ $do->do_no }}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tanggal_pengiriman" class="form-label">Tanggal Pengiriman</label>
+                        <input class="form-control rounded-top @error('tanggal_pengiriman') is-invalid @enderror" type="date" value="{{ $do->do_date }}" name="tanggal_pengiriman" placeholder="Harap Di Isi Tanggal Pengiriman Barang" disabled>
+                        @error('tanggal_pengiriman')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
-                            @enderror
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="project_id" class="form-label">Nama Project</label>
+                        <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu" disabled>
+                            <option></option>
+                            @foreach ($data_project as $data )
+                                <option value="{{$data->id}}"{{ $do->project_id == $data->id ? 'selected' : '' }}>{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
+                            @endforeach
+                        </select>
+                        @error('project_id')
+                        <div class="invalid-feedback">
+                            {{ $message }}
                         </div>
-
-                        <div class="form-group mb-3">
-                            <label class="form-label">Jumlah Barang</label>
-                            <input class="form-control @error('item_qty') is-invalid @enderror" type="number" name="item_qty" min="1" placeholder="Masukkan Jumlah Barang">
-                            @error('item_qty')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="mb-3">
+                        <label class="form-label">Alamat Penerima</label>
+                        <textarea class="form-control" name="penerima"  id="floatingTextarea2Disabled" rows="8" disabled>{{ $do->shipment_address }}</textarea>
+                        @error('penerima')
+                        <div class="invalid-feedback">
+                            {{ $message }}
                         </div>
-
-                        <div class="form-group mb-3">
-                            <label class="form-label">Berat Barang (Kg)</label>
-                            <input class="form-control @error('item_weight') is-invalid @enderror" type="number" name="item_weight" min="1" placeholder="Masukkan Berat Barang Dalam Kg">
-                            @error('item_weight')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Satuan Barang</label>
-                            <select class="form-select select-2 @error('satuan_barang') is-invalid @enderror" name="satuan_barang" data-placeholder="Pilih Salah Satu">
-                                <option></option>
-                                <option value="Pcs">Pcs</option>
-                                <option value="Unit">Unit</option>
-                                <option value="Set">Set</option>
-                                <option value="Kg">Kg</option>
-                                <option value="Lembar">Lembar</option>
-                                <option value="EA">EA</option>
-                                <option value="Liter">Liter</option>
-                                <option value="Drum">Drum</option>
-                            </select>
-                            @error('satuan_barang')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3 text-end">
-                         <a href="{{route('delivery-order.index')}}" class="btn btn-secondary">Go back!</a>
-                        </div>
-                    </form> --}}
+                        @enderror
+                    </div>
                 </div>
                 <div class="col-lg-12">
                     <hr>
@@ -158,7 +87,6 @@
                                     <th>Weight</th>
                                     <th>Qty</th>
                                     <th>Satuan</th>
-                                    <th>#</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -170,7 +98,6 @@
                                             <td>{{ $detail->item_weight }}</td>
                                             <td>{{ $detail->item_qty }}</td>
                                             <td>{{ $detail->item_measurement }}</td>
-                                            <td></td>
                                         </tr>
                                     @endforeach
                                 @else
