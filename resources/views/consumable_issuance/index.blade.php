@@ -55,6 +55,7 @@
                 <thead>
                     <tr class="table-info text-center">
                         <th>No</th>
+                        <th>Waktu Pengambilan</th>
                         <th>Tanggal Pengambilan</th>
                         <th>Nama Consumable</th>
                         <th>Tipe Consumable</th>
@@ -72,6 +73,7 @@
 
                     <tr>
                         <td class="text-center">{{$loop->iteration}} </td>
+                        <td>{{$data->created_at}} </td>
                         <td class="text-center">{{$data->tanggal_pengambilan}}</td>
                         <td>{{$data->consumable->nama_consumable}}</td>
                         <td>{{$data->consumable->spesifikasi_consumable}}</td>

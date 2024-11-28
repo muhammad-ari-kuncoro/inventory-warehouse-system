@@ -54,6 +54,7 @@
                 <thead>
                     <tr class="table-info text-center">
                         <th>No</th>
+                        <th>Waktu Pengembalian</th>
                         <th>Kode pengembalian Alat</th>
                         <th>Tanggal Pengembalian</th>
                         <th>Nama Alat </th>
@@ -71,6 +72,7 @@
 
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
+                        <td>{{$data->created_at->format('d-m-Y H:i:s');}}</td>
                         <td>{{ $data->kd_pengembalian_alat }}</td>
                         <td class="text-center">{{ $data->tanggal_pengembalian }}</td>
                         <td>{{ $data->tool->nama_alat }}</td>

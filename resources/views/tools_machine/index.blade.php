@@ -187,7 +187,7 @@
 
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Quantity Alat Atau Mesin </label>
-                        <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number"
+                        <input class="form-control rounded-top @error('quantity') is-invalid @enderror" min="1" type="number"
                             name="quantity" placeholder="Harap Di Isi Spesifikasi Peralatan Atau Permesinan" required>
                         @error('quantity')
                         <div class="invalid-feedback">

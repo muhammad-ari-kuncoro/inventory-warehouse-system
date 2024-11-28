@@ -55,6 +55,7 @@
                 <thead>
                     <tr class="table-info text-center">
                         <th>No</th>
+                        <th>Waktu Delivery</th>
                         <th>Tanggal Pengiriman</th>
                         <th>Project No</th>
                         <th>Delivery No</th>
@@ -66,6 +67,7 @@
                     @foreach ($data_delivery_order as $data)
                     <tr>
                         <td class="text-center">{{$loop->iteration}}</td>
+                        <td>{{$data->created_at}}</td>
                         <td class="text-center">{{$data->do_date}}</td>
                         <td>{{$data->project->kode_project}}</td>
                         <td>{{$data->do_no}}</td>
@@ -73,6 +75,8 @@
                         <td>
                             <div class="mb-1">
                                 <a href="{{ route('delivery-order.edit',$data->id) }}"><span class="btn btn-warning btn-sm">Edit</a></span>
+                                <a href="{{ route('delivery-order.show',$data->id) }}"><span class="btn btn-primary btn-sm">Details</a></span>
+
                             </div>
                         </td>
                     </tr>

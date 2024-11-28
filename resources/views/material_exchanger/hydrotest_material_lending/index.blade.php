@@ -68,11 +68,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach ($data_tools_in as $data ) --}}
+                    @foreach ($Material_lending as $data )
 
                     <tr>
-                        <td class="text-center"></td>
-                        <td></td>
+                        <td class="text-center">{{$loop->iteration}}</td>
+                        <td>{{$data->}}</td>
                         <td class="text-center"></td>
                         <td></td>
                         <td></td>

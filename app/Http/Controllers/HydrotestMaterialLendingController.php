@@ -18,7 +18,7 @@ class HydrotestMaterialLendingController extends Controller
         $data['sub_title'] = 'Peminjaman Materials Hydrotest';
         $data['title'] = 'Menu Peminjaman Materials Hydrotest Halaman';
         // $data['data_project'] = Project::all();
-        // $data['data_tools_in'] = CheckInTools::all();
+        $data['Material_lending'] = HydrotestMaterialLending::all();
         return view('material_exchanger.hydrotest_material_lending.index',$data);
     }
 

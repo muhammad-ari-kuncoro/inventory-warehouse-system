@@ -70,6 +70,7 @@
                     <thead>
                         <tr class="table-info">
                             <th>No</th>
+                            <th>Waktu Keluar</th>
                             <th>Tanggal Keluar</th>
                             <th>Kode Surat Jalan barang keluar</th>
                             <th class="text-center">Pengirim </th>
@@ -88,6 +89,7 @@
                         <tr class="text-center">
 
                             <td class="text-center">{{$loop->iteration}}</td>
+                            <td>{{$data->created_at}}</td>
                             <td>{{$data->tgl_kirim}}</td>
                             <td>{{$data->kd_sj_brg_keluar}}</td>
                             <td>{{$data->pengirim}}</td>

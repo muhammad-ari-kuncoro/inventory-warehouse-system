@@ -55,6 +55,7 @@
                 <thead>
                     <tr class="table-info text-center">
                         <th>No</th>
+                        <th>Waktu Pengambilan</th>
                         <th>Tanggal Pengambilan</th>
                         <th>Bagian Divisi</th>
                         <th>Nama Pengambil</th>
@@ -73,6 +74,7 @@
 
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
+                        <td class="text-center">{{ $data->created_at }}</td>
                         <td class="text-center">{{ $data->tanggal_pengambilan }}</td>
                         <td>{{ $data->bagian_divisi }}</td>
                         <td>{{ $data->nama_pengambil }}</td>

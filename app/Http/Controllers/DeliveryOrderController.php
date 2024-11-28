@@ -72,7 +72,7 @@ class DeliveryOrderController extends Controller
             $doDraftDetail->item_qty = $request->item_qty;
             $doDraftDetail->item_measurement = $request->satuan_barang;
             $doDraftDetail->save();
-            
+
             DB::commit();
             return redirect()->route('delivery-order.create')->with('success', 'Item berhasil ditambahkan!');
         } catch (\Exception $e) {
@@ -101,7 +101,7 @@ class DeliveryOrderController extends Controller
             $doDraft->shipment_address  = $request->penerima;
 
             $doDraft->save();
-            
+
             return redirect()->route('delivery-order.index')->with('success', 'Data berhasil ditambahkan!');
         } catch (\Exception $e) {
             return redirect()->back()->with('failed', 'Terjadi kesalahan saat menyimpan data!');
@@ -111,9 +111,15 @@ class DeliveryOrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(DeliveryOrder $deliveryOrder)
+    public function show($id)
     {
         //
+        $data['title'] = 'Edit Delivery Order Form';
+        $data['sub_title'] = 'Pengiriman Delivery Order';
+        $data['data_project'] = Project::all();
+        $data['do'] = DeliveryOrder::findOrFail($id);
+        $data['data_project'] = Project::all();
+        return view('delivery_order.show',$data);
     }
 
     /**
@@ -146,7 +152,7 @@ class DeliveryOrderController extends Controller
         $updateDeliveryOrder->project_id        = $request->project_id;
         $updateDeliveryOrder->shipment_address  = $request->penerima;
         $updateDeliveryOrder->save();
-        
+
         return redirect()->route('delivery-order.index')->with('editSuccess', 'Data berhasil Di Edit!');
     }
 

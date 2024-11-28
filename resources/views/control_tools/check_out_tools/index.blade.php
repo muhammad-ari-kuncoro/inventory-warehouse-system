@@ -54,6 +54,7 @@
                 <thead>
                     <tr class="table-info text-center">
                         <th>No</th>
+                        <th>Waktu Peminjaman</th>
                         <th>Kode Peminjam Alat</th>
                         <th>Tanggal Peminjaman</th>
                         <th>Nama Alat </th>
@@ -71,6 +72,7 @@
 
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
+                        <td>{{$data->created_at}}</td>
                         <td>{{ $data->kd_peminjam_tool }}</td>
                         <td class="text-center">{{ $data->tanggal_pengambilan }}</td>
                         <td>{{ $data->tool->nama_alat }}</td>

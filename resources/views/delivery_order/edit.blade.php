@@ -51,7 +51,7 @@
                                 </div>
                             @enderror
                         </div>
-        
+
                         <div class="form-floating mb-3">
                             <textarea class="form-control" name="penerima"  id="floatingTextarea2Disabled" style="height: 100px">{{ $do->shipment_address }}</textarea>
                             <label for="floatingTextarea2Disabled">Alamat Penerima</label>
@@ -61,7 +61,7 @@
                             </div>
                             @enderror
                         </div>
-        
+
                         <div class="mb-3">
                             <label for="project_id" class="form-label">Nama Project</label>
                             <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu">
@@ -91,7 +91,7 @@
                             </div>
                             @enderror
                         </div>
-        
+
                         <div class="form-group mb-3">
                             <label class="form-label">Ukuran Barang</label>
                             <input class="form-control @error('item_size') is-invalid @enderror" type="text" name="item_size" placeholder="Harap Masukkan Ukuran Barang (123 X 123 X 123) ">
@@ -101,7 +101,7 @@
                             </div>
                             @enderror
                         </div>
-    
+
                         <div class="form-group mb-3">
                             <label class="form-label">Jumlah Barang</label>
                             <input class="form-control @error('item_qty') is-invalid @enderror" type="number" name="item_qty" min="1" placeholder="Masukkan Jumlah Barang">
@@ -121,7 +121,7 @@
                             </div>
                             @enderror
                         </div>
-    
+
                         <div class="mb-3">
                             <label class="form-label">Satuan Barang</label>
                             <select class="form-select select-2 @error('satuan_barang') is-invalid @enderror" name="satuan_barang" data-placeholder="Pilih Salah Satu">
@@ -144,6 +144,7 @@
 
                         <div class="mb-3 text-end">
                             <button type="submit" class="btn btn-success">Tambah Barang</button>
+                            <a href="{{route('delivery-order.index')}}" class="btn btn-secondary">Go back</a>
                         </div>
                     </form>
                 </div>

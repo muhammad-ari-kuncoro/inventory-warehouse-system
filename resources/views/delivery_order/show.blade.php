@@ -32,22 +32,19 @@
             </div>
         @endif
         <div class="card">
-            @if ($do_draft)
-                <div class="card-header text-end">
-                    <form action="{{ route('delivery-order.delete-draft') }}" method="post">
-                        @csrf
-                        <button type="submit" class="btn btn-danger btn-sm">Hapus Draft</button>
-                    </form>
-                </div>
-            @endif
             <div class="card-body row">
-                <div class="col-lg-6">
-                    <form action="{{ route('delivery-order.store') }}" method="post" id="formSubmit">
+                <div class="col-lg-12">
+                    <form action="{{ route('delivery-order.update', $do->id) }}" method="post" id="formSubmit">
                         @csrf
-                        <h4>Form Alamat</h4>
+                        @method('patch')
+                        <h4>Form Detail Delivery Order</h4>
+                        <div class="mb-3">
+                            <label for="tanggal_pengiriman" class="form-label">Delivery Order Number</label>
+                            <input class="form-control rounded-top" type="text" value="{{ $do->do_no }}" disabled>
+                        </div>
                         <div class="mb-3">
                             <label for="tanggal_pengiriman" class="form-label">Tanggal Pengiriman</label>
-                            <input class="form-control rounded-top @error('tanggal_pengiriman') is-invalid @enderror" type="date" name="tanggal_pengiriman" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
+                            <input class="form-control rounded-top @error('tanggal_pengiriman') is-invalid @enderror" type="date" value="{{ $do->do_date }}" name="tanggal_pengiriman" placeholder="Harap Di Isi Tanggal Pengiriman Barang" disabled>
                             @error('tanggal_pengiriman')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -56,7 +53,7 @@
                         </div>
 
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" name="penerima"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
+                            <textarea class="form-control" name="penerima"  id="floatingTextarea2Disabled" style="height: 100px" disabled>{{ $do->shipment_address }}</textarea>
                             <label for="floatingTextarea2Disabled">Alamat Penerima</label>
                             @error('penerima')
                             <div class="invalid-feedback">
@@ -67,10 +64,10 @@
 
                         <div class="mb-3">
                             <label for="project_id" class="form-label">Nama Project</label>
-                            <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu">
+                            <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu" disabled>
                                 <option></option>
                                 @foreach ($data_project as $data )
-                                    <option value="{{$data->id}}">{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
+                                    <option value="{{$data->id}}"{{ $do->project_id == $data->id ? 'selected' : '' }}>{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
                                 @endforeach
                             </select>
                             @error('project_id')
@@ -82,7 +79,7 @@
                     </form>
                 </div>
                 <div class="col-lg-6">
-                    <form action="{{ route('delivery-order.store.item') }}" method="post">
+                    {{-- <form action="{{ route('delivery-order.store.item') }}" method="post">
                         @csrf
                         <h4>Form Barang</h4>
                         <div class="form-group mb-3">
@@ -146,10 +143,9 @@
                         </div>
 
                         <div class="mb-3 text-end">
-                            <button type="submit" class="btn btn-success">Tambah Barang</button>
-                            <a href="{{route('delivery-order.index')}}" class="btn btn-secondary">Go back</a>
+                         <a href="{{route('delivery-order.index')}}" class="btn btn-secondary">Go back!</a>
                         </div>
-                    </form>
+                    </form> --}}
                 </div>
                 <div class="col-lg-12">
                     <hr>
@@ -166,8 +162,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($do_draft)
-                                    @foreach ($do_draft->details as $detail)
+                                @if ($do)
+                                    @foreach ($do->details as $detail)
                                         <tr>
                                             <td>{{ $detail->item_description }}</td>
                                             <td>{{ $detail->item_size }}</td>
@@ -185,9 +181,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="mt-3">
-                        <button class="btn btn-primary" onclick="submitForm()">Submit DO</button>
-
+                    <div class="mt-3 col-lg-6">
+                      <a href="{{route('delivery-order.index')}}" class="btn btn-secondary">Go back</a>
                     </div>
                 </div>
             </div>
