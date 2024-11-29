@@ -79,7 +79,8 @@
                     <select class="form-select select-2 @error('consumable_id') is-invalid @enderror" name="consumable_id" data-placeholder="Pilih Salah Satu">
                         @foreach ($data_consumables as $data )
                         <option></option>
-                        <option value="{{$data->id}}">{{$data->nama_consumable}} | {{$data->spesifikasi_consumable}} | {{$data->quantity}} ({{$data->jenis_quantity}})</option>
+                        <option value="{{$data->id}}">{{$data->nama_consumable}} | {{$data->spesifikasi_consumable}} | {{$data->quantity}} ({{$data->jenis_quantity}}) | {{ $data->project->nama_project }}
+                            | {{ $data->project->sub_nama_project }}</option>
                         @endforeach
                     </select>
                     @error('consumable_id')

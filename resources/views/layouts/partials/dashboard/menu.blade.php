@@ -55,12 +55,42 @@
                   <div data-i18n="Layouts">Consumables</div>
               </a>
           </li>
-          <li class="menu-item {{ ($sub_title === "Tools")  ? 'active' : ''}}">
-              <a href="{{route('tools.index')}}" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-wrench"></i>
-                  <div data-i18n="Layouts">Tools</div>
-              </a>
-          </li>
+
+          <li class="menu-header small text-uppercase">
+              <span class="menu-header-text">Assets</span>
+            </li>
+              <li class="menu-item {{ ($sub_title === "Tools")  ? 'active' : ''}}">
+                  <a href="{{route('tools.index')}}" class="menu-link">
+                      <i class="menu-icon tf-icons bx bx-wrench"></i>
+                      <div data-i18n="Layouts">Tools</div>
+                  </a>
+              </li>
+
+              <li class="menu-item {{ ($sub_title === "Machine")  ? 'active' : ''}}">
+                    <a href="" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-devices"></i>
+                        <div data-i18n="Layouts">Machine</div>
+                     </a>
+                </li>
+
+                <li class="menu-header small text-uppercase">
+                    <span class="menu-header-text">Temporary</span>
+                </li>
+
+                <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
+                    <a href="{{route('tools.index')}}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-carousel"></i>
+                        <div data-i18n="Layouts">Materials Temporary</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
+                    <a href="{{route('tools.index')}}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-album"></i>
+                        <div data-i18n="Layouts">Consumable Temporary</div>
+                    </a>
+                </li>
+
           {{-- End Layout --}}
 
           {{-- Layouts Document --}}
@@ -71,14 +101,14 @@
           <li class="menu-item {{ ($sub_title === "Barang Masuk")  ? 'active' : ''}}">
               <a href="{{route('good-received.index')}}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-folder"></i>
-                  <div data-i18n="Layouts">Barang Masuk</div>
+                  <div data-i18n="Layouts">Good Received</div>
               </a>
           </li>
 
           <li class="menu-item {{ ($sub_title === "Pengiriman Delivery Order")  ? 'active' : ''}}">
               <a href="{{route('delivery-order.index')}}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-car"></i>
-                  <div data-i18n="Layouts">Pengiriman Delivery Order</div>
+                  <div data-i18n="Layouts">Delivery Order</div>
               </a>
           </li>
 
@@ -86,7 +116,7 @@
           <li class="menu-item {{ ($sub_title === "Barang Keluar")  ? 'active' : ''}}">
               <a href="{{route('shipping-items.index')}}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-log-out"></i>
-                  <div data-i18n="Layouts">Barang Keluar</div>
+                  <div data-i18n="Layouts">Shipping Fabricated</div>
               </a>
           </li>
 
@@ -99,14 +129,14 @@
           <li class="menu-item {{ ($sub_title === "Pengambilan Consumable")  ? 'active' : ''}}">
               <a href="{{ route('consumable-issuance.index') }}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-clipboard"></i>
-                  <div data-i18n="Analytics">Pengambilan Consumable</div>
+                  <div data-i18n="Analytics">Consumable Out</div>
               </a>
           </li>
 
           <li class="menu-item {{ ($sub_title === "Pengambilan Material")  ? 'active' : ''}}">
               <a href="{{route('material-issuance.index')}}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-clipboard"></i>
-                  <div data-i18n="Analytics">Pengambilan Materials</div>
+                  <div data-i18n="Analytics">Material Out</div>
               </a>
           </li>
 
@@ -118,14 +148,14 @@
           <li class="menu-item {{ ($sub_title === "Peminjaman Alat")  ? 'active' : ''}}">
               <a href="{{ route('check-out-tools.index') }}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-archive-out"></i>
-                  <div data-i18n="Analytics">Peminjaman Alat</div>
+                  <div data-i18n="Analytics">Tools Machine Out</div>
               </a>
           </li>
 
           <li class="menu-item {{ ($sub_title === "Pengembalian Alat")  ? 'active' : ''}}">
               <a href="{{ route('check-in-tools.index') }}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-archive-in"></i>
-                  <div data-i18n="Analytics">Pengembalian Alat </div>
+                  <div data-i18n="Analytics">Tools Machine In </div>
               </a>
           </li>
           {{-- Equipment Hydrotest --}}

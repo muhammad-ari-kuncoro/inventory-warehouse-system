@@ -79,7 +79,8 @@
                     <select class="form-select select-2 @error('material_id') is-invalid @enderror" name="material_id" data-placeholder="Pilih Salah Satu">
                         @foreach ($data_materials as $data )
                         <option></option>
-                        <option value="{{$data->id}}">{{$data->nama_material}} | {{$data->spesifikasi_material}} | {{$data->quantity}} ({{$data->jenis_quantity}})</option>
+                        <option value="{{$data->id}}">{{$data->nama_material}} | {{$data->spesifikasi_material}} | {{$data->quantity}} ({{$data->jenis_quantity}}) | {{ $data->project->nama_project }}
+                        | {{ $data->project->sub_nama_project }}</option>
                         @endforeach
                     </select>
                     @error('material_id')

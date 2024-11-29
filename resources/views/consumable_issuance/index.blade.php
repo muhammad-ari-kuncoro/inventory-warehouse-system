@@ -79,9 +79,9 @@
                         <td>{{$data->consumable->spesifikasi_consumable}}</td>
                         <td>{{$data->nama_pengambil}}</td>
                         <td>{{$data->bagian_divisi}}</td>
-                        <td>{{$data->quantity}}</td>
+                        <td class="text-center">{{$data->quantity}}</td>
                         <td>{{$data->jenis_quantity}}</td>
-                        <td>{{$data->project->nama_project}}</td>
+                        <td>{{$data->project->nama_project}} | {{ $data->project->sub_nama_project }}</td>
                         <td class="text-center">{{$data->keterangan_consumable}}</td>
                         <td>
                             <div class="mb-1">
@@ -125,16 +125,16 @@
                         }
                     }
                 },
-                {
-                    extend: 'pdf',
-                    text: 'Export PDF',
-                    className: 'btn btn-danger btn-sm',
-                    exportOptions: {
-                        modifier: {
-                            search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
-                        }
-                    }
-                },
+                // {
+                //     extend: 'pdf',
+                //     text: 'Export PDF',
+                //     className: 'btn btn-danger btn-sm',
+                //     exportOptions: {
+                //         modifier: {
+                //             search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
+                //         }
+                //     }
+                // },
             ],
             layout: {
                 topStart: 'buttons'
@@ -146,7 +146,7 @@
             var projectFilter = $(this).val(); // Mendapatkan nilai Nama Project | Sub Nama Project
 
             // Terapkan filter pada kolom Nama Project (kolom ke-5 di tabel)
-            table.column(4).search(projectFilter).draw();
+            table.column(9).search(projectFilter).draw();
         });
     });
 

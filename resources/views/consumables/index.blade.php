@@ -1,5 +1,6 @@
 @extends('layouts.dashboard-layout')
 @section('container')
+
 <div class="card">
     <h5 class="card-header text-center">
         Dashboard Menu Consumable Realtime
@@ -83,7 +84,11 @@
                             <td>{{$data->kode_consumable}}</td>
                             <td>{{$data->nama_consumable}}</td>
                             <td>{{$data->spesifikasi_consumable}}</td>
+                            @if (0)
+                            <td class="text-center bg-danger">{{$data->quantity}}</td>
+                            @else
                             <td class="text-center">{{$data->quantity}}</td>
+                            @endif
                             <td class="text-center">{{$data->jenis_quantity}}</td>
                             <td>{{$data->jenis_consumable}}</td>
                             <td>{{$data->project->nama_project}}</td>
@@ -218,7 +223,11 @@
     </div>
 
     @endsection
-
+    <style>
+        .bg-danger {
+            background-color: #f8d7da !important; /* Latar belakang merah muda */
+        }
+    </style>
     @push('scripts')
     <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
     <script src="//cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
@@ -243,26 +252,30 @@
                             }
                         }
                     },
-                    // {
-                    //     extend: 'pdf',
-                    //     text: 'Export PDF',
-                    //     className: 'btn btn-danger btn-sm',
-                    //     exportOptions: {
-                    //         modifier: {
-                    //             search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
-                    //         }
-                    //     }
-                    // },
                 ],
                 layout: {
                     topStart: 'buttons'
+                },
+                drawCallback: function () {
+                    // Loop melalui semua baris tabel setelah DataTable digambar ulang
+                    $('#myTable7 tbody tr').each(function () {
+                        // Ambil nilai quantity dari kolom ke-4 (index 4)
+                        var quantity = $(this).find('td').eq(4).text().trim();
+
+                        // Jika quantity == 0, tambahkan kelas 'bg-danger' untuk merubah warna latar belakang
+                        if (quantity == '0') {
+                            $(this).addClass('bg-danger text-white'); // Menambahkan teks putih untuk kontras
+                        } else {
+                            $(this).removeClass('bg-danger text-white');
+                        }
+                    });
                 }
             });
 
             $('#projectFilter').on('change', function () {
                 var projectFilter = $(this).val(); // Ambil nilai dropdown
 
-                // Terapkan filter pada kolom Kategori Project (index 3)
+                // Terapkan filter pada kolom Kategori Project (index 6)
                 table.column(6).search(projectFilter).draw();
             });
 
@@ -287,7 +300,6 @@
 
         // Perbarui waktu setiap detik
         setInterval(updateDateTime, 1000);
-
     </script>
 
 
