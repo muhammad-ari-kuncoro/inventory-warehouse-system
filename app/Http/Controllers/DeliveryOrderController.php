@@ -181,7 +181,11 @@ class DeliveryOrderController extends Controller
     public function printPDF($id)
     {
         $deliveryOrder = DeliveryOrder::findOrFail($id);
+        // Hitung total quantity
+        $totalQty = $deliveryOrder->details->sum('item_qty');
+
         $data['deliveryOrder'] = $deliveryOrder;
+        $data['totalQty'] = $totalQty;
         $pdf = Pdf::loadView('delivery_order.pdf', $data);
         $fileName = preg_replace('/[\/\\\\]/', '_', $deliveryOrder->do_no);
         return $pdf->stream($fileName . '.pdf');

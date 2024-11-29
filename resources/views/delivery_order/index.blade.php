@@ -106,7 +106,7 @@
             buttons: [
                 {
                     extend: 'excel',
-                    text: 'Export Excel',
+                    text: 'Export Excel Data Keseluruhan',
                     className: 'btn btn-success btn-sm',
                     exportOptions: {
                         modifier: {
@@ -114,16 +114,16 @@
                         }
                     }
                 },
-                {
-                    extend: 'pdf',
-                    text: 'Export PDF',
-                    className: 'btn btn-danger btn-sm',
-                    exportOptions: {
-                        modifier: {
-                            search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
-                        }
-                    }
-                },
+                // {
+                //     extend: 'pdf',
+                //     text: 'Export PDF',
+                //     className: 'btn btn-danger btn-sm',
+                //     exportOptions: {
+                //         modifier: {
+                //             search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
+                //         }
+                //     }
+                // },
             ],
             layout: {
                 topStart: 'buttons'
