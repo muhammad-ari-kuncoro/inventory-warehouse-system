@@ -20,6 +20,7 @@ class Consumables extends Model
         'jenis_quantity',
         'kode_consumable',
         'jenis_consumable',
+        'harga_consumable',
         'project_id'
     ];
 

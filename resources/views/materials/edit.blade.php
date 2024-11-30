@@ -113,6 +113,13 @@
 
             </div>
 
+            <label for="harga_material" class="form-label" name="harga_material">Harga Materials </label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Rp</span>
+                            <input type="text" class="form-control" name="harga_material" min="1" id="hargaMaterials" aria-label="Amount (to the nearest Rupiah)" oninput="formatCurrency(this)" value="{{ old('harga_material', $find_id->harga_material)}}">
+                            <span class="input-group-text">.00</span>
+                        </div>
+
             {{-- data lama tidak bisa di input --}}
             <div class="mb-3">
                 <label for="" class="form-label">Jenis Project Lama </label>

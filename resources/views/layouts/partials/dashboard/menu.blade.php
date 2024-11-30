@@ -30,7 +30,7 @@
 
           <!-- Layouts project -->
           <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">Projet</span>
+              <span class="menu-header-text">Project</span>
           </li>
           <li class="menu-item {{ ($sub_title === "Menu Project")  ? 'active' : ''}}">
               <a href="{{ route('project.index') }}" class="menu-link">
@@ -67,11 +67,12 @@
               </li>
 
               <li class="menu-item {{ ($sub_title === "Machine")  ? 'active' : ''}}">
-                    <a href="" class="menu-link">
+                    <a href="{{route('machine.index')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-devices"></i>
                         <div data-i18n="Layouts">Machine</div>
                      </a>
                 </li>
+
 
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Temporary</span>

@@ -63,6 +63,7 @@
                         <tr class="table-info text-center">
                             <th>No</th>
                             <th>Kode Project</th>
+                            <th>Tanggal Di buat</th>
                             <th>Nama Project</th>
                             <th>Sub Nama Project</th>
                             <th>Kategori Nama Project</th>
@@ -76,6 +77,7 @@
 
                             <td class="text-center">{{ $loop->iteration; }}</td>
                             <td>{{ $data->kode_project }}</td>
+                            <td>{{$data->created_at->format('d-m-Y')}}</td>
                             <td>{{ $data->nama_project }}</td>
                             <td>{{ $data->sub_nama_project }}</td>
                             <td>{{ $data->kategori_project }}</td>

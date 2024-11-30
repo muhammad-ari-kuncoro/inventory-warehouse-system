@@ -71,6 +71,7 @@
                             <th>Quantity</th>
                             <th>Jenis Quantity</th>
                             <th>Jenis Materials</th>
+                            <th>Harga Materials</th>
                             <th>Nama Project</th>
                             <th>Sub Nama Project</th>
                             <th>Aksi </th>
@@ -92,6 +93,7 @@
 
                             <td>{{ $data->jenis_quantity }}</td>
                             <td>{{ $data->jenis_material }}</td>
+                            <td>Rp {{$data->harga_material}}</td>
                             <td>{{ $data->project->nama_project }}</td>
                             <td>{{ $data->project->sub_nama_project }}</td>
                             <td>
@@ -115,7 +117,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Form Tambah Materials</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -190,6 +192,13 @@
                                 </div>
                                 @enderror
                             </select>
+                        </div>
+
+                        <label for="harga_material" class="form-label" name="harga_material">Harga Materials </label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Rp</span>
+                            <input type="text" class="form-control" name="harga_material" min="1" id="hargaMaterials" aria-label="Amount (to the nearest Rupiah)" oninput="formatCurrency(this)">
+                            <span class="input-group-text">.00</span>
                         </div>
 
 
@@ -284,6 +293,15 @@
             });
 
         });
+
+        function formatCurrency(input) {
+        // Ambil nilai input, hapus semua karakter selain angka
+        let value = input.value.replace(/[^,\d]/g, '');
+
+        // Ubah ke format angka dengan pemisah ribuan
+        input.value = new Intl.NumberFormat('id-ID').format(value);
+        }
+
 
         function updateDateTime() {
             const now = new Date();

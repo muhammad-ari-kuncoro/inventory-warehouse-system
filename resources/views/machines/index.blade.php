@@ -66,43 +66,35 @@
                     <thead>
                         <tr class="table-info text-center">
                             <th>No</th>
-                            <th>Kode Consumable</th>
-                            <th>Nama Consumables</th>
-                            <th>Spesifikasi Consumables</th>
+                            <th>Kode Mesin Asset</th>
+                            <th>Nama Mesin</th>
+                            <th>Spesifikasi Mesin</th>
+                            <th>Jenis Mesin</th>
                             <th>Quantity</th>
+                            <th>Harga Mesin</th>
                             <th>Jenis Quantity</th>
-                            <th>Jenis Consumables</th>
-                            <th>Harga Consumable</th>
-                            <th>Nama Project</th>
-                            <th>Sub nama Project</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data_consumables as $data )
+
                         <tr>
-                            <td class="text-center">{{$loop->iteration}}</td>
-                            <td>{{$data->kode_consumable}}</td>
-                            <td>{{$data->nama_consumable}}</td>
-                            <td>{{$data->spesifikasi_consumable}}</td>
-                            @if (0)
-                            <td class="text-center bg-danger">{{$data->quantity}}</td>
-                            @else
-                            <td class="text-center">{{$data->quantity}}</td>
-                            @endif
-                            <td class="text-center">{{$data->jenis_quantity}}</td>
-                            <td>{{$data->jenis_consumable}}</td>
-                            <td class="text-center">Rp.{{$data->harga_consumable}}</td>
-                            <td>{{$data->project->nama_project}}</td>
-                            <td class="text-center">{{$data->project->sub_nama_project}} </td>
+                            <td class="text-center"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"> </td>
+                            <td class="text-center"> </td>
                             <td>
                                 <div class="mb-auto">
-                                    <a href="{{route('consumable.edit',$data->id)}}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="" class="btn btn-warning btn-sm">Edit</a>
                                 </div>
 
                             </td>
                         </tr>
-                        @endforeach
+
                     </tbody>
                 </table>
             </div>
@@ -115,17 +107,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Form Tambah Consumable</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Form Tambah Mesin Assets</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('consumable.create')}}" method="post">
+                    <form action="" method="post">
                         @csrf
+
                         <div class="mb-3">
-                            <label for="nama_consumable" class="form-label">Nama Consumable</label>
-                            <input class="form-control rounded-top  @error('nama_consumable') is-invalid @enderror"
-                                type="text" name="nama_consumable" placeholder="Harap Di Isi Nama Consumable" required>
-                            @error('nama_consumable')
+                            <label for="nama_mesin" class="form-label">Nama Mesin</label>
+                            <input class="form-control rounded-top  @error('nama_mesin') is-invalid @enderror"
+                                type="text" name="nama_mesin" placeholder="Harap Di Isi Nama Mesin" required>
+                            @error('nama_mesin')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -133,11 +126,11 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="spesifikasi_consumable" class="form-label">Spesifikasi Consumable</label>
-                            <input class="form-control rounded-top @error('spesifikasi_consumable') is-invalid @enderror"
-                                type="text" name="spesifikasi_consumable" placeholder="Harap Di Isi Spesifikasi Consumable"
+                            <label for="spesifikasi_mesin" class="form-label">Spesifikasi Mesin</label>
+                            <input class="form-control rounded-top @error('spesifikasi_mesin') is-invalid @enderror"
+                                type="text" name="spesifikasi_mesin" placeholder="Harap Di Isi Spesifikasi Mesin"
                                 required>
-                            @error('spesifikasi_consumable')
+                            @error('spesifikasi_mesin')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -145,9 +138,31 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="quantity" class="form-label">Quantity Consumable</label>
-                            <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number"
-                                name="quantity" placeholder="Harap Di Isi Quantity Material" required>
+                            <label for="jenis_mesin" class="form-label" name="jenis_mesin">Jenis Mesin </label>
+                            <select class="form-select rounded-top @error('jenis_mesin') is-invalid @enderror" name="jenis_mesin" required>
+                                <option selected disabled>Pilih Jenis Mesin</option>
+                                <option value="Cutting Machines">Cutting Machines</option>
+                                <option value="Forming Machines">Forming Machines</option>
+                                <option value="Welding Machines">Welding Machines</option>
+                                <option value="Machining Machines">Machining Machines</option>
+                                <option value="Surface Treatment Machines">Surface Treatment Machines</option>
+                                <option value="spesial machines">spesial machines</option>
+                                <option value="Pipe Bending">Pipe Bending</option>
+
+
+                                @error('jenis_mesin')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity Mesin</label>
+                            <input class="form-control rounded-top @error('quantity') is-invalid @enderror"
+                                type="number" min="1"  name="quantity" placeholder="Harap Di Isi Quantity Mesin"
+                                required>
                             @error('quantity')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -155,19 +170,24 @@
                             @enderror
                         </div>
 
+                        <label for="harga_mesin" class="form-label">Harga Mesin</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" min="1" class="form-control" name="harga_mesin" aria-label="Amount (to the nearest dollar)">
+                            <span class="input-group-text">.00</span>
+                          </div>
+
+
+
+
 
                         <div class="mb-3">
                             <label for="jenis_quantity" class="form-label" name="jenis_quantity">Jenis Quantity </label>
-                            <select class="form-select rounded-top @error('jenis_quantity') is-invalid @enderror" name="jenis_quantity" required>
-                                <option selected disabled>Pilih Jenis Quantity</option>
-                                <option value="Pcs">Pcs</option>
-                                <option value="Batang">Batang</option>
+                            <select class="form-select rounded-top @error('jenis_quantity') is-invalid @enderror"
+                                name="jenis_quantity" required>
+                                <option selected disabled>Pilih Jenis Material</option>
+                                <option value="Unit">Unit</option>
                                 <option value="Set">Set</option>
-                                <option value="Karung">Karung</option>
-                                <option value="Box">Box</option>
-                                <option value="Pasang">Pasang</option>
-                                <option value="Kilo Gram">KG</option>
-                                <option value="Lusin">Lusin</option>
                                 @error('jenis_quantity')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -177,47 +197,6 @@
                         </div>
 
 
-                        <div class="mb-3">
-                            <label for="jenis_consumable" class="form-label" name="jenis_consumable">Jenis Consumable </label>
-                            <select class="form-select rounded-top @error('jenis_consumable') is-invalid @enderror"
-                                name="jenis_consumable" required>
-                                <option selected disabled>Pilih Jenis Consumable</option>
-                                <option value="General Consumable">General Consumable</option>
-                                <option value="Welding Consumable">Welding Consumable</option>
-                                <option value="Safety Consumable">Safety Consumable</option>
-
-                                @error('jenis_consumable')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </select>
-                        </div>
-
-                        <label for="harga_consumable" class="form-label" name="harga_consumable">Harga Consumable </label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Rp</span>
-                            <input type="text" class="form-control" name="harga_consumable" id="hargaConsumable" aria-label="Amount (to the nearest Rupiah)" oninput="formatCurrency(this)">
-                            <span class="input-group-text">.00</span>
-                        </div>
-
-
-                        <div class="mb-3">
-                            <label for="project_id" class="form-label" name="project_id">Nama Kategori Project</label>
-                            <select class="form-select rounded-top @error('project_id') is-invalid @enderror"
-                                name="project_id" required>
-                                <option selected disabled>Pilih Kategori Project</option>
-                                @foreach ($data_project as $data )
-                                <option value="{{ $data->id }}">{{ $data->nama_project }} | {{ $data->sub_nama_project }} | NO JO : {{ $data->no_jo_project }} </option>
-                                @error('project_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                                @endforeach
-
-                            </select>
-                        </div>
 
 
 
@@ -285,18 +264,10 @@
                 var projectFilter = $(this).val(); // Ambil nilai dropdown
 
                 // Terapkan filter pada kolom Kategori Project (index 6)
-                table.column(6).search(projectFilter).draw();
+                table.column(11).search(projectFilter).draw();
             });
 
         });
-
-        function formatCurrency(input) {
-        // Ambil nilai input, hapus semua karakter selain angka
-        let value = input.value.replace(/[^,\d]/g, '');
-
-        // Ubah ke format angka dengan pemisah ribuan
-        input.value = new Intl.NumberFormat('id-ID').format(value);
-        }
 
         function updateDateTime() {
             const now = new Date();
@@ -318,6 +289,4 @@
         // Perbarui waktu setiap detik
         setInterval(updateDateTime, 1000);
     </script>
-
-
     @endpush

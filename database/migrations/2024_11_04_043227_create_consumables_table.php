@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('jenis_quantity');
             $table->integer('quantity');
             $table->string('jenis_consumable');
+            $table->string('harga_consumable')->nullable();
             $table->bigInteger('project_id')->unsigned()->nullable();
             $table->foreign("project_id")->references("id")->on("menu_project");
             $table->timestamps();

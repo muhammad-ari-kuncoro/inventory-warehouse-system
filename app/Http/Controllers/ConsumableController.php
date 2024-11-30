@@ -42,6 +42,7 @@ class ConsumableController extends Controller
             'jenis_quantity' => 'required|min:1|max:255',
             'quantity' => 'required|min:1|max:100',
             'jenis_consumable' => 'required|min:5|max:255',
+            'harga_consumable' => 'required|min:1|max:255',
             'project_id' => 'required',
 
         ]);
@@ -52,6 +53,7 @@ class ConsumableController extends Controller
                 'jenis_quantity' => $request->jenis_quantity,
                 'quantity' => $request->quantity,
                 'jenis_consumable' => $request->jenis_consumable,
+                'harga_consumable' => $request->harga_consumable,
                 'project_id' => $request->project_id
             ]);
             return redirect()->route('consumable.index')->with('success', 'Data berhasil ditambahkan!');
@@ -99,6 +101,7 @@ class ConsumableController extends Controller
             'jenis_quantity'           => 'required|min:1|max:255',
             'quantity'                 => 'required|min:1|max:100',
             'jenis_consumable'         => 'min:5|max:255',
+            'quantity'                 => 'required|min:1|max:100',
             'project_id'               => 'required',
 
         ]);
@@ -108,6 +111,7 @@ class ConsumableController extends Controller
         $updateConsumable->jenis_quantity         = $request->jenis_quantity;
         $updateConsumable->quantity               = $request->quantity;
         $updateConsumable->jenis_consumable         = $request->jenis_consumable;
+        $updateConsumable->harga_consumable         = $request->harga_consumable;
         $updateConsumable->project_id             = $request->project_id;
         $updateConsumable->save();
         // Redirect ke halaman yang diinginkan

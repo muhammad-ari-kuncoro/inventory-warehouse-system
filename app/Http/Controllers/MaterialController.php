@@ -42,6 +42,7 @@ class MaterialController extends Controller
             'jenis_quantity' => 'required|min:1|max:255',
             'quantity' => 'required|min:1|max:100',
             'jenis_material' => 'required|min:5|max:255',
+            'harga_material' => 'required|min:1|max:255',
             'project_id' => 'required',
 
         ]);
@@ -54,6 +55,7 @@ class MaterialController extends Controller
                 'jenis_quantity' => $request->jenis_quantity,
                 'quantity' => $request->quantity,
                 'jenis_material' => $request->jenis_material,
+                'harga_material' => $request->harga_material,
                 'project_id' => $request->project_id
             ]);
             // dd($tambah);
@@ -100,6 +102,7 @@ class MaterialController extends Controller
             'jenis_quantity'        => 'required|min:1|max:255',
             'quantity'              => 'required|min:1|max:100',
             'jenis_material'        => 'min:5|max:255',
+            'harga_material'        => 'required|min:1|max:100',
             'project_id'            => 'required',
 
         ]);
@@ -112,6 +115,7 @@ class MaterialController extends Controller
         $updateMaterial->jenis_quantity         = $request->jenis_quantity;
         $updateMaterial->quantity               = $request->quantity;
         $updateMaterial->jenis_material         = $request->jenis_material;
+        $updateMaterial->harga_material         = $request->harga_material;
         $updateMaterial->project_id             = $request->project_id;
         $updateMaterial->save();
         // Redirect ke halaman yang diinginkan

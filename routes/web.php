@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryOrderController;
 use App\Http\Controllers\GoodsReceivedController;
 use App\Http\Controllers\HydrotestMaterialLendingController;
+use App\Http\Controllers\MachinesController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialIssuanceController;
 use App\Http\Controllers\MenuProjectController;
@@ -75,6 +76,13 @@ Route::middleware('auth')->group(function (){
         Route::post('create',[ToolsController::class, 'store'])->name('create');
         Route::get('edit/{id}',[ToolsController::class, 'edit'])->name('edit');
         Route::patch('update/{id}',[ToolsController::class, 'update'])->name('update');
+    });
+
+    Route::prefix('machine')->name('machine.')->group(function(){
+
+        Route::get('/',[MachinesController::class, 'index'])->name('index');
+
+
     });
     // End Route Stok
 

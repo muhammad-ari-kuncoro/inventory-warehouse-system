@@ -43,6 +43,14 @@
                     @enderror
             </div>
 
+            <label for="harga_consumable" class="form-label" name="harga_consumable">Harga Consumable </label>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Rp</span>
+                <input type="text" class="form-control" name="harga_consumable" id="hargaConsumable" aria-label="Amount (to the nearest Rupiah)" oninput="formatCurrency(this)" value="{{ old('harga_consumable', $find_id->harga_consumable)}}">
+                <span class="input-group-text">.00</span>
+            </div>
+
+
 
 
             {{-- Data Lama Tidak Bisa di input --}}

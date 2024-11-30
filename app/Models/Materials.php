@@ -26,6 +26,7 @@ class Materials extends Model
         'jenis_quantity',
         'kode_material',
         'jenis_material',
+        'harga_material',
         'project_id'
     ];
 
