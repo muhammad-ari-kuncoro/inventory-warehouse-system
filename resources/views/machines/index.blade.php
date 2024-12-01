@@ -46,9 +46,13 @@
                         <label for="projectFilter" class="form-label">Filter Jenis Consumable:</label>
                         <select id="projectFilter" class="form-select">
                             <option value="">Semua Kategori</option>
-                            <option value="General Consumable">General Consumable</option>
-                            <option value="Welding Consumable">Welding Consumable</option>
-                            <option value="Safety Consumable">Safety Consumable</option>
+                            <option value="Cutting Machines">Cutting Machines</option>
+                            <option value="Forming Machines">Forming Machines</option>
+                            <option value="Welding Machines">Welding Machines</option>
+                            <option value="Machining Machines">Machining Machines</option>
+                            <option value="Surface Treatment Machines">Surface Treatment Machines</option>
+                            <option value="spesial machines">spesial machines</option>
+                            <option value="Pipe Bending">Pipe Bending</option>
                     </select>
                 </div>
             </div>
@@ -77,16 +81,17 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($data_machine_asset as $data)
 
                         <tr>
-                            <td class="text-center"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"> </td>
-                            <td class="text-center"> </td>
+                            <td class="text-center">{{$loop->iteration}}</td>
+                            <td>{{$data->kd_mesin_assets}}</td>
+                            <td>{{$data->nama_mesin}}</td>
+                            <td>{{$data->spesifikasi_mesin}}</td>
+                            <td class="text-center">{{$data->jenis_mesin}}</td>
+                            <td class="text-center">{{$data->quantity}}</td>
+                            <td class="text-center">{{$data->jenis_quantity}}</td>
+                            <td class="text-center">{{$data->harga_mesin}}</td>
                             <td>
                                 <div class="mb-auto">
                                     <a href="" class="btn btn-warning btn-sm">Edit</a>
@@ -94,6 +99,7 @@
 
                             </td>
                         </tr>
+                        @endforeach
 
                     </tbody>
                 </table>
@@ -111,9 +117,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post">
+                    <form action="{{route('machine.create')}}" method="post">
                         @csrf
-
                         <div class="mb-3">
                             <label for="nama_mesin" class="form-label">Nama Mesin</label>
                             <input class="form-control rounded-top  @error('nama_mesin') is-invalid @enderror"
@@ -170,12 +175,6 @@
                             @enderror
                         </div>
 
-                        <label for="harga_mesin" class="form-label">Harga Mesin</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Rp</span>
-                            <input type="number" min="1" class="form-control" name="harga_mesin" aria-label="Amount (to the nearest dollar)">
-                            <span class="input-group-text">.00</span>
-                          </div>
 
 
 
@@ -196,8 +195,24 @@
                             </select>
                         </div>
 
-
-
+                        <label for="harga_mesin" class="form-label">Harga Mesin</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Rp</span>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="harga_mesin"
+                                id="hargaConsumable"
+                                aria-label="Amount (to the nearest Rupiah)"
+                                oninput="formatCurrency(this)"
+                            >
+                            @error('harga_mesin')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            <span class="input-group-text">.00</span>
+                        </div>
 
 
                         <div class="modal-footer">
@@ -264,10 +279,17 @@
                 var projectFilter = $(this).val(); // Ambil nilai dropdown
 
                 // Terapkan filter pada kolom Kategori Project (index 6)
-                table.column(11).search(projectFilter).draw();
+                table.column(4).search(projectFilter).draw();
             });
 
         });
+        function formatCurrency(input) {
+        // Ambil nilai input, hapus semua karakter selain angka
+        let value = input.value.replace(/[^,\d]/g, '');
+
+        // Ubah ke format angka dengan pemisah ribuan
+        input.value = new Intl.NumberFormat('id-ID').format(value);
+    }
 
         function updateDateTime() {
             const now = new Date();

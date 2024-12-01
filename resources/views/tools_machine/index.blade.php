@@ -151,14 +151,10 @@
                         <select class="form-select rounded-top @error('jenis_alat') is-invalid @enderror"
                             name="jenis_alat" required>
                             <option selected disabled>Pilih Jenis Alat</option>
-                            <option value="Alat Pemotong">Alat Pemotong(Cutting Tools)</option>
-                            <option value="Mesin Las">Mesin las (Machine Welding)</option>
                             <option value="Alat Pengangkat">Alat Pengangkat</option>
                             <option value="Alat Pemukul ">Alat Pemukul (Lifting Equipment)</option>
-                            <option value="Mesin Pembentuk">Mesin Pembentuk</option>
-                            <option value="Alat Pemukul">Mesin Pemukul(Hammer)</option>
                             <option value="Alat Pengunci">Alat Pengunci</option>
-                            <option value="Alat Pengukur">Alat Pengunci</option>
+                            <option value="Alat Pengukur">Alat Pengukur</option>
                             <option value="Alat Tester">Alat Tester</option>
 
                             @error('jenis_alat')

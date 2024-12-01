@@ -78,14 +78,16 @@ Route::middleware('auth')->group(function (){
         Route::patch('update/{id}',[ToolsController::class, 'update'])->name('update');
     });
 
+
     Route::prefix('machine')->name('machine.')->group(function(){
-
         Route::get('/',[MachinesController::class, 'index'])->name('index');
-
+        Route::post('/create',[MachinesController::class, 'store'])->name('create');
+        Route::get('edit/{id}',[MachinesController::class, 'edit'])->name('edit');
+        Route::get('update/{id}',[MachinesController::class, 'update'])->name('update');
 
     });
-    // End Route Stok
 
+    // End Route Stok
     Route::prefix('good-received')->name('good-received.')->group(function(){
         Route::get('/',[GoodsReceivedController::class, 'index'])->name('index');
         Route::get('create',[GoodsReceivedController::class, 'create'])->name('create');
@@ -93,8 +95,6 @@ Route::middleware('auth')->group(function (){
         Route::get('edit/{id}',[GoodsReceivedController::class, 'edit'])->name('edit');
         Route::patch('update/{id}',[GoodsReceivedController::class, 'update'])->name('update');
         Route::delete('/destroy/{id}',[GoodsReceivedController::class,'destroy'])->name('destroy');
-
-
     });
 
     Route::prefix('delivery-order')->name('delivery-order.')->group(function(){
