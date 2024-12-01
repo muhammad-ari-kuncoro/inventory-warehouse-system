@@ -94,7 +94,7 @@
                             <td class="text-center">{{$data->harga_mesin}}</td>
                             <td>
                                 <div class="mb-auto">
-                                    <a href="" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="{{route('machine.edit',$data->id)}}" class="btn btn-warning btn-sm">Edit</a>
                                 </div>
 
                             </td>

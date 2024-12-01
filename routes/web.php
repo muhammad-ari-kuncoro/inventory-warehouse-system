@@ -83,7 +83,7 @@ Route::middleware('auth')->group(function (){
         Route::get('/',[MachinesController::class, 'index'])->name('index');
         Route::post('/create',[MachinesController::class, 'store'])->name('create');
         Route::get('edit/{id}',[MachinesController::class, 'edit'])->name('edit');
-        Route::get('update/{id}',[MachinesController::class, 'update'])->name('update');
+        Route::patch('update/{id}',[MachinesController::class, 'update'])->name('update');
 
     });
 

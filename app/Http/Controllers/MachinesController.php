@@ -103,6 +103,18 @@ class MachinesController extends Controller
 
         ]);
 
+
+        $updateMachines = Machines::findOrFail($id);
+        $updateMachines->nama_mesin = $request->nama_mesin;
+        $updateMachines->spesifikasi_mesin = $request->spesifikasi_mesin;
+        $updateMachines->jenis_mesin = $request->jenis_mesin;
+        $updateMachines->quantity = $request->quantity;
+        $updateMachines->jenis_quantity = $request->jenis_quantity;
+        $updateMachines->harga_mesin = $request->harga_mesin;
+        $updateMachines->save();
+        // Redirect ke halaman yang diinginkan
+        return redirect()->route('machine.index')->with('editSuccess', 'Data berhasil Di Edit!');
+
     }
 
     /**

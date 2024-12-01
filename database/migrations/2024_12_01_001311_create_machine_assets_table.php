@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('machine_assets', function (Blueprint $table) {
             $table->id();
             $table->string('kd_mesin_assets');
-            $table->string('nama_mesin');
             $table->string('spesifikasi_mesin');
+            $table->string('nama_mesin');
             $table->string('jenis_mesin');
             $table->integer('quantity');
             $table->string('jenis_quantity');
