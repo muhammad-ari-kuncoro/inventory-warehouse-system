@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\GoodReceived;
-use App\Http\Controllers\Controller;
-use App\Models\Consumables;
-use App\Models\GoodReceivedDetail;
-use App\Models\Materials;
 use App\Models\Tools;
 use App\Models\Project;
-
-use Illuminate\Http\Request;
-use Symfony\Contracts\Service\Attribute\Required;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Models\Materials;
+use App\Models\Consumables;
 use Illuminate\Support\Str;
+use App\Models\GoodReceived;
+use Illuminate\Http\Request;
+
+use App\Models\GoodReceivedDetail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class GoodsReceivedController extends Controller
 {
@@ -28,11 +29,7 @@ class GoodsReceivedController extends Controller
         $data['sub_title'] = 'Barang Masuk';
         $data['data_delivery_order']  = GoodReceived::where('kd_sj', '!=', 'draft')->get();
         $data['data_project'] = Project::get();
-        return view('good_recevied.index',$data);
-
-
-
-
+        return view('good_recevied.index', $data);
     }
 
     /**
@@ -53,49 +50,46 @@ class GoodsReceivedController extends Controller
 
     public function storeItem(Request $request)
     {
-         $request->validate([
-            'tgl_masuk' => 'required',
-            'no_surat_jalan' => 'required',
-            'nama_supplier' => 'required|min:1',
-            'satuan_barang' => 'required',
-            'project_id'    => 'required'
+        $request->validate([
+            'jenis_barang' => 'required|min:1',
+            'consumable_id' => 'nullable',
+            'material_id' => 'nullable',
+            'tools_id' => 'nullable',
+            'quantity' => 'required|min:1',
+            'quantity_jenis' => 'required|min:1',
+            'keterangan_barang' => 'required|min:1',
 
         ]);
+        // dd($request);
+
         DB::beginTransaction();
         try {
-            // Cek Apakah Surat Jalan Draft Sudah ada
-            $kdSJDraf = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
-            if (!$kdSJDraf) {
-                $kdSJDraf = new GoodReceived();
-                $kdSJDraf->kd_sj = 'draft';
-                $kdSJDraf->user_id = Auth::user()->id;
-                $kdSJDraf->save();
+            // Cek apakah draft sudah ada
+            $doDraft = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
+            if (!$doDraft) {
+                $doDraft = new GoodReceived();
+                $doDraft->kd_sj = 'draft';
+                $doDraft->user_id = Auth::user()->id;
+                $doDraft->save();
             }
 
+            // Simpan detail
             $kdSJDrafDetail = new GoodReceivedDetail();
-            $kdSJDrafDetail->good_received_id = $kdSJDraf->id;
-            $kdSJDrafDetail->consumable_id = $kdSJDraf->id;
-            $kdSJDrafDetail->material_id = $kdSJDraf->id;
-            $kdSJDrafDetail->tool_id = $kdSJDraf->id;
-
-            $kdSJDrafDetail->quantity = $request->quantity;
-
-            if ($request->jenis_barang === 'Materials') {
-                $kdSJDrafDetail->material_id = $request->material_id;
-            } elseif ($request->jenis_barang === 'Consumables') {
-                $kdSJDrafDetail->consumable_id = $request->consumable_id;
-            } elseif ($request->jenis_barang === 'Tools') {
-                $kdSJDrafDetail->tool_id = $request->tools_id;
-            }
-
-            $kdSJDrafDetail->quantity_jenis =  $request->quantity_jenis;
-            $kdSJDrafDetail->keterangan_barang = $request->keterangan_barang;
+            $kdSJDrafDetail->good_received_id   = $doDraft->id;
+            $kdSJDrafDetail->jenis_barang       = $request->jenis_barang;
+            $kdSJDrafDetail->consumable_id      = $request->consumable_id;
+            $kdSJDrafDetail->material_id        = $request->material_id;
+            $kdSJDrafDetail->tools_id           = $request->tools_id;
+            $kdSJDrafDetail->quantity           = $request->quantity;
+            $kdSJDrafDetail->quantity_jenis     = $request->quantity_jenis;
+            $kdSJDrafDetail->keterangan_barang  = $request->keterangan_barang;
             $kdSJDrafDetail->save();
 
             DB::commit();
             return redirect()->route('good-received.create')->with('success', 'Item berhasil ditambahkan!');
         } catch (\Exception $e) {
             DB::rollback();
+            Log::error($e->getMessage()); // Tambahkan log untuk melihat error
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
@@ -107,21 +101,24 @@ class GoodsReceivedController extends Controller
     {
         // Validate the incoming request
         $request->validate([
-            'tgl_masuk' => 'required',
-            'penerima' => 'required|min:1|max:255',
+            'tanggal_masuk' => 'required|min:1|max:255',
+            'nama_supplier' => 'required|min:1|max:255',
+            'kode_surat_jalan' => 'required|min:1|max:100',
             'project_id' => 'required',
         ]);
         try {
 
             $doDraft = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
             if (!$doDraft) {
-                return redirect()->back()->with('error','Harap Masukkan Barang!');
+                return redirect()->back()->with('error', 'Harap Masukkan Barang!');
             }
 
             $doDraft->kd_sj             = $this->generatekdSJ();
-            $doDraft->tgl_masuk           = $request->tgl_masuk;
+            $doDraft->tanggal_masuk     = $request->tanggal_masuk;
             $doDraft->project_id        = $request->project_id;
-            $doDraft->shipment_address  = $request->penerima;
+            $doDraft->nama_supplier  = $request->nama_supplier;
+            $doDraft->kode_surat_jalan  = $request->kode_surat_jalan;
+            $doDraft->project_id  = $request->project_id;
 
             $doDraft->save();
 
@@ -154,13 +151,13 @@ class GoodsReceivedController extends Controller
 
         $data['find_id'] = GoodReceived::findOrFail($id);
 
-        return view('good_recevied.edit',$data);
+        return view('good_recevied.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'tanggal_pengiriman'            => 'required|min:5|max:255',
@@ -191,7 +188,6 @@ class GoodsReceivedController extends Controller
         }
 
         return redirect()->back()->with('delete', 'Data tidak ditemukan.');
-
     }
 
     public function deleteDraft()
@@ -205,11 +201,10 @@ class GoodsReceivedController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with('success', $th->getMessage());
         }
-
     }
 
     private function generatekdSJ()
     {
-        return 'DO/'. 'AJM/O/SJ/-'. date('Ymd') . '/' . strtoupper(Str::random(3));
+        return 'GR/' . 'AJM/O/SJ/-' . date('Ymd') . '/' . strtoupper(Str::random(3));
     }
 }

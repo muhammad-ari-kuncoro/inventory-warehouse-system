@@ -13,12 +13,9 @@ return new class extends Migration
     {
         Schema::create('good_received_detail', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
 
-            // Relasi Ke Table Materials
-            $table->bigInteger('good_received_id')->unsigned();
-            $table->foreign("good_received_id")->references("id")->on("goods_received");
 
+            $table->integer('good_received_id');
             // Relasi Ke Table Materials
             $table->bigInteger('material_id')->unsigned()->nullable();
             $table->foreign("material_id")->references("id")->on("materials");
@@ -36,6 +33,7 @@ return new class extends Migration
             $table->string('quantity_jenis');
             $table->string('keterangan_barang');
 
+            $table->timestamps();
         });
     }
 

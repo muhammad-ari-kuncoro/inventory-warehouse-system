@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class GoodReceivedDetail extends Model
 {
     use HasFactory;
-    protected $table = 'goods_received';  // Sesuaikan dengan nama tabel di database
+    protected $table = 'good_received_detail';
+    protected $guarded = ['id'];  // Sesuaikan dengan nama tabel di database
+
     protected $fillable = [
-        'good_received_id',
+        'jenis_barang',
         'material_id',
+        'good_received_id',
         'consumable_id',
         'tools_id',
-        'jenis_barang',
         'quantity',
         'quantity_jenis',
         'keterangan_barang',
@@ -22,11 +24,11 @@ class GoodReceivedDetail extends Model
 
     public function material()
     {
-        return $this->belongsTo(Materials::class);
+        return $this->belongsTo(Materials::class, 'material_id', 'id');
     }
     public function consumable()
     {
-        return $this->belongsTo(Consumables::class);
+        return $this->belongsTo(Consumables::class, 'consumable_id', 'id');
     }
     public function tool()
     {

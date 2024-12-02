@@ -18,6 +18,11 @@ return new class extends Migration
             $table->string('kd_sj');
             $table->string('nama_supplier');
             $table->string('kode_surat_jalan');
+             // Relasi Ke Table Materials
+             $table->bigInteger('project_id')->unsigned();
+             $table->foreign("project_id")->references("id")->on("menu_project");
+
+
 
             $table->timestamps();
         });
