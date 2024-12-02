@@ -65,54 +65,39 @@
                             <th>No </th>
                             <th>Kode Surat Jalan</th>
                             <th>Tanggal masuk </th>
-                            <th>No Transaksi </th>
+                            <th>No Transaksi / No Surat Jalan</th>
                             <th>Nama Supplier </th>
-                            <th>Nama Barang </th>
-                            <th>Quantity Masuk</th>
-                            <th>Quantity Jenis</th>
-                            <th>Jenis Stock</th>
-                            <th>Keterangan Barang</th>
+                            <th>Kode Surat Jalan</th>
+                            <th>Nama Project</th>
+                            <th>No JO Project</th>
                             <th>Aksi </th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        @foreach ($data_good_received as $data )
+
                         <tr class="text-center">
 
-                            <td class="text-center">{{$loop->iteration}}</td>
-                            <td>{{$data->kode_surat_jalan}}</td>
-                            <td>{{$data->tanggal_masuk}}</td>
-                            <td>{{$data->no_transaksi}}</td>
-                            <td>{{$data->nama_supplier}}</td>
+                            <td class="text-center"></td>
+                            <td></td>
+                            <td></td>
                             <!-- Tampilkan Nama Material, Consumable, dan Tool -->
-                            <td>
-                                {{ optional($data->material)->nama_material ?? optional($data->consumable)->nama_consumable ?? optional($data->tool)->nama_alat
-                                    ?? '-' }}
-                            </td>
 
-                            <td class="text-center">{{$data->quantity}}</td>
-                            <td>{{$data->quantity_jenis}}</td>
-                            <td>{{$data->jenis_barang}}</td>
-                            <td>{{$data->keterangan_barang}}</td>
+                            <td class="text-center"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td>
+
+
                                 <div class="mb-1">
-                                    <a href="{{route('good-received.edit', $data->id)}}"><span class="btn btn-warning btn-sm mb-3">Edit</a></span>
-                                    <form action="{{route('good-received.destroy',$data->id)}}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
-                                    </form>
+                                    <a href=""><span class="btn btn-danger btn-sm">Detail</a></span>
                                 </div>
-
-
-                                {{-- <div class="mb-1">
-                                    <a href=""><span class="btn btn-danger btn-sm">Hapus</a></span>
-                                </div> --}}
                             </td>
 
                         </tr>
-                        @endforeach
+
 
                     </tbody>
                 </table>

@@ -17,60 +17,86 @@
 @section('container')
 
 <div class="row">
-    <!-- Card 1: Data Umum -->
-    <div class="col-md-6">
-        <div class="card mb-3">
-            <h5 class="card-header text-center text-bold">
-                Data Umum
-            </h5>
-            <div class="card-body">
-                <form action="{{route('good-received.store')}}" method="post">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
-                        <input class="form-control rounded-top @error('tanggal_masuk') is-invalid @enderror" type="date"
-                            name="tanggal_masuk" placeholder="Harap Di Isi Tanggal Masuk Barang">
-                        @error('tanggal_masuk')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="no_transaksi" class="form-label">No Transaksi Barang</label>
-                        <input class="form-control rounded-top @error('no_transaksi') is-invalid @enderror" type="text"
-                            name="no_transaksi" placeholder="Harap Di Isi No Transaksi Barang">
-                        @error('no_transaksi')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="nama_supplier" class="form-label">Nama Supplier</label>
-                        <input class="form-control rounded-top @error('nama_supplier') is-invalid @enderror" type="text"
-                            name="nama_supplier" placeholder="Harap Di Isi Nama Supplier">
-                        @error('nama_supplier')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
+    <div class="col-lg-12">
+        {{-- Session Notifikasi --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong class="text-dark">{!! session()->get('success') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </div>
-    </div>
-
-    <!-- Card 2: Detail Barang -->
-    <div class="col-md-6">
+        @endif
+        @if (session('failed'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong class="text-dark">{!! session()->get('failed') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="card">
-            <h5 class="card-header text-center text-bold">
-                Detail Barang
-            </h5>
-            <div class="card-body">
+            @if ($do_draft)
+            <div class="card-header text-end">
+                <form action="{{ route('good-received.delete-draft') }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-sm">Hapus Draft</button>
+                </form>
+            </div>
+        @endif
+            <div class="card-body row">
+                <div class="col-lg-6">
+                    <form action="{{ route('good-received.store') }}" method="post" id="formSubmit">
+                        @csrf
+                        <h4>Tanggal Masuk Barang</h4>
+                        <div class="mb-3">
+                            <label for="tgl_masuk" class="form-label">Tanggal Masuk Barang</label>
+                            <input class="form-control rounded-top @error('tgl_masuk') is-invalid @enderror" type="date" name="tgl_masuk" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
+                            @error('tgl_masuk')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
 
-                <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="no_surat_jalan" class="form-label">No Surat Jalan</label>
+                            <input class="form-control rounded-top @error('no_surat_jalan') is-invalid @enderror" type="text" name="no_surat_jalan" placeholder="Harap Di Isi No Surat Jalan Barang">
+                            @error('no_surat_jalan')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nama_supplier" class="form-label">Nama Supplier</label>
+                            <input class="form-control rounded-top @error('nama_supplier') is-invalid @enderror" type="text" name="nama_supplier" placeholder="Harap Di Isi Nama Supplier">
+                            @error('nama_supplier')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="project_id" class="form-label">Nama Project</label>
+                            <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu">
+                                <option></option>
+                                @foreach ($data_project as $data )
+                                    <option value="{{$data->id}}">{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
+                                @endforeach
+                            </select>
+                            @error('project_id')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6">
+                    <form action="{{route('good-received.store.item')}}" method="post">
+                        @csrf
+                        <h4>Form Daftar Barang</h4>
+
+                        <div class="mb-3">
                     <label for="jenis_barang" class="form-label">Jenis Barang Masuk</label>
                     <select name="jenis_barang" id="jenis_barang" class="form-select @error('jenis_barang') is-invalid @enderror">
                         <option value="" selected disabled>-- Pilih Jenis Barang Masuk --</option>
@@ -116,14 +142,15 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="quantity" class="form-label">Quantity Masuk</label>
-                    <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number" name="quantity" placeholder="Harap Di Isi Quantity">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number" min="1" name="quantity" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
                     @error('quantity')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
+
 
                 <div class="mb-3">
                     <label for="quantity_jenis" class="form-label">Quantity Jenis</label>
@@ -145,22 +172,71 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Keterangan Barang</label>
-                    <textarea class="form-control" placeholder="Catatan Keterangan Barang" name="keterangan_barang" style="height: 100px"></textarea>
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" name="keterangan_barang"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
+                    <label for="floatingTextarea2Disabled">Keterangan barang </label>
+                    @error('keterangan_barang')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
 
-                <div class="mb-3 text-center">
-                    <a href="{{ route('good-received.index') }}" class="btn btn-secondary">Go Back</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
 
-                </form>
+                        <div class="mb-3 text-end">
+                            <button type="submit" class="btn btn-success">Tambah Barang</button>
+                            <a href="" class="btn btn-secondary">Go back</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-12">
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama barang</th>
+                                    <th>Quantity</th>
+                                    <th>Jenis Quantity</th>
+                                    <th>Jenis Barang</th>
+                                    <th>Keterangan barang</th>
+                                    <th>#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($do_draft)
+                                    @foreach ($do_draft->details as $detail)
+                                        <tr>
+                                            <td>
+                                                {{ optional($detail->material)->nama_material ?? optional($detail->consumable)->nama_consumable ?? optional($detail->tool)->nama_alat
+                                                    ?? '-' }}
+                                            </td>
+                                            <td>{{ $detail->jenis_barang }}</td>
+                                            <td>{{ $detail->quantity }}</td>
+                                            <td>{{ $detail->quantity_jenis }}</td>
+                                            <td>{{ $detail->keterangan_barang }}</td>
+                                            <td></td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                <tr>
+                                    <td colspan="6" class="text-center">No Item Found</td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-primary" onclick="submitForm()">Submit DO</button>
+                    </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 @endsection
 
 @push('scripts')
@@ -175,6 +251,11 @@
         width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
         placeholder: $(this).data('placeholder'),
     });
+</script>
+<script>
+    function submitForm() {
+        $("#formSubmit").submit();
+    }
 </script>
 <script>
     $(document).ready(function(){

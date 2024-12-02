@@ -92,6 +92,8 @@ Route::middleware('auth')->group(function (){
         Route::get('/',[GoodsReceivedController::class, 'index'])->name('index');
         Route::get('create',[GoodsReceivedController::class, 'create'])->name('create');
         Route::post('store',[GoodsReceivedController::class, 'store'])->name('store');
+        Route::post('store/item',[GoodsReceivedController::class, 'storeItem'])->name('store.item');
+        Route::post('delete-draft',[GoodsReceivedController::class, 'deleteDraft'])->name('delete-draft');
         Route::get('edit/{id}',[GoodsReceivedController::class, 'edit'])->name('edit');
         Route::patch('update/{id}',[GoodsReceivedController::class, 'update'])->name('update');
         Route::delete('/destroy/{id}',[GoodsReceivedController::class,'destroy'])->name('destroy');

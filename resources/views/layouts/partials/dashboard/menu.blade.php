@@ -85,12 +85,12 @@
                     </a>
                 </li>
 
-                <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
+                {{-- <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
                     <a href="{{route('tools.index')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-album"></i>
                         <div data-i18n="Layouts">Consumable Temporary</div>
                     </a>
-                </li>
+                </li> --}}
 
           {{-- End Layout --}}
 
@@ -171,7 +171,7 @@
               </a>
           </li>
 
-          <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
+          {{-- <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
             <a href="" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-minus-front"></i>
                 <div data-i18n="Analytics">Pengembalian Materials HydroTest</div>
@@ -190,7 +190,7 @@
                   <i class="menu-icon tf-icons bx bx-arrow-to-left"></i>
                   <div data-i18n="Layouts">Pengembalian Barang</div>
               </a>
-          </li>
+          </li> --}}
 
 
 
