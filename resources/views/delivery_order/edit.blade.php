@@ -81,6 +81,7 @@
                 <div class="col-lg-6">
                     <form action="{{ route('delivery-order.store.item') }}" method="post">
                         @csrf
+                        <input type="hidden" name="do_id" value="{{ $do->id }}">
                         <h4>Form Barang</h4>
                         <div class="form-group mb-3">
                             <label class="form-label">Deskripsi Barang</label>

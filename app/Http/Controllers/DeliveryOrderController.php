@@ -56,18 +56,26 @@ class DeliveryOrderController extends Controller
         ]);
         DB::beginTransaction();
         try {
-            // Cek Apakah DO Draft Sudah ada
-            $doDraft = DeliveryOrder::where('user_id', Auth::user()->id)->where('do_no', 'draft')->first();
-            if (!$doDraft) {
-                $doDraft = new DeliveryOrder();
-                $doDraft->do_no = 'draft';
-                $doDraft->user_id = Auth::user()->id;
-                $doDraft->save();
+            if ($request->do_id) {
+                $doDraft = DeliveryOrderDetail::findOrFail($request->do_id);
+            } else {
+                $doDraft = DeliveryOrder::where('user_id', Auth::user()->id)->where('do_no', 'draft')->first();
+                if (!$doDraft) {
+                    $doDraft = new DeliveryOrder();
+                    $doDraft->do_no = 'draft';
+                    $doDraft->user_id = Auth::user()->id;
+                    $doDraft->save();
+                }
             }
 
-            $doDraftDetail = new DeliveryOrderDetail();
+            $checkDoDetail = DeliveryOrderDetail::where('delivery_order_id', $doDraft->id)->where('item_description', trim($request->item_description))->first();
+            if ($checkDoDetail) {
+                $doDraftDetail = $checkDoDetail;
+            } else {
+                $doDraftDetail = new DeliveryOrderDetail();
+            }
             $doDraftDetail->delivery_order_id = $doDraft->id;
-            $doDraftDetail->item_description = $request->item_description;
+            $doDraftDetail->item_description = trim($request->item_description);
             $doDraftDetail->item_size = $request->item_size;
             $doDraftDetail->item_weight = $request->item_weight;
             $doDraftDetail->item_qty = $request->item_qty;
@@ -75,7 +83,11 @@ class DeliveryOrderController extends Controller
             $doDraftDetail->save();
 
             DB::commit();
-            return redirect()->route('delivery-order.create')->with('success', 'Item berhasil ditambahkan!');
+            if ($request->do_id) {
+                return redirect()->route('delivery-order.edit', $request->do_id)->with('success', 'Item berhasil ditambahkan!');
+            } else {
+                return redirect()->route('delivery-order.create')->with('success', 'Item berhasil ditambahkan!');
+            }
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', $e->getMessage());

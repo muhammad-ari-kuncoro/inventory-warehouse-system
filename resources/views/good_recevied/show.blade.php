@@ -42,13 +42,12 @@
             @endif
             <div class="card-body row">
                 <div class="col-lg-6">
-                    <form action="{{ route('good-received.update', $do->id) }}" method="post" id="formSubmit">
+                    <form action="{{ route('good-received.store') }}" method="post" id="formSubmit">
                         @csrf
-                        @method('patch')
                         <h4>Form Data Alamat</h4>
                        <div class="mb-3">
                             <label for="tanggal_masuk" class="form-label">Tanggal Masuk Barang</label>
-                            <input class="form-control rounded-top @error('tanggal_masuk') is-invalid @enderror" type="date" name="tanggal_masuk" placeholder="Harap Di Isi Tanggal Pengiriman Barang" value="{{ old('tanggal_masuk', $do->tanggal_masuk)}}">
+                            <input class="form-control rounded-top @error('tanggal_masuk') is-invalid @enderror" type="date" name="tanggal_masuk" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
                             @error('tanggal_masuk')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -59,7 +58,7 @@
 
                         <div class="mb-3">
                             <label for="kode_surat_jalan" class="form-label">No Surat Jalan</label>
-                            <input class="form-control rounded-top @error('kode_surat_jalan') is-invalid @enderror" type="text" name="kode_surat_jalan" placeholder="Harap Di Isi No Surat Jalan Barang"value="{{ old('kode_surat_jalan', $do->kode_surat_jalan)}}">
+                            <input class="form-control rounded-top @error('kode_surat_jalan') is-invalid @enderror" type="text" name="kode_surat_jalan" placeholder="Harap Di Isi No Surat Jalan Barang">
                             @error('kode_surat_jalan')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -69,7 +68,7 @@
 
                         <div class="mb-3">
                             <label for="nama_supplier" class="form-label">Nama Supplier</label>
-                            <input class="form-control rounded-top @error('nama_supplier') is-invalid @enderror" type="text" name="nama_supplier" placeholder="Harap Di Isi Nama Supplier" value="{{ old('nama_supplier', $do->nama_supplier)}}">
+                            <input class="form-control rounded-top @error('nama_supplier') is-invalid @enderror" type="text" name="nama_supplier" placeholder="Harap Di Isi Nama Supplier">
                             @error('nama_supplier')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -79,19 +78,18 @@
 
 
                         <div class="mb-3">
-                            <label for="project_id" class="form-label" name="project_id">Kategori Nama Project baru </label>
-                            <select class="form-select rounded-top @error('project_id') is-invalid @enderror"  value="{{ old('project_id', $do->project_id)}}" name="project_id" >
+                            <label for="project_id" class="form-label">Nama Project</label>
+                            <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu">
+                                <option></option>
                                 @foreach ($data_project as $data )
-                                <option value="" disabled {{ old('project_id'), $do->project_id === null ? 'selected' : '' }}>Pilih salah satu</option>
-                                <option value="{{ $data->id }}" {{ old('project_id') == $do->project_id ? 'selected' : '' }}>{{ $data->nama_project }} | {{ $data->sub_nama_project }} | NO JO : {{ $data->no_jo_project }}</option>
+                                    <option value="{{$data->id}}">{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
                                 @endforeach
                             </select>
                             @error('project_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                             @enderror
-
                         </div>
 
 
@@ -249,6 +247,7 @@
                     </div>
                     <div class="mt-3">
                         <button class="btn btn-primary" onclick="submitForm()">Submit</button>
+
                     </div>
                 </div>
             </div>

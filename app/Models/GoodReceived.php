@@ -19,13 +19,18 @@ class GoodReceived extends Model
         'nama_supplier',
         'kode_surat_jalan',
 
+
     ];
+
+        public function project()
+        {
+            return $this->belongsTo(Project::class);
+        }
 
     public function details()
     {
-        return $this->hasMany(GoodReceivedDetail::class, 'good_received_id');
+        return $this->hasMany(GoodReceivedDetail::class);
     }
-
 
 
 

@@ -44,13 +44,11 @@
                 <div class="col-lg-6">
                     <form action="{{ route('good-received.store') }}" method="post" id="formSubmit">
                         @csrf
-
-                        <h4>Form Alamat</h4>
-
+                        <h4>Form Data Alamat</h4>
                        <div class="mb-3">
-                            <label for="tgl_masuk" class="form-label">Tanggal Masuk Barang</label>
-                            <input class="form-control rounded-top @error('tgl_masuk') is-invalid @enderror" type="date" name="tgl_masuk" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
-                            @error('tgl_masuk')
+                            <label for="tanggal_masuk" class="form-label">Tanggal Masuk Barang</label>
+                            <input class="form-control rounded-top @error('tanggal_masuk') is-invalid @enderror" type="date" name="tanggal_masuk" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
+                            @error('tanggal_masuk')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -248,7 +246,7 @@
                         </table>
                     </div>
                     <div class="mt-3">
-                        <button class="btn btn-primary" onclick="submitForm()">Submit DO</button>
+                        <button class="btn btn-primary" onclick="submitForm()">Submit</button>
 
                     </div>
                 </div>

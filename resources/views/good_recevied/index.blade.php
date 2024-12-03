@@ -61,43 +61,47 @@
 
                 <table class="table table-bordered table-hover display" id="myTable7">
                     <thead>
+
                         <tr class="table-info text-center">
                             <th>No </th>
                             <th>Kode Surat Jalan</th>
                             <th>Tanggal masuk </th>
                             <th>No Transaksi / No Surat Jalan</th>
                             <th>Nama Supplier </th>
-                            <th>Kode Surat Jalan</th>
-                            <th>Nama Project</th>
+                            <th>Keperluan Project</th>
                             <th>No JO Project</th>
                             <th>Aksi </th>
                         </tr>
                     </thead>
                     <tbody>
 
+                        @foreach ($data_delivery_order as $data )
 
                         <tr class="text-center">
 
-                            <td class="text-center"></td>
-                            <td></td>
-                            <td></td>
-                            <!-- Tampilkan Nama Material, Consumable, dan Tool -->
+                            <td class="text-center">{{$loop->iteration}}</td>
+                            <td class="text-center">{{$data->kd_sj}}</td>
+                            <td class="text-center">{{$data->tanggal_masuk}}</td>
+                            <td class="text-center">{{$data->kode_surat_jalan}}</td>
+                            <td class="text-center">{{$data->nama_supplier}}</td>
+                            <td class="text-center">
+                                {{ $data->project->nama_project ?? 'N/A' }} | {{ $data->project->sub_nama_project ?? 'N/A' }}
+                            </td>
+                            <td class="text-center">
+                                {{ $data->project->no_jo_project ?? 'N/A' }}
+                            </td>
 
-                            <td class="text-center"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
                             <td>
 
-
                                 <div class="mb-1">
-                                    <a href=""><span class="btn btn-danger btn-sm">Detail</a></span>
+
+                                    <a href="{{route('good-received.edit', $data->id)}}"><span class="btn btn-danger btn-sm">Edit</a></span>
                                 </div>
                             </td>
 
                         </tr>
 
+                        @endforeach
 
                     </tbody>
                 </table>

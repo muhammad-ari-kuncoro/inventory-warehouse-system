@@ -92,6 +92,7 @@ class GoodsReceivedController extends Controller
         }
     }
 
+
     /**
      * Store a newly created resource in storage.
      */
@@ -102,7 +103,7 @@ class GoodsReceivedController extends Controller
             'tanggal_masuk' => 'required|min:1|max:255',
             'nama_supplier' => 'required|min:1|max:255',
             'kode_surat_jalan' => 'required|min:1|max:100',
-            'project_id' => 'required',
+            'project_id' => 'nullable',
         ]);
         try {
 
@@ -130,9 +131,19 @@ class GoodsReceivedController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(GoodReceived $goodReceive)
+    public function show($id)
     {
         //
+         //
+         $data['title'] = 'Edit Delivery Order Form';
+         $data['sub_title'] = 'Pengiriman Delivery Order';
+         $data['data_project'] = Project::all();
+         $data['consumables'] = Consumables::all();
+         $data['tools']  = Tools::all();
+         $data['materials'] = Materials::all();
+         $data['do'] = GoodReceived::findOrFail($id);
+         return view('good_recevied.show',$data);
+
     }
 
     /**
@@ -146,8 +157,8 @@ class GoodsReceivedController extends Controller
         $data['consumables'] = Consumables::all();
         $data['tools']  = Tools::all();
         $data['materials'] = Materials::all();
-
-        $data['find_id'] = GoodReceived::findOrFail($id);
+        $data['data_project'] = Project::all();
+        $data['do'] = GoodReceived::findOrFail($id);
 
         return view('good_recevied.edit', $data);
     }
@@ -158,18 +169,21 @@ class GoodsReceivedController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'tanggal_pengiriman'            => 'required|min:5|max:255',
-            'penerima'                      => 'required|min:1|max:255',
-            'project_id'                    => 'required',
+            'tanggal_masuk' => 'required|min:1|max:255',
+            'nama_supplier' => 'required|min:1|max:255',
+            'kode_surat_jalan' => 'required|min:1|max:100',
+            'project_id' => 'required',
         ]);
 
-        $updateGoodReceived                    = GoodReceived::findOrFail($id);
-        $updateGoodReceived->do_date           = $request->tanggal_pengiriman;
-        $updateGoodReceived->project_id        = $request->project_id;
-        $updateGoodReceived->shipment_address  = $request->penerima;
+
+        $updateGoodReceived                           = GoodReceived::findOrFail($id);
+        $updateGoodReceived->tanggal_masuk           = $request->tanggal_masuk;
+        $updateGoodReceived->nama_supplier           = $request->nama_supplier;
+        $updateGoodReceived->kode_surat_jalan        = $request->kode_surat_jalan;
+        $updateGoodReceived->project_id              = $request->project_id;
         $updateGoodReceived->save();
 
-        return redirect()->route('delivery-order.index')->with('editSuccess', 'Data berhasil Di Edit!');
+        return redirect()->route('good-received.index')->with('editSuccess', 'Data berhasil Di Edit!');
     }
 
     /**
@@ -188,18 +202,52 @@ class GoodsReceivedController extends Controller
         return redirect()->back()->with('delete', 'Data tidak ditemukan.');
     }
 
-    public function deleteDraft()
-    {
-        try {
-            $doDraft = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
-            GoodReceivedDetail::where('good_received_id', $doDraft->id)->delete();
-            $doDraft->delete();
+   public function deleteDraft()
+{
+    try {
+        $doDraft = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
 
-            return redirect()->back()->with('success', 'Success Delete Draft');
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('success', $th->getMessage());
+        if ($doDraft) {
+            // Ambil semua detail barang masuk
+            $details = GoodReceivedDetail::where('good_received_id', $doDraft->id)->get();
+
+            foreach ($details as $detail) {
+                // Kurangi stok berdasarkan jenis barang
+                if ($detail->material_id) {
+                    $material = Materials::find($detail->material_id);
+                    if ($material) {
+                        $material->decrement('quantity', $detail->quantity);
+                    }
+                }
+
+                if ($detail->consumable_id) {
+                    $consumable = Consumables::find($detail->consumable_id);
+                    if ($consumable) {
+                        $consumable->decrement('quantity', $detail->quantity);
+                    }
+                }
+
+                if ($detail->tools_id) {
+                    $tool = Tools::find($detail->tools_id);
+                    if ($tool) {
+                        $tool->decrement('quantity', $detail->quantity);
+                    }
+                }
+            }
+
+            // Hapus semua detail barang masuk
+            GoodReceivedDetail::where('good_received_id', $doDraft->id)->delete();
+
+            // Hapus draft utama
+            $doDraft->delete();
         }
+
+        return redirect()->back()->with('success', 'Draft dan stok berhasil dihapus.');
+    } catch (\Throwable $th) {
+        return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
     }
+}
+
 
     private function generatekdSJ()
     {
