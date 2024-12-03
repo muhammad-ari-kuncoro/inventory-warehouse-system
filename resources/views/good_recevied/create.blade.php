@@ -234,7 +234,13 @@
                                             <td>{{ $detail->quantity }}</td>
                                             <td>{{ $detail->quantity_jenis }}</td>
                                             <td>{{ $detail->keterangan_barang }}</td>
-                                            <td></td>
+                                            <td>
+
+                                                <form action="{{ route('good-received.destroy', $detail->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class='bx bx-edit-alt' ></i></button>
+                                                </form>
                                         </tr>
                                     @endforeach
                                 @else

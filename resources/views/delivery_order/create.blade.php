@@ -117,7 +117,7 @@
 
                         <div class="form-group mb-3">
                             <label class="form-label">Berat Barang (Kg)</label>
-                            <input class="form-control @error('item_weight') is-invalid @enderror" type="number" name="item_weight" min="1" placeholder="Masukkan Berat Barang Dalam Kg">
+                            <input class="form-control @error('item_weight') is-invalid @enderror" type="number" step="0.01" name="item_weight" min="1" placeholder="Masukkan Berat Barang Dalam Kg">
                             @error('item_weight')
                             <div class="invalid-feedback">
                                 {{ $message }}

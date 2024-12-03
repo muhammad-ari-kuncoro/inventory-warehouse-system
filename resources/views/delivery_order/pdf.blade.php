@@ -50,12 +50,12 @@
         }
 
         .text-header-sm {
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 500;
         }
 
         .text-header-md {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 500;
         }
 
@@ -65,7 +65,7 @@
         }
 
         .text-sm {
-            font-size: 10px;
+            font-size: 12px;
         }
 
         .text-xl {
@@ -194,9 +194,9 @@
         <tr>
             <td colspan="2" class="text-center text-sm border-full">Total</td>
             <td class="text-center text-sm border-full"></td>
-            <td class="text-center text-sm border-full"></td>
+            <td class="text-center text-sm border-full">± {{$totalWeight}} (Kgs)</td>
             <td class="text-center text-sm border-full">{{ $totalQty }}</td>
-            <td class="text-center text-sm border-full"></td>
+            <td class="text-center text-sm border-full">Unit</td>
         </tr>
     </table>
 

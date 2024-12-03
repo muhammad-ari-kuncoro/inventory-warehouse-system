@@ -97,7 +97,7 @@ Route::middleware('auth')->group(function (){
         Route::get('edit/{id}',[GoodsReceivedController::class, 'edit'])->name('edit');
         Route::get('show/{id}',[GoodsReceivedController::class, 'show'])->name('show');
         Route::patch('update/{id}',[GoodsReceivedController::class, 'update'])->name('update');
-        Route::delete('/destroy/{id}',[GoodsReceivedController::class,'destroy'])->name('destroy');
+        Route::delete('destroy/{id}',[GoodsReceivedController::class,'destroyDetail'])->name('destroy');
     });
 
     Route::prefix('delivery-order')->name('delivery-order.')->group(function(){

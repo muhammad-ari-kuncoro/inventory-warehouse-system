@@ -2,7 +2,7 @@
 @section('container')
 <div class="card">
     <h5 class="card-header text-center">
-        Dashboard Menu Project
+        Dashboard Menu Good Received (Surat Jalan)
         <br>
         <span id="currentDateTime" class="ms-2 text-muted"></span>
     </h5>
@@ -95,7 +95,11 @@
 
                                 <div class="mb-1">
 
-                                    <a href="{{route('good-received.edit', $data->id)}}"><span class="btn btn-danger btn-sm">Edit</a></span>
+                                    <a href="{{ route('good-received.edit',$data->id) }}"><span class="btn btn-warning btn-sm"><i class='bx bx-edit-alt' ></i></a></span>
+                                    <a href="{{ route('good-received.show',$data->id) }}"><span class="btn btn-info btn-sm"><i class='bx bx-show' ></i></a></span>
+                                    <a href="{{ route('good-received.destroy',$data->id) }}"><span class="btn btn-danger btn-sm mt-2"><i class='bx bxs-file-pdf'></i></a></span>
+
+
                                 </div>
                             </td>
 

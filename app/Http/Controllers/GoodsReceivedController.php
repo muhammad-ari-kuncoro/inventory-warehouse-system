@@ -91,6 +91,38 @@ class GoodsReceivedController extends Controller
             return redirect()->back()->with('failed', $e->getMessage());
         }
     }
+    public function destroyDetail($id)
+    {
+        DB::beginTransaction();
+        try {
+            // Temukan detail barang berdasarkan ID
+            $detail = GoodReceivedDetail::findOrFail($id);
+
+            // Kembalikan quantity ke stok asli
+            if ($detail->material_id) {
+                $material = Materials::findOrFail($detail->material_id);
+                $material->quantity -= $detail->quantity;
+                $material->save();
+            } elseif ($detail->consumable_id) {
+                $consumable = Consumables::findOrFail($detail->consumable_id);
+                $consumable->quantity -= $detail->quantity;
+                $consumable->save();
+            } elseif ($detail->tools_id) {
+                $tool = Tools::findOrFail($detail->tools_id);
+                $tool->quantity -= $detail->quantity;
+                $tool->save();
+            }
+
+            // Hapus detail barang
+            $detail->delete();
+            DB::commit();
+            return redirect()->route('good-received.create')->with('warning', 'Item berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => 'Terjadi kesalahan saat menghapus item: ' . $e->getMessage()]);
+        }
+    }
+
 
 
     /**

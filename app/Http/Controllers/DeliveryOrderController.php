@@ -49,9 +49,9 @@ class DeliveryOrderController extends Controller
     {
          $request->validate([
             'item_description' => 'required',
-            'item_size' => 'required',
-            'item_qty' => 'required|min:1',
-            'satuan_barang' => 'required',
+            'item_size' => 'nullable',
+            'item_qty' => 'nullable',
+            'satuan_barang' => 'nullable',
 
         ]);
         DB::beginTransaction();
@@ -195,9 +195,11 @@ class DeliveryOrderController extends Controller
         $deliveryOrder = DeliveryOrder::findOrFail($id);
         // Hitung total quantity
         $totalQty = $deliveryOrder->details->sum('item_qty');
+        $totalWeight = $deliveryOrder->details->sum('item_weight');
 
         $data['deliveryOrder'] = $deliveryOrder;
         $data['totalQty'] = $totalQty;
+        $data['totalWeight'] = $totalWeight;
         $pdf = Pdf::loadView('delivery_order.pdf', $data);
         $fileName = preg_replace('/[\/\\\\]/', '_', $deliveryOrder->do_no);
         return $pdf->stream($fileName . '.pdf');

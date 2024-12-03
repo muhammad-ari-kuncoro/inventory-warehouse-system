@@ -81,8 +81,8 @@
                         <div class="mb-3">
                             <label for="project_id" class="form-label" name="project_id">Kategori Nama Project baru </label>
                             <select class="form-select rounded-top @error('project_id') is-invalid @enderror"  value="{{ old('project_id', $do->project_id)}}" name="project_id" >
+                                <option value="" disabled {{ old('project_id'), $do->project_id === null ? 'selected' : '' }}>Pilih salah satu : </option>
                                 @foreach ($data_project as $data )
-                                <option value="" disabled {{ old('project_id'), $do->project_id === null ? 'selected' : '' }}>Pilih salah satu</option>
                                 <option value="{{ $data->id }}" {{ old('project_id') == $do->project_id ? 'selected' : '' }}>{{ $data->nama_project }} | {{ $data->sub_nama_project }} | NO JO : {{ $data->no_jo_project }}</option>
                                 @endforeach
                             </select>

@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('delivery_order_id');
             $table->string('item_description');
-            $table->string('item_size');
-            $table->string('item_weight');
-            $table->string('item_qty');
+            $table->string('item_size')->nullable();
+            $table->string('item_weight')->nullable();
+            $table->string('item_qty')->nullable();
             $table->string('item_measurement');
             $table->timestamps();
         });
