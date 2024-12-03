@@ -4,17 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Materials;
+use App\Models\Consumables;
+use App\Models\Tools;
 class GoodReceivedDetail extends Model
 {
     use HasFactory;
     protected $table = 'good_received_detail';
-    protected $guarded = ['id'];  // Sesuaikan dengan nama tabel di database
-
     protected $fillable = [
         'jenis_barang',
         'material_id',
-        'good_received_id',
         'consumable_id',
         'tools_id',
         'quantity',

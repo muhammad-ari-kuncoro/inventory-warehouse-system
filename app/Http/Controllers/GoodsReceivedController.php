@@ -27,7 +27,7 @@ class GoodsReceivedController extends Controller
         //
         $data['title'] = 'Menu Barang Masuk';
         $data['sub_title'] = 'Barang Masuk';
-        $data['data_delivery_order']  = GoodReceived::where('kd_sj', '!=', 'draft')->get();
+        $data['data_delivery_order']  = GoodReceived::where('kd_sj', '!=', 'drafts')->get();
         $data['data_project'] = Project::get();
         return view('good_recevied.index', $data);
     }
@@ -50,47 +50,45 @@ class GoodsReceivedController extends Controller
 
     public function storeItem(Request $request)
     {
-        $request->validate([
-            'jenis_barang' => 'required|min:1',
+        $validated = $request->validate([
+            'jenis_barang' => 'required',
             'consumable_id' => 'nullable',
             'material_id' => 'nullable',
             'tools_id' => 'nullable',
             'quantity' => 'required|min:1',
-            'quantity_jenis' => 'required|min:1',
-            'keterangan_barang' => 'required|min:1',
+            'quantity_jenis' => 'required',
+            'keterangan_barang' => 'nullable',
 
         ]);
-        // dd($request);
+        Log::info('Validation passed:', $validated);
+        // dd($request->all());
 
         DB::beginTransaction();
         try {
-            // Cek apakah draft sudah ada
+            // Cek Apakah DO Draft Sudah ada
             $doDraft = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
             if (!$doDraft) {
                 $doDraft = new GoodReceived();
-                $doDraft->kd_sj = 'draft';
                 $doDraft->user_id = Auth::user()->id;
                 $doDraft->save();
             }
 
-            // Simpan detail
-            $kdSJDrafDetail = new GoodReceivedDetail();
-            $kdSJDrafDetail->good_received_id   = $doDraft->id;
-            $kdSJDrafDetail->jenis_barang       = $request->jenis_barang;
-            $kdSJDrafDetail->consumable_id      = $request->consumable_id;
-            $kdSJDrafDetail->material_id        = $request->material_id;
-            $kdSJDrafDetail->tools_id           = $request->tools_id;
-            $kdSJDrafDetail->quantity           = $request->quantity;
-            $kdSJDrafDetail->quantity_jenis     = $request->quantity_jenis;
-            $kdSJDrafDetail->keterangan_barang  = $request->keterangan_barang;
-            $kdSJDrafDetail->save();
+            $doDraftDetail = new GoodReceivedDetail();
+            $doDraftDetail->good_received_id = $doDraft->id;
+            $doDraftDetail->jenis_barang        = $request->jenis_barang;
+            $doDraftDetail->consumable_id       = $request->consumable_id ?: null;
+            $doDraftDetail->material_id         = $request->material_id ?: null;
+            $doDraftDetail->tools_id            = $request->tools_id ?: null;
+            $doDraftDetail->quantity            = $request->quantity;
+            $doDraftDetail->quantity_jenis      = $request->quantity_jenis;
+            $doDraftDetail->keterangan_barang   = $request->keterangan_barang;
+            $doDraftDetail->save();
 
             DB::commit();
             return redirect()->route('good-received.create')->with('success', 'Item berhasil ditambahkan!');
         } catch (\Exception $e) {
             DB::rollback();
-            Log::error($e->getMessage()); // Tambahkan log untuk melihat error
-            return redirect()->back()->with('error', $e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 

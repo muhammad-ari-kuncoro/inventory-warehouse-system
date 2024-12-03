@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
 
-            $table->integer('good_received_id');
+            $table->integer('good_received_id')->nullable();;
             // Relasi Ke Table Materials
             $table->bigInteger('material_id')->unsigned()->nullable();
             $table->foreign("material_id")->references("id")->on("materials");

@@ -98,20 +98,6 @@
                     </form>
                 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 <div class="col-lg-6">
                     <form action="{{ route('good-received.store.item') }}" method="post">
                         @csrf
@@ -135,8 +121,8 @@
                         <div class="mb-3" id="div_material">
                             <label class="form-label">Nama Material</label>
                             <select name="material_id" class="form-select select-2" data-placeholder="Pilih Salah Satu">
-                                @foreach ($materials as $material)
                                 <option></option>
+                                @foreach ($materials as $material)
                                 <option value="{{ $material->id }}">{{ $material->nama_material }} |
                                     {{$material->spesifikasi_material}} | ({{$material->quantity}})
                                     {{$material->jenis_quantity}}</option>
@@ -148,8 +134,8 @@
                             <label for="consumable_id" class="form-label">Nama Consumable</label>
                             <select name="consumable_id" class="form-select select-2"
                                 data-placeholder="Pilih Salah Satu">
-                                @foreach ($consumables as $consumable)
                                 <option></option>
+                                @foreach ($consumables as $consumable)
                                 <option value="{{ $consumable->id }}">{{ $consumable->nama_consumable }} |
                                     {{$consumable->spesifikasi_consumable}} | ({{$consumable->quantity}})
                                     {{$consumable->jenis_quantity}}</option>
@@ -160,8 +146,8 @@
                         <div class="mb-3" id="div_tool">
                             <label class="form-label">Nama Tool</label>
                             <select name="tools_id" class="form-select select-2" data-placeholder="Pilih Salah Satu">
-                                @foreach ($tools as $tool)
                                 <option></option>
+                                @foreach ($tools as $tool)
                                 <option value="{{ $tool->id }}">{{ $tool->nama_alat }} | {{$tool->spesifikasi_alat}} |
                                     ({{$tool->quantity}}) {{$tool->jenis_quantity}}</option>
                                 @endforeach
@@ -230,9 +216,9 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama barang</th>
+                                    <th>Jenis Barang</th>
                                     <th>Quantity</th>
                                     <th>Jenis Quantity</th>
-                                    <th>Jenis Barang</th>
                                     <th>Keterangan barang</th>
                                     <th>#</th>
                                 </tr>
@@ -241,6 +227,7 @@
                                 @if ($do_draft)
                                     @foreach ($do_draft->details as $detail)
                                         <tr>
+                                            <td>{{$loop->iteration}}</td>
                                             <td>
                                                 {{ optional($detail->material)->nama_material ?? optional($detail->consumable)->nama_consumable ?? optional($detail->tool)->nama_alat
                                                             ?? '-' }}
