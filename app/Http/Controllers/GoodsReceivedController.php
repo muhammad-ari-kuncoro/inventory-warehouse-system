@@ -58,13 +58,23 @@ class GoodsReceivedController extends Controller
             'quantity' => 'required|min:1',
             'quantity_jenis' => 'required',
             'keterangan_barang' => 'nullable',
-
         ]);
         Log::info('Validation passed:', $validated);
-        // dd($request->all());
 
         DB::beginTransaction();
         try {
+            // Cek apakah data dengan jenis_barang dan nama barang sudah ada
+            $existingItem = GoodReceivedDetail::where('jenis_barang', $request->jenis_barang)
+                ->where(function ($query) use ($request) {
+                    $query->where('consumable_id', $request->consumable_id)
+                        ->orWhere('material_id', $request->material_id)
+                        ->orWhere('tools_id', $request->tools_id);
+                })->first();
+
+            if ($existingItem) {
+                return redirect()->back()->with('failed', 'Data dengan jenis barang dan nama barang ini sudah ada. Silakan gunakan data lama.');
+            }
+
             // Cek Apakah DO Draft Sudah ada
             $doDraft = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
             if (!$doDraft) {
@@ -75,13 +85,13 @@ class GoodsReceivedController extends Controller
 
             $doDraftDetail = new GoodReceivedDetail();
             $doDraftDetail->good_received_id = $doDraft->id;
-            $doDraftDetail->jenis_barang        = $request->jenis_barang;
-            $doDraftDetail->consumable_id       = $request->consumable_id ?: null;
-            $doDraftDetail->material_id         = $request->material_id ?: null;
-            $doDraftDetail->tools_id            = $request->tools_id ?: null;
-            $doDraftDetail->quantity            = $request->quantity;
-            $doDraftDetail->quantity_jenis      = $request->quantity_jenis;
-            $doDraftDetail->keterangan_barang   = $request->keterangan_barang;
+            $doDraftDetail->jenis_barang = $request->jenis_barang;
+            $doDraftDetail->consumable_id = $request->consumable_id ?: null;
+            $doDraftDetail->material_id = $request->material_id ?: null;
+            $doDraftDetail->tools_id = $request->tools_id ?: null;
+            $doDraftDetail->quantity = $request->quantity;
+            $doDraftDetail->quantity_jenis = $request->quantity_jenis;
+            $doDraftDetail->keterangan_barang = $request->keterangan_barang;
             $doDraftDetail->save();
 
             DB::commit();
@@ -91,6 +101,7 @@ class GoodsReceivedController extends Controller
             return redirect()->back()->with('failed', $e->getMessage());
         }
     }
+
     public function destroyDetail($id)
     {
         DB::beginTransaction();

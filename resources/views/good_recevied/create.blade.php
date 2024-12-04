@@ -239,7 +239,7 @@
                                                 <form action="{{ route('good-received.destroy', $detail->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class='bx bx-edit-alt' ></i></button>
+                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"><i class='bx bx-edit-alt' ></i></button>
                                                 </form>
                                         </tr>
                                     @endforeach
