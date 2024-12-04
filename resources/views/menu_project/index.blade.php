@@ -68,6 +68,7 @@
                             <th>Sub Nama Project</th>
                             <th>Kategori Nama Project</th>
                             <th>No Jo Project</th>
+                            <th>No PO Project</th>
                             <th>Aksi </th>
                         </tr>
                     </thead>
@@ -82,6 +83,7 @@
                             <td>{{ $data->sub_nama_project }}</td>
                             <td>{{ $data->kategori_project }}</td>
                             <td>{{ $data->no_jo_project }}</td>
+                            <td>{{$data->no_po_project}}</td>
                             <td>
                                 <div class="mb-1">
                                     <a href="{{route('project.edit',$data->id)}}"><span
@@ -161,6 +163,17 @@
                             <input class="form-control rounded-top @error('no_jo_project') is-invalid @enderror"
                                 type="text" name="no_jo_project" placeholder="Harap Di Isi Sub Nama Project" required>
                             @error('no_jo_project')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="formFile" name="no_po_project" class="form-label">No PO Project </label>
+                            <input class="form-control rounded-top @error('no_po_project') is-invalid @enderror"
+                                type="text" name="no_po_project" placeholder="Harap Di Isi Sub Nama Project" required>
+                            @error('no_po_project')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>

@@ -18,6 +18,7 @@ class Project extends Model
         'sub_nama_project',
         'kategori_project',
         'no_jo_project',
+        'no_po_project',
         'kode_project'
     ];
 

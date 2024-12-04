@@ -73,6 +73,20 @@
 
             </div>
 
+            <div class="mb-3">
+                <label for="no_po_project" class="form-label">No Po Project </label>
+                <input class="form-control rounded-top @error('no_po_project') is-invalid @enderror" type="text" name="no_po_project"
+                    placeholder="Harap Di Isi No Jo Project" value="{{ old('no_po_project', $find_id->no_po_project)}}">
+
+                    @error('no_po_project')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+
+
+            </div>
+
 
 
 

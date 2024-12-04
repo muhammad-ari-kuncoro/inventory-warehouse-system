@@ -41,7 +41,8 @@ class MenuProjectController extends Controller
             'nama_project' => 'required|min:5|max:255',
             'sub_nama_project' => 'required|min:5|max:255',
             'kategori_project' => 'required|min:5|max:255',
-            'no_jo_project' => 'required|min:5|max:255'
+            'no_jo_project' => 'required|min:5|max:255',
+            'no_po_project' => 'required|min:3|max:255'
         ]);
 
         // Menangani Data
@@ -51,6 +52,7 @@ class MenuProjectController extends Controller
                 'sub_nama_project' => $request->sub_nama_project,
                 'kategori_project' => $request->kategori_project,
                 'no_jo_project' => $request->no_jo_project,
+                'no_po_project' => $request->no_po_project,
             ]);
             return redirect()->route('project.index')->with('success', 'Data berhasil ditambahkan!');
         } catch (\Exception $e) {
@@ -88,13 +90,15 @@ class MenuProjectController extends Controller
             'nama_project' => 'required|min:5|max:255',
             'sub_nama_project' => 'required|min:5|max:255',
             'kategori_project' => 'required|min:5|max:255',
-            'no_jo_project' => 'required|min:5|max:255'
+            'no_jo_project' => 'required|min:5|max:255',
+            'no_po_project' => 'required|min:5|max:255',
         ]);
         $updateProject = Project::findOrFail($id);
         $updateProject->nama_project = $request->nama_project;
         $updateProject->sub_nama_project = $request->sub_nama_project;
         $updateProject->kategori_project = $request->kategori_project;
         $updateProject->no_jo_project = $request->no_jo_project;
+        $updateProject->no_po_project = $request->no_po_project;
         $updateProject->save();
         // Redirect ke halaman yang diinginkan
         return redirect()->route('project.index')->with('editSuccess', 'Data berhasil Di Edit!');

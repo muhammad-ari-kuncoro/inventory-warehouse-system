@@ -94,7 +94,7 @@
                         src="{{ public_path('asset/img/img-import/thumb_armindo_jaya_mandiri-removebg-preview.png') }}"
                         alt="" width="150px" height="75px"></td>
                 <td class="border-full text-header-sm text-center">FORM</td>
-                <td class="border-full text-header-sm text-center">No. Dok</td>
+                <td class="border-full text-header-sm">No. Doc</td>
                 <td class="border-full text-header-sm">AJM/MTK/F/01/05</td>
             </tr>
             <tr>
@@ -144,20 +144,20 @@
                 </p>
             </td>
             <td class="text-sm text-center border-full">
-                {{ $deliveryOrder->created_at->format('d F Y') }}
+                {{ $deliveryOrder->do_date }}
             </td>
         </tr>
         <tr>
-            <td class="text-header-sm bg-gray text-center border-full">Delivery No.</td>
+            <td class="text-header-sm bg-gray text-center border-full">Delivery Warehouse No.</td>
         </tr>
         <tr>
             <td class="text-sm text-center border-full">{{ $deliveryOrder->do_no }}</td>
         </tr>
         <tr>
-            <td class="text-header-sm bg-gray text-center border-full">PN No</td>
+            <td class="text-header-sm bg-gray text-center border-full">No Jo</td>
         </tr>
         <tr>
-            <td class="text-sm text-center border-full">{{ $deliveryOrder->project->kode_project }}</td>
+            <td class="text-sm text-center border-full">{{ $deliveryOrder->project->no_jo_project }}</td>
         </tr>
     </table>
 
@@ -202,35 +202,35 @@
 
     <table class="w-full" style="margin-top: -30px;">
         <tr>
-            <td class="text-sm" style="height: 150px;">
+            <td class="text-sm" style="height: 230px;">
                 Disiapkan Oleh,
             </td>
-            <td class="text-sm" style="height: 150px;">
+            <td class="text-sm" style="height: 230px;">
                 Disetujui Oleh,
             </td>
-            <td class="text-sm" style="height: 150px;">
+            <td class="text-sm" style="height: 230px;">
                 Dikirim Oleh,
             </td>
-            <td style="width: 100px;">
+            <td style="width: 200px;">
             </td>
-            <td class="text-sm" style="height: 150px;">
+            <td class="text-sm" style="height: 230px;">
                 Diterima Oleh,
             </td>
         </tr>
         <tr>
             <td class="text-sm">
-               Date:  {{ $deliveryOrder->created_at->format('d F Y') }}
+               Date:        {{ $deliveryOrder->do_date }}
             </td>
             <td class="text-sm">
-                Date: {{ $deliveryOrder->created_at->format('d F Y') }}
+                Date:       {{ $deliveryOrder->do_date }}
             </td>
             <td class="text-sm">
-                Date: {{ $deliveryOrder->created_at->format('d F Y') }}
+                Date:       {{ $deliveryOrder->do_date }}
             </td>
             <td class="">
             </td>
             <td class="text-sm">
-                Date" {{ $deliveryOrder->created_at->format('d F Y') }}
+                Date:       {{ $deliveryOrder->do_date }}
             </td>
         </tr>
     </table>
