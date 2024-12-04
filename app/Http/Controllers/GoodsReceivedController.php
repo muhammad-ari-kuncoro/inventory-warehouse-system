@@ -63,16 +63,20 @@ class GoodsReceivedController extends Controller
 
         DB::beginTransaction();
         try {
-            // Cek apakah data dengan jenis_barang dan nama barang sudah ada
+            // Cek apakah kombinasi jenis_barang dan nama barang sudah ada
             $existingItem = GoodReceivedDetail::where('jenis_barang', $request->jenis_barang)
                 ->where(function ($query) use ($request) {
                     $query->where('consumable_id', $request->consumable_id)
+                        ->whereNotNull('consumable_id') // Pastikan hanya mengecek jika ID barang tersedia
                         ->orWhere('material_id', $request->material_id)
-                        ->orWhere('tools_id', $request->tools_id);
-                })->first();
+                        ->whereNotNull('material_id')
+                        ->orWhere('tools_id', $request->tools_id)
+                        ->whereNotNull('tools_id');
+                })
+                ->first();
 
             if ($existingItem) {
-                return redirect()->back()->with('failed', 'Data dengan jenis barang dan nama barang ini sudah ada. Silakan gunakan data lama.');
+                return redirect()->back()->with('failed', 'nama barang ini sudah ada. Silakan gunakan data yang sudah tersedia.');
             }
 
             // Cek Apakah DO Draft Sudah ada
@@ -83,6 +87,7 @@ class GoodsReceivedController extends Controller
                 $doDraft->save();
             }
 
+            // Tambahkan detail barang baru
             $doDraftDetail = new GoodReceivedDetail();
             $doDraftDetail->good_received_id = $doDraft->id;
             $doDraftDetail->jenis_barang = $request->jenis_barang;
@@ -101,6 +106,8 @@ class GoodsReceivedController extends Controller
             return redirect()->back()->with('failed', $e->getMessage());
         }
     }
+
+
 
     public function destroyDetail($id)
     {
@@ -233,17 +240,49 @@ class GoodsReceivedController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-    {
-        //
+{
+    DB::beginTransaction();
+    try {
         $goodReceive = GoodReceived::find($id);
 
         if ($goodReceive) {
-            $goodReceive->delete(); // Menghapus data
-            return redirect()->back()->with('delete', 'Data berhasil dihapus.');
+            // Loop melalui semua detail barang terkait
+            foreach ($goodReceive->details as $detail) {
+                // Cek jenis barang dan update quantity berdasarkan ID barang
+                if ($detail->consumable_id) {
+                    $item = Consumables::find($detail->consumable_id);
+                    if ($item) {
+                        $item->quantity += $detail->quantity;
+                        $item->save();
+                    }
+                } elseif ($detail->material_id) {
+                    $item = Materials::find($detail->material_id);
+                    if ($item) {
+                        $item->quantity += $detail->quantity;
+                        $item->save();
+                    }
+                } elseif ($detail->tools_id) {
+                    $item = Tools::find($detail->tools_id);
+                    if ($item) {
+                        $item->quantity += $detail->quantity;
+                        $item->save();
+                    }
+                }
+            }
+
+            // Hapus data utama dan detailnya
+            $goodReceive->delete();
+            DB::commit();
+            return redirect()->back()->with('delete', 'Data berhasil dihapus dan quantity barang telah diperbarui.');
         }
 
+        DB::rollBack();
         return redirect()->back()->with('delete', 'Data tidak ditemukan.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->with('delete', 'Terjadi kesalahan: ' . $e->getMessage());
     }
+}
 
    public function deleteDraft()
 {

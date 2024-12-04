@@ -63,33 +63,33 @@ class GoodReceivedDetail extends Model
 
         });
 
-        // Saat memperbarui data
-        static::updating(function ($model) {
-            // Ambil nilai quantity lama sebelum di-update
-            $originalQuantity = $model->getOriginal('quantity');
-            $quantityDifference = $model->quantity - $originalQuantity;
+        // // Saat memperbarui data
+        // static::updating(function ($model) {
+        //     // Ambil nilai quantity lama sebelum di-update
+        //     $originalQuantity = $model->getOriginal('quantity');
+        //     $quantityDifference = $model->quantity - $originalQuantity;
 
-            // Ambil objek terkait
-            $material = Materials::find($model->material_id);
-            $consumable = Consumables::find($model->consumable_id);
-            $tools = Tools::find($model->tools_id);
+        //     // Ambil objek terkait
+        //     $material = Materials::find($model->material_id);
+        //     $consumable = Consumables::find($model->consumable_id);
+        //     $tools = Tools::find($model->tools_id);
 
-            // Perbarui stok berdasarkan perubahan quantity
-            if ($material && $quantityDifference != 0) {
-                $quantityDifference > 0
-                    ? $material->increment('quantity', $quantityDifference)
-                    : $material->decrement('quantity', abs($quantityDifference));
-            }
-            if ($consumable && $quantityDifference != 0) {
-                $quantityDifference > 0
-                    ? $consumable->increment('quantity', $quantityDifference)
-                    : $consumable->decrement('quantity', abs($quantityDifference));
-            }
-            if ($tools && $quantityDifference != 0) {
-                $quantityDifference > 0
-                    ? $tools->increment('quantity', $quantityDifference)
-                    : $tools->decrement('quantity', abs($quantityDifference));
-            }
-            });
+        //     // Perbarui stok berdasarkan perubahan quantity
+        //     if ($material && $quantityDifference != 0) {
+        //         $quantityDifference > 0
+        //             ? $material->increment('quantity', $quantityDifference)
+        //             : $material->decrement('quantity', abs($quantityDifference));
+        //     }
+        //     if ($consumable && $quantityDifference != 0) {
+        //         $quantityDifference > 0
+        //             ? $consumable->increment('quantity', $quantityDifference)
+        //             : $consumable->decrement('quantity', abs($quantityDifference));
+        //     }
+        //     if ($tools && $quantityDifference != 0) {
+        //         $quantityDifference > 0
+        //             ? $tools->increment('quantity', $quantityDifference)
+        //             : $tools->decrement('quantity', abs($quantityDifference));
+        //     }
+        //     });
     }
 }

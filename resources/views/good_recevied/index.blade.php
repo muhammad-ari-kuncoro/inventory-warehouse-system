@@ -95,10 +95,13 @@
 
                                 <div class="mb-1">
 
-                                    <a href="{{ route('good-received.edit',$data->id) }}"><span class="btn btn-warning btn-sm"><i class='bx bx-edit-alt' ></i></a></span>
-                                    <a href="{{ route('good-received.show',$data->id) }}"><span class="btn btn-info btn-sm"><i class='bx bx-show' ></i></a></span>
-                                    <a href="{{ route('good-received.destroy',$data->id) }}"><span class="btn btn-danger btn-sm mt-2"><i class='bx bxs-file-pdf'></i></a></span>
-
+                                    <a href="{{ route('good-received.edit',$data->id) }}"><span class="btn btn-warning btn-sm mb-2"><i class='bx bx-edit-alt' ></i></a></span>
+                                    <a href="{{ route('good-received.show',$data->id) }}"><span class="btn btn-info btn-sm mb-2"><i class='bx bx-show' ></i></a></span>
+                                    <form action="{{ route('good-received.destroy', $data->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"><i class='bx bxs-file-pdf' ></i></button>
+                                    </form>
 
                                 </div>
                             </td>
