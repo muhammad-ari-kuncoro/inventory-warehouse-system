@@ -73,13 +73,8 @@
                             <th>Waktu Keluar</th>
                             <th>Tanggal Keluar</th>
                             <th>Kode Surat Jalan barang keluar</th>
-                            <th class="text-center">Pengirim </th>
-                            <th>Alamat</th>
-                            <th>Deskripsi Barang</th>
-                            <th>Quantity Barang Keluar</th>
-                            <th>Jenis Quantity</th>
-                            <th>Keterangan Barang</th>
-                            <th>Nama Project</th>
+                            <th>Alamat Dikirim</th>
+
                             <th>Aksi </th>
                         </tr>
                     </thead>
@@ -92,13 +87,8 @@
                             <td>{{$data->created_at}}</td>
                             <td>{{$data->tgl_kirim}}</td>
                             <td>{{$data->kd_sj_brg_keluar}}</td>
-                            <td>{{$data->pengirim}}</td>
                             <td>{{$data->tujuan}}</td>
-                            <td>{{$data->deskripsi_brg}}</td>
-                            <td class="text-center">{{$data->quantity}}</td>
-                            <td>{{$data->jenis_quantity}}</td>
-                            <td>{{$data->keterangan_brg}}</td>
-                            <td>{{$data->project->nama_project}} | {{$data->project->sub_nama_project}}</td>
+
                             <td>
                                 <div class="mb-1">
                                     <a href="{{  route('shipping-items.edit',$data->id) }}"><span

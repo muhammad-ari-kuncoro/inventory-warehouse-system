@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shipping_items', function (Blueprint $table) {
+        Schema::create('shipping_items_detail', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->string('date_delivery')->nullable();
-            $table->string('to')->nullable();
-            $table->string('kd_sj_brg_keluar')->default('draft');;
-            $table->string('description_stuff')->nullable();
-
+            $table->integer('shipping_items_id')->nullable();
+            $table->string('item_names')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->string('quantity_type')->nullable();
+            $table->string('description_items')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shipping_items');
+        Schema::dropIfExists('shipping_items_detail');
     }
 };

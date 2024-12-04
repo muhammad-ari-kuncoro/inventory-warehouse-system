@@ -117,6 +117,7 @@ Route::middleware('auth')->group(function (){
         Route::get('/',[ShippingItemController::class, 'index'])->name('index');
         Route::get('/create',[ShippingItemController::class, 'create'])->name('create');
         Route::post('store',[ShippingItemController::class, 'store'])->name('store');
+        Route::post('store/item',[ShippingItemController::class, 'storeItem'])->name('store.item');
         Route::get('edit/{id}',[ShippingItemController::class, 'edit'])->name('edit');
         Route::patch('update/{id}',[ShippingItemController::class,'update'])->name('update');
 

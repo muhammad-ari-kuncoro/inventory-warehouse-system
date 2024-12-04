@@ -17,138 +17,164 @@
 @section('container')
 
 <div class="row">
-    <!-- Card 1: Data Umum -->
-    <div class="col-md-6">
-        <div class="card mb-3">
-            <h5 class="card-header text-center text-bold">
-                Form Alamat Pengiriman
-            </h5>
-            <div class="card-body">
-                <form action="{{route('shipping-items.store')}}" method="post">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="tgl_kirim" class="form-label">Tanggal Pengiriman</label>
-                        <input class="form-control rounded-top @error('tgl_kirim') is-invalid @enderror" type="date"
-                            name="tgl_kirim" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
-                        @error('tgl_kirim')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-
-
-
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" name="pengirim"  id="floatingTextarea2Disabled" style="height: 100px">PT ARMINDO JAYA MANDIRI Kawasan Industri Jababeka 2 Blok FF 1 F Jalan Industri Selatan 7 Cikarang Baru, Pasirsari, Cikarang Sel., Kabupaten Bekasi, Jawa Barat 17550</textarea>
-                        <label for="floatingTextarea2Disabled">Pengirim</label>
-                        @error('pengirim')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                      </div>
-
-                      <div class="form-floating mb-3">
-                        <textarea class="form-control" name="tujuan"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
-                        <label for="floatingTextarea2Disabled">tujuan</label>
-                        @error('tujuan')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                      </div>
-
-
-
+    <div class="col-lg-12">
+        {{-- Session Notifikasi --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong class="text-dark">{!! session()->get('success') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </div>
-    </div>
-
-    <!-- Card 2: Detail Barang -->
-    <div class="col-md-6">
+        @endif
+        @if (session('failed'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong class="text-dark">{!! session()->get('failed') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="card">
-            <h5 class="card-header text-center text-bold">
-                Data Barang
-            </h5>
-            <div class="card-body">
-
-                <div class="form-floating mb-3">
-                    <textarea class="form-control" name="deskripsi_brg"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
-                        <label for="floatingTextarea2Disabled">Deskripsi Barang</label>
-                        @error('deskripsi_brg')
-                        <div class="invalid-Deskripsi">
-                            {{ $message }}
+            {{-- @if ($do_draft) --}}
+                <div class="card-header text-end">
+                    <form action="" method="post">
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-sm">Delete Draft</button>
+                    </form>
+                </div>
+            {{-- @endif --}}
+            <div class="card-body row">
+                <div class="col-lg-6">
+                    <form action="" method="post" id="formSubmit">
+                        @csrf
+                        <h4>Form Address</h4>
+                        <div class="mb-3">
+                            <label for="tgl_kirim" class="form-label">Date </label>
+                            <input class="form-control rounded-top @error('tgl_kirim') is-invalid @enderror" type="date" name="tgl_kirim" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
+                            @error('tgl_kirim')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-                        @enderror
-                </div>
 
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">quantity</label>
-                    <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number" name="quantity" placeholder="Harap Di Isi quantity ">
-                    @error('quantity')
-                    <div class="invalid-feedback">
-                        {{ $message }}
+                        <label for="tgl_kirim" class="form-label">Address </label>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" name="pengirim"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
+                            <label for="floatingTextarea2Disabled">To</label>
+                            @error('pengirim')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+
+
+
+                    </form>
+                </div>
+                <div class="col-lg-6">
+                    <form action="{{route('shipping-items.store.item')}}" method="post">
+                        @csrf
+                        <h4>Form Items</h4>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Items Names</label>
+                            <input type="text" name="item_names" class="form-control" id="" placeholder="Harap Masukkan Deskripsi Barang">
+                            @error('item_names')
+                            <div class="invalid-Deskripsi">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Quantity</label>
+                            <input class="form-control @error('quantity') is-invalid @enderror" type="number" name="quantity" min="1" placeholder="Masukkan Jumlah Barang">
+                            @error('quantity')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+
+
+
+                        <div class="mb-3">
+                            <label class="form-label">Type Items</label>
+                            <select class="form-select select-2 @error('quantity_type') is-invalid @enderror" name="quantity_type" data-placeholder="Pilih Salah Satu">
+                                <option></option>
+                                <option value="Pcs">Pcs</option>
+                                <option value="Unit">Unit</option>
+                                <option value="Set">Set</option>
+                                <option value="Kg">Kg</option>
+                                <option value="Lmbr">Lmbr</option>
+                                <option value="EA">EA</option>
+                                <option value="Liter">Liter</option>
+                                <option value="Drum">Drum</option>
+                            </select>
+                            @error('quantity_type')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+
+                        <label class="form-label">Deskcription Items</label>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" name="description_items"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
+                            <label for="floatingTextarea2Disabled">Description</label>
+                            @error('description_items')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3 text-end">
+                            <button type="submit" class="btn btn-success">Submit Items</button>
+                            <a href="{{route('shipping-items.index')}}" class="btn btn-secondary">Go back</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-12">
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Description Items</th>
+                                    <th>Quantity</th>
+                                    <th>Type</th>
+                                    <th>Description Items</th>
+                                    <th>#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{-- @if ($do_draft)
+                                    @foreach ($do_draft->details as $detail) --}}
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    {{-- @endforeach
+                                @else --}}
+                                <tr>
+                                    <td colspan="6" class="text-center">No Item Found</td>
+                                </tr>
+                                {{-- @endif --}}
+                            </tbody>
+                        </table>
                     </div>
-                    @enderror
-                </div>
+                    <div class="mt-3">
+                        <button class="btn btn-primary" onclick="submitForm()">Submit DO</button>
 
-
-                <div class="mb-3">
-                    <label for="jenis_quantity" class="form-label">Jenis Quantity </label>
-                    <select class="form-select select-2 @error('jenis_quantity') is-invalid @enderror" name="jenis_quantity" data-placeholder="Pilih Salah Satu">
-                        <option></option>
-                        <option value="Pcs">Pcs</option>
-                        <option value="Unit">Unit</option>
-                        <option value="Set">Set</option>
-                        <option value="Kg">Kg</option>
-                        <option value="Lembar">Lembar</option>
-                        <option value="EA">EA</option>
-                        <option value="Liter">Liter</option>
-                        <option value="Drum">Drum</option>
-                    </select>
-                    @error('jenis_quantity')
-                    <div class="invalid-feedback">
-                        {{ $message }}
                     </div>
-                    @enderror
                 </div>
-
-
-
-
-                <div class="mb-3">
-                    <label for="project_id" class="form-label">Nama Project </label>
-                    <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Nama Project ">
-                        <option></option>
-                        @foreach ($data_project as $data )
-
-                        <option value="{{$data->id}}">{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
-                        @endforeach
-                    </select>
-                    @error('project_id')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Keterangan Barang</label>
-                    <textarea class="form-control" placeholder="Catatan Keterangan Barang (Opsional)" name="keterangan_brg"  style="height: 100px"></textarea>
-                </div>
-
-                <div class="mb-3 text-center">
-                    <a href="{{route('shipping-items.index')}}" class="btn btn-secondary">Go Back</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-
-                </form>
             </div>
         </div>
     </div>
 </div>
-
 @endsection
 
 @push('scripts')
@@ -165,24 +191,8 @@
     });
 </script>
 <script>
-    $(document).ready(function(){
-        $('#jenis_barang').on('change', function(){
-            var value = this.value;
-
-            if (value == 'Materials') {
-                $('#div_material').show();
-                $('#div_consumable').hide();
-                $('#div_tool').hide();
-            } else if (value == 'Consumables') {
-                $('#div_material').hide();
-                $('#div_consumable').show();
-                $('#div_tool').hide();
-            } else if (value == 'Tools') {
-                $('#div_material').hide();
-                $('#div_consumable').hide();
-                $('#div_tool').show();
-            }
-        });
-    });
+    function submitForm() {
+        $("#formSubmit").submit();
+    }
 </script>
 @endpush
