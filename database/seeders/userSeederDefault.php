@@ -18,11 +18,18 @@ class userSeederDefault extends Seeder
 
 
 
-       User::create([
+       User::create(
+        [
             'username' => 'Administrator',
             'email' => 'administrator@gmail.com',
             'password' => bcrypt('admin123'),
-        ]);
+        ],
+        [
+            'username' => 'Administrator2',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('admin'),
+        ]
+    );
 
 
 

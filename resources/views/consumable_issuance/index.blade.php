@@ -41,7 +41,7 @@
                 <label for="projectFilter">Filter Nama Project:</label>
                 <select id="projectFilter" class="form-select select-2">
                     <option value="">Semua Project</option>
-                    @foreach($data_project as $data)
+                    @foreach($projects as $data)
                     <option value="{{ $data->nama_project }} | {{$data->sub_nama_project}}">{{ $data->nama_project }} |
                         {{$data->sub_nama_project}}</option>
                     @endforeach
@@ -69,7 +69,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data_consumable_issuance as $data )
+                    @foreach ($datas as $data )
 
                     <tr>
                         <td class="text-center">{{$loop->iteration}} </td>
@@ -77,8 +77,8 @@
                         <td class="text-center">{{$data->tanggal_pengambilan}}</td>
                         <td>{{$data->consumable->nama_consumable}}</td>
                         <td>{{$data->consumable->spesifikasi_consumable}}</td>
-                        <td>{{$data->nama_pengambil}}</td>
-                        <td>{{$data->bagian_divisi}}</td>
+                        <td>{{ $data->user->username }}</td>
+                        <td>{{ 'Staff Produksi' }}</td>
                         <td class="text-center">{{$data->quantity}}</td>
                         <td>{{$data->jenis_quantity}}</td>
                         <td>{{$data->project->nama_project}} | {{ $data->project->sub_nama_project }}</td>

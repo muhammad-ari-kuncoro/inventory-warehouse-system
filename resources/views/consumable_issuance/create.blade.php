@@ -17,63 +17,45 @@
 @section('container')
 
 <div class="row">
-    <!-- Card 1: Data Umum -->
-    <div class="col-md-6">
-        <div class="card mb-3">
-            <h5 class="card-header text-center text-bold">
-                Form Data Diri
-            </h5>
-            <div class="card-body">
-                <form action="{{route('consumable-issuance.store')}}" method="post">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="tanggal_pengambilan" class="form-label">Tanggal pengambilan</label>
-                        <input class="form-control rounded-top @error('tanggal_pengambilan') is-invalid @enderror" type="date"
-                            name="tanggal_pengambilan" placeholder="Harap Di Isi Tanggal pengambilan Consumbable">
-                        @error('tanggal_pengambilan')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="bagian_divisi" class="form-label">Bagian Divisi</label>
-                        <input class="form-control rounded-top @error('bagian_divisi') is-invalid @enderror" type="text"
-                            name="bagian_divisi" placeholder="Harap Di Isi Bagian Divisi Pengambil ">
-                        @error('bagian_divisi')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-
-
-
-
-                    <div class="mb-3">
-                        <label for="nama_pengambil" class="form-label">Nama Pengambil Consumable </label>
-                        <input class="form-control rounded-top @error('nama_pengambil') is-invalid @enderror" type="text" name="nama_pengambil" placeholder="Harap Di Isi Nama Pengambil Consumable ">
-                        @error('nama_pengambil')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-
-
-            </div>
-        </div>
-    </div>
-
     <!-- Card 2: Detail Barang -->
     <div class="col-md-6">
+         @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong class="text-dark">{!! session()->get('success') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (session('failed'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong class="text-dark">{!! session()->get('failed') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="card">
             <h5 class="card-header text-center text-bold">
                 Data Barang
             </h5>
+            <form action="{{route('consumable-issuance.store')}}" method="post">
+            @csrf
             <div class="card-body">
-
+                <div class="mb-3">
+                    <label for="tanggal_pengambilan" class="form-label">Tanggal pengambilan</label>
+                    <input class="form-control rounded-top @error('tanggal_pengambilan') is-invalid @enderror" type="date" name="tanggal_pengambilan" placeholder="Harap Di Isi Tanggal pengambilan Consumbable">
+                    @error('tanggal_pengambilan')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
                 <div class="mb-3">
                     <label for="consumable_id" class="form-label">Nama Consumable</label>
                     <select class="form-select select-2 @error('consumable_id') is-invalid @enderror" name="consumable_id" data-placeholder="Pilih Salah Satu">

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Consumables;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ConsumableIssuanceController extends Controller
 {
@@ -18,8 +19,14 @@ class ConsumableIssuanceController extends Controller
         //
         $data['title'] = 'Formulir Pengambilan Consumable';
         $data['sub_title'] = 'Pengambilan Consumable';
-        $data['data_project'] = Project::all();
-        $data['data_consumable_issuance'] = ConsumableIssuance::all();
+        $data['projects'] = Project::all();
+        if (1 == 2) {
+            // Ini khusus superadmin / pentinggi bisa ngeliat semuanya
+            $data['datas'] = ConsumableIssuance::get();
+        } else {
+            // Ini Khusus masing masing staff / user
+            $data['datas'] = ConsumableIssuance::where('user_id', Auth::user()->id)->get();
+        }
         return view('consumable_issuance.index',$data);
     }
 
@@ -45,27 +52,23 @@ class ConsumableIssuanceController extends Controller
     {
         //
         $request->validate([
-            'tanggal_pengambilan' => 'required|min:3|max:100',
-            'bagian_divisi' => 'required|min:3|max:100',
-            'nama_pengambil' => 'required|min:3|max:100',
+            'tanggal_pengambilan' => 'required',
             'consumable_id' => 'required|exists:consumables,id',
             'project_id' => 'required|exists:menu_project,id',
             'quantity' => 'required|numeric|min:1',
-            'jenis_quantity' => 'required|min:1|max:100',
-            'keterangan_consumable' => 'required|min:3|max:100',
+            'jenis_quantity' => 'required',
+            'keterangan_consumable' => 'required',
         ]);
-        // dd($request);
         try {
             //code...
             ConsumableIssuance::create([
-                'tanggal_pengambilan'               => $request->tanggal_pengambilan,
-                'bagian_divisi'                     => $request->bagian_divisi,
-                'nama_pengambil'                    => $request->nama_pengambil,
-                'consumable_id'                     => $request->consumable_id,
-                'project_id'                        => $request->project_id,
-                'quantity'                          => $request->quantity,
-                'jenis_quantity'                    => $request->jenis_quantity,
-                'keterangan_consumable'             => $request->keterangan_consumable
+                'tanggal_pengambilan'   => $request->tanggal_pengambilan,
+                'user_id'               => Auth::user()->id,
+                'consumable_id'         => $request->consumable_id,
+                'project_id'            => $request->project_id,
+                'quantity'              => $request->quantity,
+                'jenis_quantity'        => $request->jenis_quantity,
+                'keterangan_consumable' => $request->keterangan_consumable
             ]);
             return redirect()->route('consumable-issuance.index')->with('success', 'Data berhasil ditambahkan!');
 
@@ -73,7 +76,7 @@ class ConsumableIssuanceController extends Controller
             //throw $th;
             //erros jika data tidak sesuai
             // Simpan pesan error jika terjadi kesalahan
-            return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
+            return redirect()->back()->with('failed',$e->getMessage());
         }
     }
 
