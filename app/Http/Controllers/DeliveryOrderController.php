@@ -57,7 +57,7 @@ class DeliveryOrderController extends Controller
         DB::beginTransaction();
         try {
             if ($request->do_id) {
-                $doDraft = DeliveryOrderDetail::findOrFail($request->do_id);
+                $doDraft = DeliveryOrder::findOrFail($request->do_id);
             } else {
                 $doDraft = DeliveryOrder::where('user_id', Auth::user()->id)->where('do_no', 'draft')->first();
                 if (!$doDraft) {
@@ -74,6 +74,7 @@ class DeliveryOrderController extends Controller
             } else {
                 $doDraftDetail = new DeliveryOrderDetail();
             }
+
             $doDraftDetail->delivery_order_id = $doDraft->id;
             $doDraftDetail->item_description = trim($request->item_description);
             $doDraftDetail->item_size = $request->item_size;

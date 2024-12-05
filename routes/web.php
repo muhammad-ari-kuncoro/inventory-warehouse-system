@@ -93,6 +93,7 @@ Route::middleware('auth')->group(function (){
         Route::get('create',[GoodsReceivedController::class, 'create'])->name('create');
         Route::post('store',[GoodsReceivedController::class, 'store'])->name('store');
         Route::post('store/item',[GoodsReceivedController::class, 'storeItem'])->name('store.item');
+        Route::post('store/item/update/{id}',[GoodsReceivedController::class, 'storeItemUpdate'])->name('store.item.update');
         Route::post('delete-draft',[GoodsReceivedController::class, 'deleteDraft'])->name('delete-draft');
         Route::get('edit/{id}',[GoodsReceivedController::class, 'edit'])->name('edit');
         Route::get('show/{id}',[GoodsReceivedController::class, 'show'])->name('show');

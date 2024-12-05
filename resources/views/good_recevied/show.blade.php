@@ -32,14 +32,6 @@
             </div>
         @endif
         <div class="card">
-            @if ($do)
-                <div class="card-header text-end">
-                    <form action="{{ route('good-received.delete-draft') }}" method="post">
-                        @csrf
-                        <button type="submit" class="btn btn-danger btn-sm">Hapus Draft</button>
-                    </form>
-                </div>
-            @endif
             <div class="card-body row">
                 <div class="col-lg-6">
                     <form action="{{ route('good-received.store') }}" method="post" id="formSubmit">

@@ -32,14 +32,6 @@
             </div>
         @endif
         <div class="card">
-            @if ($do)
-                <div class="card-header text-end">
-                    <form action="{{ route('good-received.delete-draft') }}" method="post">
-                        @csrf
-                        <button type="submit" class="btn btn-danger btn-sm">Hapus Draft</button>
-                    </form>
-                </div>
-            @endif
             <div class="card-body row">
                 <div class="col-lg-6">
                     <form action="{{ route('good-received.update', $do->id) }}" method="post" id="formSubmit">
@@ -99,13 +91,12 @@
                 </div>
 
                 <div class="col-lg-6">
-                    <form action="{{ route('good-received.store.item') }}" method="post">
+                    <form action="{{ route('good-received.store.item.update', $do->id) }}" method="post">
                         @csrf
                         <h4>Form Barang</h4>
                         <div class="mb-3">
                             <label for="jenis_barang" class="form-label">Jenis Barang Masuk</label>
-                            <select name="jenis_barang" id="jenis_barang"
-                                class="form-select @error('jenis_barang') is-invalid @enderror">
+                            <select name="jenis_barang" id="jenis_barang" class="form-select @error('jenis_barang') is-invalid @enderror">
                                 <option value="" selected disabled>-- Pilih Jenis Barang Masuk --</option>
                                 <option value="Materials">Materials</option>
                                 <option value="Consumables">Consumables</option>

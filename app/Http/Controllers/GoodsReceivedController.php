@@ -25,10 +25,10 @@ class GoodsReceivedController extends Controller
     public function index()
     {
         //
-        $data['title'] = 'Menu Barang Masuk';
-        $data['sub_title'] = 'Barang Masuk';
-        $data['data_delivery_order']  = GoodReceived::where('kd_sj', '!=', 'drafts')->get();
-        $data['data_project'] = Project::get();
+        $data['title']                  = 'Menu Barang Masuk';
+        $data['sub_title']              = 'Barang Masuk';
+        $data['data_delivery_order']    = GoodReceived::where('kd_sj', '!=', 'draft')->get();
+        $data['data_project']           = Project::get();
         return view('good_recevied.index', $data);
     }
 
@@ -38,13 +38,13 @@ class GoodsReceivedController extends Controller
     public function create()
     {
         //
-        $data['title'] = 'Menu Barang Masuk';
-        $data['sub_title'] = 'Barang Masuk';
-        $data['consumables'] = Consumables::all();
-        $data['tools']  = Tools::all();
-        $data['materials'] = Materials::all();
-        $data['data_project'] = Project::get();
-        $data['do_draft'] = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
+        $data['title']          = 'Menu Barang Masuk';
+        $data['sub_title']      = 'Barang Masuk';
+        $data['consumables']    = Consumables::all();
+        $data['tools']          = Tools::all();
+        $data['materials']      = Materials::all();
+        $data['data_project']   = Project::get();
+        $data['do_draft']       = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
         return view('good_recevied.create', $data);
     }
 
@@ -63,8 +63,10 @@ class GoodsReceivedController extends Controller
 
         DB::beginTransaction();
         try {
+            $do_draft = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
+
             // Cek apakah kombinasi jenis_barang dan nama barang sudah ada
-            $existingItem = GoodReceivedDetail::where('jenis_barang', $request->jenis_barang)
+            $existingItem = GoodReceivedDetail::where('good_received_id', $do_draft->id)->where('jenis_barang', $request->jenis_barang)
                 ->where(function ($query) use ($request) {
                     $query->where('consumable_id', $request->consumable_id)
                         ->whereNotNull('consumable_id') // Pastikan hanya mengecek jika ID barang tersedia
@@ -88,19 +90,71 @@ class GoodsReceivedController extends Controller
             }
 
             // Tambahkan detail barang baru
-            $doDraftDetail = new GoodReceivedDetail();
-            $doDraftDetail->good_received_id = $doDraft->id;
-            $doDraftDetail->jenis_barang = $request->jenis_barang;
-            $doDraftDetail->consumable_id = $request->consumable_id ?: null;
-            $doDraftDetail->material_id = $request->material_id ?: null;
-            $doDraftDetail->tools_id = $request->tools_id ?: null;
-            $doDraftDetail->quantity = $request->quantity;
-            $doDraftDetail->quantity_jenis = $request->quantity_jenis;
-            $doDraftDetail->keterangan_barang = $request->keterangan_barang;
+            $doDraftDetail                      = new GoodReceivedDetail();
+            $doDraftDetail->good_received_id    = $doDraft->id;
+            $doDraftDetail->jenis_barang        = $request->jenis_barang;
+            $doDraftDetail->consumable_id       = $request->consumable_id ?: null;
+            $doDraftDetail->material_id         = $request->material_id ?: null;
+            $doDraftDetail->tools_id            = $request->tools_id ?: null;
+            $doDraftDetail->quantity            = $request->quantity;
+            $doDraftDetail->quantity_jenis      = $request->quantity_jenis;
+            $doDraftDetail->keterangan_barang   = $request->keterangan_barang;
             $doDraftDetail->save();
 
             DB::commit();
             return redirect()->route('good-received.create')->with('success', 'Item berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('failed', $e->getMessage());
+        }
+    }
+    
+    public function storeItemUpdate(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'jenis_barang' => 'required',
+            'consumable_id' => 'nullable',
+            'material_id' => 'nullable',
+            'tools_id' => 'nullable',
+            'quantity' => 'required|min:1',
+            'quantity_jenis' => 'required',
+            'keterangan_barang' => 'nullable',
+        ]);
+        Log::info('Validation passed:', $validated);
+
+        DB::beginTransaction();
+        try {
+            $goodReceive = GoodReceived::findOrFail($id);
+
+            // Cek apakah kombinasi jenis_barang dan nama barang sudah ada
+            $existingItem = GoodReceivedDetail::where('good_received_id', $goodReceive->id)->where('jenis_barang', $request->jenis_barang)
+                ->where(function ($query) use ($request) {
+                    $query->where('consumable_id', $request->consumable_id)
+                        ->whereNotNull('consumable_id') // Pastikan hanya mengecek jika ID barang tersedia
+                        ->orWhere('material_id', $request->material_id)
+                        ->whereNotNull('material_id')
+                        ->orWhere('tools_id', $request->tools_id)
+                        ->whereNotNull('tools_id');
+                })
+                ->first();
+
+            if ($existingItem) {
+                return redirect()->back()->with('failed', 'nama barang ini sudah ada. Silakan gunakan data yang sudah tersedia.');
+            }
+            // Tambahkan detail barang baru
+            $doDraftDetail                      = new GoodReceivedDetail();
+            $doDraftDetail->good_received_id    = $goodReceive->id;
+            $doDraftDetail->jenis_barang        = $request->jenis_barang;
+            $doDraftDetail->consumable_id       = $request->consumable_id ?: null;
+            $doDraftDetail->material_id         = $request->material_id ?: null;
+            $doDraftDetail->tools_id            = $request->tools_id ?: null;
+            $doDraftDetail->quantity            = $request->quantity;
+            $doDraftDetail->quantity_jenis      = $request->quantity_jenis;
+            $doDraftDetail->keterangan_barang   = $request->keterangan_barang;
+            $doDraftDetail->save();
+
+            DB::commit();
+            return redirect()->route('good-received.edit', $goodReceive->id)->with('success', 'Item berhasil ditambahkan!');
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('failed', $e->getMessage());
@@ -118,12 +172,12 @@ class GoodsReceivedController extends Controller
 
             // Kembalikan quantity ke stok asli
             if ($detail->material_id) {
-                $material = Materials::findOrFail($detail->material_id);
-                $material->quantity -= $detail->quantity;
+                $material               = Materials::findOrFail($detail->material_id);
+                $material->quantity    -= $detail->quantity;
                 $material->save();
             } elseif ($detail->consumable_id) {
-                $consumable = Consumables::findOrFail($detail->consumable_id);
-                $consumable->quantity -= $detail->quantity;
+                $consumable             = Consumables::findOrFail($detail->consumable_id);
+                $consumable->quantity  -= $detail->quantity;
                 $consumable->save();
             } elseif ($detail->tools_id) {
                 $tool = Tools::findOrFail($detail->tools_id);
@@ -150,10 +204,10 @@ class GoodsReceivedController extends Controller
     {
         // Validate the incoming request
         $request->validate([
-            'tanggal_masuk' => 'required|min:1|max:255',
-            'nama_supplier' => 'required|min:1|max:255',
-            'kode_surat_jalan' => 'required|min:1|max:100',
-            'project_id' => 'nullable',
+            'tanggal_masuk'     => 'required|min:1|max:255',
+            'nama_supplier'     => 'required|min:1|max:255',
+            'kode_surat_jalan'  => 'required|min:1|max:100',
+            'project_id'        => 'nullable',
         ]);
         try {
 
@@ -165,9 +219,9 @@ class GoodsReceivedController extends Controller
             $doDraft->kd_sj             = $this->generatekdSJ();
             $doDraft->tanggal_masuk     = $request->tanggal_masuk;
             $doDraft->project_id        = $request->project_id;
-            $doDraft->nama_supplier  = $request->nama_supplier;
+            $doDraft->nama_supplier     = $request->nama_supplier;
             $doDraft->kode_surat_jalan  = $request->kode_surat_jalan;
-            $doDraft->project_id  = $request->project_id;
+            $doDraft->project_id        = $request->project_id;
 
             $doDraft->save();
 
@@ -226,7 +280,7 @@ class GoodsReceivedController extends Controller
         ]);
 
 
-        $updateGoodReceived                           = GoodReceived::findOrFail($id);
+        $updateGoodReceived                          = GoodReceived::findOrFail($id);
         $updateGoodReceived->tanggal_masuk           = $request->tanggal_masuk;
         $updateGoodReceived->nama_supplier           = $request->nama_supplier;
         $updateGoodReceived->kode_surat_jalan        = $request->kode_surat_jalan;
@@ -240,49 +294,49 @@ class GoodsReceivedController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-{
-    DB::beginTransaction();
-    try {
-        $goodReceive = GoodReceived::find($id);
+    {
+        DB::beginTransaction();
+        try {
+            $goodReceive = GoodReceived::find($id);
 
-        if ($goodReceive) {
-            // Loop melalui semua detail barang terkait
-            foreach ($goodReceive->details as $detail) {
-                // Cek jenis barang dan update quantity berdasarkan ID barang
-                if ($detail->consumable_id) {
-                    $item = Consumables::find($detail->consumable_id);
-                    if ($item) {
-                        $item->quantity += $detail->quantity;
-                        $item->save();
-                    }
-                } elseif ($detail->material_id) {
-                    $item = Materials::find($detail->material_id);
-                    if ($item) {
-                        $item->quantity += $detail->quantity;
-                        $item->save();
-                    }
-                } elseif ($detail->tools_id) {
-                    $item = Tools::find($detail->tools_id);
-                    if ($item) {
-                        $item->quantity += $detail->quantity;
-                        $item->save();
+            if ($goodReceive) {
+                // Loop melalui semua detail barang terkait
+                foreach ($goodReceive->details as $detail) {
+                    // Cek jenis barang dan update quantity berdasarkan ID barang
+                    if ($detail->consumable_id) {
+                        $item = Consumables::find($detail->consumable_id);
+                        if ($item) {
+                            $item->quantity += $detail->quantity;
+                            $item->save();
+                        }
+                    } elseif ($detail->material_id) {
+                        $item = Materials::find($detail->material_id);
+                        if ($item) {
+                            $item->quantity += $detail->quantity;
+                            $item->save();
+                        }
+                    } elseif ($detail->tools_id) {
+                        $item = Tools::find($detail->tools_id);
+                        if ($item) {
+                            $item->quantity += $detail->quantity;
+                            $item->save();
+                        }
                     }
                 }
+
+                // Hapus data utama dan detailnya
+                $goodReceive->delete();
+                DB::commit();
+                return redirect()->back()->with('delete', 'Data berhasil dihapus dan quantity barang telah diperbarui.');
             }
 
-            // Hapus data utama dan detailnya
-            $goodReceive->delete();
-            DB::commit();
-            return redirect()->back()->with('delete', 'Data berhasil dihapus dan quantity barang telah diperbarui.');
+            DB::rollBack();
+            return redirect()->back()->with('delete', 'Data tidak ditemukan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('delete', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-
-        DB::rollBack();
-        return redirect()->back()->with('delete', 'Data tidak ditemukan.');
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return redirect()->back()->with('delete', 'Terjadi kesalahan: ' . $e->getMessage());
     }
-}
 
    public function deleteDraft()
 {
