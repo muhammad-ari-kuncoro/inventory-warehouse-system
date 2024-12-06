@@ -13,11 +13,13 @@ use App\Http\Controllers\HydrotestMaterialLendingController;
 use App\Http\Controllers\MachinesController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialIssuanceController;
+use App\Http\Controllers\MaterialTemporaryController;
 use App\Http\Controllers\MenuProjectController;
 use App\Http\Controllers\ShippingItemController;
 use App\Http\Controllers\ToolsController;
 use App\Models\ConsumableIssuance;
 use App\Models\HydrotestMaterialLending;
+use App\Models\MaterialTemporary;
 use Faker\Guesser\Name;
 
 /*
@@ -77,6 +79,15 @@ Route::middleware('auth')->group(function (){
         Route::get('edit/{id}',[ToolsController::class, 'edit'])->name('edit');
         Route::patch('update/{id}',[ToolsController::class, 'update'])->name('update');
     });
+
+
+    Route::prefix('material-temporary')->name('material-temporary.')->group(function(){
+        Route::get('/',[MaterialTemporaryController::class, 'index'])->name('index');
+        Route::post('create',[MaterialTemporaryController::class, 'store'])->name('create');
+        Route::get('edit/{id}',[MaterialTemporaryController::class, 'edit'])->name('edit');
+        Route::patch('update/{id}',[MaterialTemporaryController::class, 'update'])->name('update');
+    });
+
 
 
     Route::prefix('machine')->name('machine.')->group(function(){
