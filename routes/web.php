@@ -81,7 +81,7 @@ Route::middleware('auth')->group(function (){
     });
 
 
-    Route::prefix('material-temporary')->name('material-temporary.')->group(function(){
+    Route::prefix('material-temporary')->name('material-temporary.' )->group(function(){
         Route::get('/',[MaterialTemporaryController::class, 'index'])->name('index');
         Route::post('create',[MaterialTemporaryController::class, 'store'])->name('create');
         Route::get('edit/{id}',[MaterialTemporaryController::class, 'edit'])->name('edit');
@@ -123,6 +123,9 @@ Route::middleware('auth')->group(function (){
         Route::get('print-pdf/{id}',[DeliveryOrderController::class, 'printPDF'])->name('print-pdf');
         Route::get('show/{id}',[DeliveryOrderController::class, 'show'])->name('show');
         Route::patch('update/{id}',[DeliveryOrderController::class, 'update'])->name('update');
+        Route::patch('update-detail/{id}',[DeliveryOrderController::class, 'updateDetail'])->name('update-detail');
+        Route::get('detail-updating/{id}',[DeliveryOrderController::class, 'detailUpdate'])->name('detail-updating');
+        Route::delete('delete-per-draft/{id}',[DeliveryOrderController::class, 'deletePerDraft'])->name('delete-per-draft');
 
     });
 

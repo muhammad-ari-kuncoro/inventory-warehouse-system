@@ -95,6 +95,44 @@ class DeliveryOrderController extends Controller
         }
     }
 
+    public function detailUpdate($id){
+        $data['title'] = 'Edit Edit Detail Delivery Order ';
+        $data['sub_title'] = 'Edit Detail Delivery Order Project';
+        $data['find_id'] = DeliveryOrderDetail::findOrFail($id);
+        return view('delivery_order.edit_detail', $data);
+    }
+
+    public function updateDetail(Request $request, $id)
+    {
+        //Validasi Update
+        $this->validate($request, [
+            'item_description' => 'required',
+            'item_size' => 'nullable',
+            'item_qty' => 'nullable',
+            'satuan_barang' => 'nullable',
+        ]);
+        $updatingDeliveryOrder = DeliveryOrderDetail::findOrFail($id);
+        $updatingDeliveryOrder->item_description = trim($request->item_description);
+        $updatingDeliveryOrder->item_size = $request->item_size;
+        $updatingDeliveryOrder->item_weight = $request->item_weight;
+        $updatingDeliveryOrder->item_qty = $request->item_qty;
+        $updatingDeliveryOrder->item_measurement = $request->satuan_barang;
+        $updatingDeliveryOrder->save();
+        // Redirect ke halaman yang diinginkan
+        return redirect()->route('delivery-order.create')->with('editSuccess', 'Data berhasil Di Edit!');
+    }
+
+    public function deletePerDraft($id){
+        $detail = DeliveryOrderDetail::find($id);
+
+        if ($detail) {
+            $detail->delete();
+            return redirect()->back()->with('success', 'Item berhasil dihapus.');
+        }
+
+        return redirect()->back()->with('failed', 'Item tidak ditemukan.');
+    }
+
     public function store(Request $request)
     {
         $request->validate([

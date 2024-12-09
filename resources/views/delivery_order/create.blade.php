@@ -146,6 +146,8 @@
                                 <option value="EA">EA</option>
                                 <option value="Liter">Liter</option>
                                 <option value="Drum">Drum</option>
+                                <option value="MTR">MTR</option>
+                                <option value="BOX">BOX</option>
                             </select>
                             @error('satuan_barang')
                             <div class="invalid-feedback">
@@ -183,7 +185,20 @@
                                             <td>{{ $detail->item_weight }}</td>
                                             <td>{{ $detail->item_qty }}</td>
                                             <td>{{ $detail->item_measurement }}</td>
-                                            <td></td>
+                                            <td>
+
+                                                <form action="{{ route('delivery-order.delete-per-draft', $detail->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus item ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="bx bx-trash-alt"></i>
+                                                    </button>
+                                                    <a href="{{route('delivery-order.detail-updating',$detail->id)}}"><span class="btn btn-info btn-sm"><i class='bx bx-edit-alt' ></i></a></span></a>
+                                                </form>
+
+
+                                            </td>
+
                                         </tr>
                                     @endforeach
                                 @else

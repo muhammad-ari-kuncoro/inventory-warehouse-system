@@ -2,6 +2,17 @@
 @section('container')
 
 <div class="card">
+     <div class="card-header bg-light">
+        <!-- Breadcrumb Navigation -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ route('dashboard') }}" class="text-primary text-decoration-none">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Consumables</li>
+            </ol>
+        </nav>
+    </div>
     <h5 class="card-header text-center">
         Dashboard Menu Consumable Realtime
         <br>

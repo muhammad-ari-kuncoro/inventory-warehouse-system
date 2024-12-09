@@ -42,7 +42,7 @@
                 <div class="row">
 
                     <div class="col-md-3 mb-3">
-                        <label for="projectFilter" class="form-label">Filter Jenis quantity:</label>
+                        <label for="projectFilter" class="form-label">Filter Jenis quantity_temporary:</label>
                         <select id="projectFilter" class="form-select">
                             <option value="">Semua Jenis</option>
                             <option value="Besar">Besar</option>
@@ -71,31 +71,25 @@
                             <th>Quantity</th>
                             <th>Jenis Quantity</th>
                             <th>Jenis Materials</th>
-                            <th>Harga Materials</th>
-                            <th>Nama Project</th>
-                            <th>Sub Nama Project</th>
                             <th>Aksi </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($data_material as $data) --}}
+                        @foreach ($data_material_temporary as $data)
                         <tr>
-                            <td class="text-center"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td class="text-center">{{$loop->iteration}}</td>
+                            <td class="text-center">{{$data->kd_material_temporary}}</td>
+                            <td>{{$data->nm_material_temporary}}</td>
+                            <td>{{$data->spesifikasi_material_temporary}}</td>
 
-                            {{-- @if (0) --}}
-                            {{-- <td class="text-center bg-danger">{{$data->quantity}}</td> --}}
-                            {{-- @else --}}
-                            <td class="text-center"></td>
-                            {{-- @endif --}}
+                             @if (0)
+                            <td class="text-center bg-danger">{{$data->quantity_temporary}}</td>
+                             @else
+                            <td class="text-center">{{$data->quantity_temporary}}</td>
+                             @endif
 
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{$data->jenis_quantity}}</td>
+                            <td>{{$data->jenis_material}}</td>
                             <td>
                                 <div class="mb-1">
                                     <a href=""><span class="btn btn-warning btn-sm mb-3">Edit</a></span>
@@ -104,7 +98,7 @@
 
                             </td>
                         </tr>
-                        {{-- @endforeach --}}
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -121,14 +115,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post">
+                    <form action="{{route('material-temporary.create')}}" method="post">
                         @csrf
-
                         <div class="mb-3">
-                            <label for="nama_material" class="form-label">Nama Material Temporary</label>
-                            <input class="form-control rounded-top  @error('nama_material') is-invalid @enderror"
-                                type="text" name="nama_material" placeholder="Harap Di Isi Nama Material" required>
-                            @error('nama_material')
+                            <label for="nm_material_temporary" class="form-label">Nama Material Temporary</label>
+                            <input class="form-control rounded-top  @error('nm_material_temporary') is-invalid @enderror"
+                                type="text" name="nm_material_temporary" placeholder="Harap Di Isi Nama Material" required>
+                            @error('nm_material_temporary')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -136,11 +129,11 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="spesifikasi_material" class="form-label">Spesifikasi Materials Temporary</label>
-                            <input class="form-control rounded-top @error('spesifikasi_material') is-invalid @enderror"
-                                type="text" name="spesifikasi_material" placeholder="Harap Di Isi Spesifikasi Material"
+                            <label for="spesifikasi_material_temporary" class="form-label">Spesifikasi Material Temporary</label>
+                            <input class="form-control rounded-top @error('spesifikasi_material_temporary') is-invalid @enderror"
+                                type="text" name="spesifikasi_material_temporary" placeholder="Harap Di Isi Spesifikasi Material"
                                 required>
-                            @error('spesifikasi_material')
+                            @error('spesifikasi_material_temporary')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -148,10 +141,10 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="quantity" class="form-label">Quantity Materials Temporary</label>
-                            <input class="form-control rounded-top @error('quantity') is-invalid @enderror"
-                                type="number" name="quantity" placeholder="Harap Di Isi Quantity Material" required>
-                            @error('quantity')
+                            <label for="quantity_temporary" class="form-label">Quantity Material Temporary</label>
+                            <input class="form-control rounded-top @error('quantity_temporary') is-invalid @enderror"
+                                type="number" name="quantity_temporary" placeholder="Harap Di Isi Quantity Material" required>
+                            @error('quantity_temporary')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -179,7 +172,7 @@
 
 
                         <div class="mb-3">
-                            <label for="jenis_material" class="form-label" name="jenis_material">Jenis Materials
+                            <label for="jenis_material" class="form-label" name="jenis_material">Jenis Material
                             </label>
                             <select class="form-select rounded-top @error('jenis_material') is-invalid @enderror"
                                 name="jenis_material" required>
@@ -253,11 +246,11 @@
                 drawCallback: function () {
                     // Loop melalui semua baris tabel setelah DataTable digambar ulang
                     $('#myTable7 tbody tr').each(function () {
-                        // Ambil nilai quantity dari kolom ke-4 (index 4)
-                        var quantity = $(this).find('td').eq(4).text().trim();
+                        // Ambil nilai quantity_temporary dari kolom ke-4 (index 4)
+                        var quantity_temporary = $(this).find('td').eq(4).text().trim();
 
-                        // Jika quantity == 0, tambahkan kelas 'bg-danger' untuk merubah warna latar belakang
-                        if (quantity == '0') {
+                        // Jika quantity_temporary == 0, tambahkan kelas 'bg-danger' untuk merubah warna latar belakang
+                        if (quantity_temporary == '0') {
                             $(this).addClass('bg-danger text-white'); // Menambahkan teks putih untuk kontras
                         } else {
                             $(this).removeClass('bg-danger text-white');

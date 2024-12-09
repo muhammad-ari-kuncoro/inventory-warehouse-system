@@ -72,7 +72,7 @@
 
                     <tr>
                         <td class="text-center">{{$loop->iteration}}</td>
-                        <td>{{$data->}}</td>
+                        <td></td>
                         <td class="text-center"></td>
                         <td></td>
                         <td></td>
@@ -88,7 +88,7 @@
                             </div>
                         </td>
                     </tr>
-                    {{-- @endforeach --}}
+                    @endforeach
 
                 </tbody>
             </table>
@@ -118,16 +118,6 @@
                     extend: 'excel',
                     text: 'Export Excel',
                     className: 'btn btn-success btn-sm',
-                    exportOptions: {
-                        modifier: {
-                            search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
-                        }
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    text: 'Export PDF',
-                    className: 'btn btn-danger btn-sm',
                     exportOptions: {
                         modifier: {
                             search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport

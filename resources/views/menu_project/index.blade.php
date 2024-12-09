@@ -1,11 +1,17 @@
 @extends('layouts.dashboard-layout')
 @section('container')
 <div class="card">
-    <h5 class="card-header text-center">
-        Dashboard Menu Project
-        <br>
-        <span id="currentDateTime" class="ms-2 text-muted"></span>
-    </h5>
+    <div class="card-header bg-light">
+        <!-- Breadcrumb Navigation -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ route('dashboard') }}" class="text-primary text-decoration-none">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Menu Project</li>
+            </ol>
+        </nav>
+    </div>
 
     {{-- Session Notifikasi --}}
     @if (session('success'))
