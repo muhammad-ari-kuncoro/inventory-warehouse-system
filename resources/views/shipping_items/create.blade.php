@@ -32,7 +32,7 @@
             </div>
         @endif
         <div class="card">
-            {{-- @if ($do_draft) --}}
+            {{-- @if ($data_shipping) --}}
                 <div class="card-header text-end">
                     <form action="" method="post">
                         @csrf
@@ -42,24 +42,34 @@
             {{-- @endif --}}
             <div class="card-body row">
                 <div class="col-lg-6">
-                    <form action="" method="post" id="formSubmit">
+                    <form action="{{route('shipping-items.store')}}" method="post" id="formSubmit">
                         @csrf
                         <h4>Form Address</h4>
                         <div class="mb-3">
-                            <label for="tgl_kirim" class="form-label">Date </label>
-                            <input class="form-control rounded-top @error('tgl_kirim') is-invalid @enderror" type="date" name="tgl_kirim" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
-                            @error('tgl_kirim')
+                            <label for="date_delivery" class="form-label">Date </label>
+                            <input class="form-control rounded-top @error('date_delivery') is-invalid @enderror" type="date" name="date_delivery" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
+                            @error('date_delivery')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
 
-                        <label for="tgl_kirim" class="form-label">Address </label>
+                        <label for="to" class="form-label">Address </label>
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" name="pengirim"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
-                            <label for="floatingTextarea2Disabled">To</label>
-                            @error('pengirim')
+                            <textarea class="form-control" name="to"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
+                            <label for="floatingTextarea2Disabled">to</label>
+                            @error('to')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <label for="description_stuff" class="form-label">Description </label>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" name="description_stuff"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
+                            <label for="floatingTextarea2Disabled">Description</label>
+                            @error('description_stuff')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -140,29 +150,29 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
+                                    <th>No</th>
                                     <th>Description Items</th>
                                     <th>Quantity</th>
                                     <th>Type</th>
-                                    <th>Description Items</th>
                                     <th>#</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @if ($do_draft)
-                                    @foreach ($do_draft->details as $detail) --}}
+                                @if ($data_shipping)
+                                    @foreach ($data_shipping as $detail)
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$detail->item_names}}</td>
+                                            <td>{{$detail->quantity}}</td>
+                                            <td>{{$detail->quantity_type}}</td>
                                             <td></td>
                                         </tr>
-                                    {{-- @endforeach
-                                @else --}}
+                                    @endforeach
+                                @else
                                 <tr>
                                     <td colspan="6" class="text-center">No Item Found</td>
                                 </tr>
-                                {{-- @endif --}}
+                                @endif
                             </tbody>
                         </table>
                     </div>

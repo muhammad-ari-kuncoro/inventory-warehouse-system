@@ -74,6 +74,7 @@
                             <th>Tanggal Keluar</th>
                             <th>Kode Surat Jalan barang keluar</th>
                             <th>Alamat Dikirim</th>
+                            <th>Description</th>
 
                             <th>Aksi </th>
                         </tr>
@@ -85,9 +86,10 @@
 
                             <td class="text-center">{{$loop->iteration}}</td>
                             <td>{{$data->created_at}}</td>
-                            <td>{{$data->tgl_kirim}}</td>
+                            <td>{{$data->date_delivery}}</td>
                             <td>{{$data->kd_sj_brg_keluar}}</td>
-                            <td>{{$data->tujuan}}</td>
+                            <td>{{$data->to}}</td>
+                            <td>{{$data->description_stuff}}</td>
 
                             <td>
                                 <div class="mb-1">

@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function (){
         Route::get('edit/{id}',[MaterialController::class, 'edit'])->name('edit');
         Route::patch('update{id}',[MaterialController::class, 'update'])->name('update');
         Route::get('/search',[MaterialController::class, 'index'])->name('search');
+        Route::post('/import',[MaterialController::class, 'import'])->name('import');
 
     });
 

@@ -42,7 +42,7 @@
                 <div class="row">
 
                     <div class="col-md-3 mb-3">
-                        <label for="projectFilter" class="form-label">Filter Jenis quantity_temporary:</label>
+                        <label for="projectFilter" class="form-label">Filter Jenis quantity:</label>
                         <select id="projectFilter" class="form-select">
                             <option value="">Semua Jenis</option>
                             <option value="Besar">Besar</option>
@@ -83,9 +83,9 @@
                             <td>{{$data->spesifikasi_material_temporary}}</td>
 
                              @if (0)
-                            <td class="text-center bg-danger">{{$data->quantity_temporary}}</td>
+                            <td class="text-center bg-danger">{{$data->quantity}}</td>
                              @else
-                            <td class="text-center">{{$data->quantity_temporary}}</td>
+                            <td class="text-center">{{$data->quantity}}</td>
                              @endif
 
                             <td>{{$data->jenis_quantity}}</td>
@@ -141,10 +141,10 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="quantity_temporary" class="form-label">Quantity Material Temporary</label>
-                            <input class="form-control rounded-top @error('quantity_temporary') is-invalid @enderror"
-                                type="number" name="quantity_temporary" placeholder="Harap Di Isi Quantity Material" required>
-                            @error('quantity_temporary')
+                            <label for="quantity" class="form-label">Quantity Material Temporary</label>
+                            <input class="form-control rounded-top @error('quantity') is-invalid @enderror"
+                                type="number" name="quantity" placeholder="Harap Di Isi Quantity Material" required>
+                            @error('quantity')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -246,11 +246,11 @@
                 drawCallback: function () {
                     // Loop melalui semua baris tabel setelah DataTable digambar ulang
                     $('#myTable7 tbody tr').each(function () {
-                        // Ambil nilai quantity_temporary dari kolom ke-4 (index 4)
-                        var quantity_temporary = $(this).find('td').eq(4).text().trim();
+                        // Ambil nilai quantity dari kolom ke-4 (index 4)
+                        var quantity = $(this).find('td').eq(4).text().trim();
 
-                        // Jika quantity_temporary == 0, tambahkan kelas 'bg-danger' untuk merubah warna latar belakang
-                        if (quantity_temporary == '0') {
+                        // Jika quantity == 0, tambahkan kelas 'bg-danger' untuk merubah warna latar belakang
+                        if (quantity == '0') {
                             $(this).addClass('bg-danger text-white'); // Menambahkan teks putih untuk kontras
                         } else {
                             $(this).removeClass('bg-danger text-white');

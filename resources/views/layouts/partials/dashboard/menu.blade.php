@@ -74,7 +74,7 @@
                 </li>
 
 
-                <li class="menu-header small text-uppercase">
+                {{-- <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Temporary</span>
                 </li>
 
@@ -83,7 +83,7 @@
                         <i class="menu-icon tf-icons bx bx-carousel"></i>
                         <div data-i18n="Layouts">Materials Temporary</div>
                     </a>
-                </li>
+                </li> --}}
 
                 {{-- <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
                     <a href="{{route('tools.index')}}" class="menu-link">

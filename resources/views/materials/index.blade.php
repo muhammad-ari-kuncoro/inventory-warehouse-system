@@ -37,14 +37,32 @@
 
         <div class="row align-items-center">
             <!-- Print Button -->
-            <div class="row">
-                <!-- Dropdown Filter -->
-                <div class="col-sm-auto mb-3">
+            <div class="row align-items-center mb-3">
+                <!-- Tombol Tambah Data -->
+                <div class="col-md-6 d-flex justify-content-start">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Tambah Data
                     </button>
                 </div>
+
+                <!-- Form Import Data -->
+                <div class="col-md-6 d-flex justify-content-end">
+                    <form action="{{ route('material.import') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
+                        @csrf
+                        <div class="me-2">
+                            <label for="importFile" class="form-label mb-0">Import Data Excel:</label>
+                            <input type="file" class="form-control form-control-sm @error('file') is-invalid @enderror" id="importFile" name="file" required>
+                            @error('file')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-success btn-sm">Import Data</button>
+                    </form>
+                </div>
             </div>
+
                 <div class="row">
 
                     <div class="col-md-3 mb-3">
@@ -87,31 +105,33 @@
                         @foreach ($data_material as $data)
                         <tr>
                             <td class="text-center">{{ $loop->iteration }}</td>
-                            <td>{{ $data->kode_material }}</td>
-                            <td>{{ $data->nama_material }}</td>
-                            <td>{{ $data->spesifikasi_material }}</td>
+                            <td>{{ $data->kode_material ?? '-' }}</td>
+                            <td>{{ $data->nama_material ?? '-' }}</td>
+                            <td>{{ $data->spesifikasi_material ?? '-' }}</td>
 
-                            @if (0)
-                            <td class="text-center bg-danger">{{$data->quantity}}</td>
+                            {{-- Penanganan untuk nilai quantity --}}
+                            @if ($data->quantity === 0)
+                            <td class="text-center bg-danger">{{ $data->quantity }}</td>
                             @else
-                            <td class="text-center">{{$data->quantity}}</td>
+                            <td class="text-center">{{ $data->quantity ?? '-' }}</td>
                             @endif
 
-                            <td>{{ $data->jenis_quantity }}</td>
-                            <td>{{ $data->jenis_material }}</td>
-                            <td>Rp {{$data->harga_material}}</td>
-                            <td>{{ $data->project->nama_project }}</td>
-                            <td>{{ $data->project->sub_nama_project }}</td>
+                            <td>{{ $data->jenis_quantity ?? '-' }}</td>
+                            <td>{{ $data->jenis_material ?? '-' }}</td>
+                            <td>Rp {{ $data->harga_material ?? '-' }}</td>
+                            <td>{{ $data->project->nama_project ?? '-' }}</td>
+                            <td>{{ $data->project->sub_nama_project ?? '-' }}</td>
                             <td>
                                 <div class="mb-1">
-                                    <a href="{{ route('material.edit', $data->id) }}"><span class="btn btn-warning btn-sm mb-3">Edit</a></span>
-
+                                    <a href="{{ route('material.edit', $data->id) }}">
+                                        <span class="btn btn-warning btn-sm mb-3">Edit</span>
+                                    </a>
                                 </div>
-
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
+
                 </table>
             </div>
         </div>
@@ -190,8 +210,8 @@
                             <select class="form-select rounded-top @error('jenis_material') is-invalid @enderror"
                                 name="jenis_material" required>
                                 <option selected disabled>Pilih Jenis Material</option>
-                                <option value="Besar">Besar</option>
-                                <option value="Kecil">Kecil</option>
+                                <option value="Baru">Baru</option>
+                                <option value="Temporary">Temporary</option>
                                 @error('jenis_material')
                                 <div class="invalid-feedback">
                                     {{ $message }}

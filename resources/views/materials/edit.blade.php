@@ -74,7 +74,7 @@
 
 
             {{-- Data Lama Tidak Bisa di input --}}
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="" class="form-label">Kategori Nama Project Lama </label>
                 <input class="form-control rounded-top" type="text"
                     placeholder="{{ old('projet_id', $find_id->project->nama_project)}}" disabled>
@@ -90,7 +90,7 @@
                 <label for="" class="form-label">No JO  Project Lama </label>
                 <input class="form-control rounded-top" type="text"
                     placeholder="{{ old('projet_id', $find_id->project->no_jo_project)}}" disabled>
-            </div>
+            </div> --}}
             {{-- end --}}
 
 
@@ -98,20 +98,27 @@
 
 
             <div class="mb-3">
-                <label for="project_id" class="form-label" name="project_id">Kategori Nama Project baru </label>
-                <select class="form-select rounded-top @error('project_id') is-invalid @enderror"  value="{{ old('project_id', $find_id->project_id)}}" name="project_id" >
-                    @foreach ($data_project as $data )
-                    <option value="" disabled {{ old('project_id'), $find_id->project_id === null ? 'selected' : '' }}>Pilih salah satu</option>
-                    <option value="{{ $data->id }}" {{ old('project_id') == $find_id->project_id ? 'selected' : '' }}>{{ $data->nama_project }} | {{ $data->sub_nama_project }} | NO JO : {{ $data->no_jo_project }}</option>
+                <label for="project_id" class="form-label">Kategori Nama Project Baru</label>
+                <select class="form-select rounded-top @error('project_id') is-invalid @enderror" name="project_id">
+                    {{-- Opsi default jika project_id null --}}
+                    <option value="" disabled {{ $find_id->project_id === null ? 'selected' : '' }}>Pilih salah satu</option>
+
+                    {{-- Loop untuk daftar project --}}
+                    @foreach ($data_project as $data)
+                    <option value="{{ $data->id }}"
+                        {{ old('project_id', $find_id->project_id) == $data->id ? 'selected' : '' }}>
+                        {{ $data->nama_project }} | {{ $data->sub_nama_project }} | NO JO : {{ $data->no_jo_project }}
+                    </option>
                     @endforeach
                 </select>
+                {{-- Validasi error --}}
                 @error('project_id')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                 @enderror
-
             </div>
+
 
             <label for="harga_material" class="form-label" name="harga_material">Harga Materials </label>
                         <div class="input-group mb-3">

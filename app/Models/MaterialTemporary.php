@@ -17,7 +17,7 @@ class MaterialTemporary extends Model
         'kd_material_temporary',
         'nm_material_temporary',
         'spesifikasi_material_temporary',
-        'quantity_temporary',
+        'quantity',
         'jenis_quantity',
         'jenis_material',
     ];

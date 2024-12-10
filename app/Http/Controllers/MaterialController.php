@@ -6,6 +6,8 @@ use App\Models\Project;
 use App\Models\Materials;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use PHPExcel_IOFactory;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class MaterialController extends Controller
 {
@@ -43,7 +45,7 @@ class MaterialController extends Controller
             'quantity' => 'required|min:1|max:100',
             'jenis_material' => 'required|min:5|max:255',
             'harga_material' => 'required|min:1|max:255',
-            'project_id' => 'required',
+            'project_id' => 'nullable',
 
         ]);
 
@@ -67,6 +69,53 @@ class MaterialController extends Controller
         }
 
     }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $path = $file->getRealPath();
+
+            // Baca file Excel
+            $spreadsheet = IOFactory::load($path);
+            $sheet = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+            // Proses setiap baris (abaikan header)
+            foreach ($sheet as $index => $row) {
+                // Lewati baris header
+                if ($index === 0) continue;
+
+                // Validasi setiap baris data
+                if (
+                    empty($row['A']) || empty($row['B']) || empty($row['C']) ||
+                    empty($row['D']) || empty($row['E']) || empty($row['F']) ||
+                    empty($row['G'])
+                ) {
+                    // Skip jika ada kolom yang kosong
+                    continue;
+                }
+
+                Materials::create([
+                    'kode_material' => $row['A'],
+                    'nama_material' => $row['B'],
+                    'spesifikasi_material' => $row['C'],
+                    'quantity' => $row['D'],
+                    'jenis_quantity' => $row['E'],
+                    'jenis_material' => $row['F'],
+                    'harga_material' => $row['G'],
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Data berhasil diimpor!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('delete', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
 
     /**
      * Display the specified resource.
@@ -103,7 +152,7 @@ class MaterialController extends Controller
             'quantity'              => 'required|min:1|max:100',
             'jenis_material'        => 'min:5|max:255',
             'harga_material'        => 'required|min:1|max:100',
-            'project_id'            => 'required',
+            'project_id'            => 'nullable',
 
         ]);
 

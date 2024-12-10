@@ -36,6 +36,7 @@ class ShippingItemController extends Controller
         //
         $data['title'] = 'Menu Tambah Barang Keluar Page';
         $data['sub_title'] = 'Barang Keluar';
+        $data['data_shipping'] = ShippingItemsDetail::all();
         $data['data_project'] = Project::all();
         return view('shipping_items.create',$data);
     }
@@ -53,6 +54,7 @@ class ShippingItemController extends Controller
         'description_items' => 'nullable',
     ]);
 
+    // dd($validated);
     Log::info('Validation passed:', $validated);
 
     DB::beginTransaction();
@@ -60,10 +62,10 @@ class ShippingItemController extends Controller
         if ($request->do_id) {
             $doDraft = ShippingItemsDetail::findOrFail($request->do_id);
         } else {
-            $doDraft = ShippingItem::where('user_id', Auth::user()->id)->where('do_no', 'draft')->first();
+            $doDraft = ShippingItem::where('user_id', Auth::user()->id)->where('kd_sj_brg_keluar', 'draft')->first();
             if (!$doDraft) {
                 $doDraft = new ShippingItem();
-                $doDraft->do_no = 'draft';
+                $doDraft->kd_sj_brg_keluar = 'draft';
                 $doDraft->user_id = Auth::user()->id;
                 $doDraft->save();
             }
@@ -110,7 +112,7 @@ class ShippingItemController extends Controller
             }
 
             $doDraft->kd_sj_brg_keluar          = $this->generatKdJsBrngKeluar();
-            $doDraft->date_delivery                   = $request->date_delivery;
+            $doDraft->date_delivery             = $request->date_delivery;
             $doDraft->to                        = $request->to;
             $doDraft->description_stuff         = $request->description_stuff;
 
@@ -138,6 +140,7 @@ class ShippingItemController extends Controller
     {
         $data['title'] = 'Menu Edit Barang Keluar Page';
         $data['sub_title'] = 'Barang Keluar';
+        $data['do'] = ShippingItemsDetail::findOrFail($id);
         $data['find_id'] = ShippingItem::findOrFail($id);
         $data['data_project'] = Project::all();
         return view('shipping_items.edit',$data);
