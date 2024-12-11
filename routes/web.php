@@ -18,6 +18,7 @@ use App\Http\Controllers\MenuProjectController;
 use App\Http\Controllers\ShippingItemController;
 use App\Http\Controllers\ToolsController;
 use App\Models\ConsumableIssuance;
+use App\Models\Consumables;
 use App\Models\HydrotestMaterialLending;
 use App\Models\MaterialTemporary;
 use Faker\Guesser\Name;
@@ -71,6 +72,7 @@ Route::middleware('auth')->group(function (){
         Route::post('create',[ConsumableController::class, 'store'])->name('create');
         Route::get('edit/{id}',[ConsumableController::class, 'edit'])->name('edit');
         Route::patch('update{id}',[ConsumableController::class, 'update'])->name('update');
+        Route::post('/import',[ConsumableController::class, 'import'])->name('import');
 
     });
 
@@ -79,6 +81,7 @@ Route::middleware('auth')->group(function (){
         Route::post('create',[ToolsController::class, 'store'])->name('create');
         Route::get('edit/{id}',[ToolsController::class, 'edit'])->name('edit');
         Route::patch('update/{id}',[ToolsController::class, 'update'])->name('update');
+        Route::post('/import',[ToolsController::class, 'import'])->name('import');
     });
 
 

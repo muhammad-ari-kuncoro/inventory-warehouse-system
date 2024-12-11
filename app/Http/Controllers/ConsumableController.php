@@ -6,6 +6,8 @@ use App\Models\Consumables;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use PHPExcel_IOFactory;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 class ConsumableController extends Controller
 {
     /**
@@ -43,7 +45,7 @@ class ConsumableController extends Controller
             'quantity' => 'required|min:1|max:100',
             'jenis_consumable' => 'required|min:5|max:255',
             'harga_consumable' => 'required|min:1|max:255',
-            'project_id' => 'required',
+            'project_id' => 'nullable',
 
         ]);
         try {
@@ -63,6 +65,51 @@ class ConsumableController extends Controller
             // Simpan pesan error jika terjadi kesalahan
             return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
 
+        }
+    }
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $path = $file->getRealPath();
+
+            // Baca file Excel
+            $spreadsheet = IOFactory::load($path);
+            $sheet = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+            // Proses setiap baris (abaikan header)
+            foreach ($sheet as $index => $row) {
+                // Lewati baris header
+                if ($index === 0) continue;
+
+                // Validasi setiap baris data
+                if (
+                    empty($row['A']) || empty($row['B']) || empty($row['C']) ||
+                    empty($row['D']) || empty($row['E']) || empty($row['F']) ||
+                    empty($row['G'])
+                ) {
+                    // Skip jika ada kolom yang kosong
+                    continue;
+                }
+
+                Consumables::create([
+                    'kode_consumable' => $row['A'],
+                    'nama_consumable' => $row['B'],
+                    'spesifikasi_consumable' => $row['C'],
+                    'quantity' => $row['D'],
+                    'jenis_quantity' => $row['E'],
+                    'jenis_consumable' => $row['F'],
+                    'harga_consumable' => $row['G'],
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Data berhasil diimpor!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('delete', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 

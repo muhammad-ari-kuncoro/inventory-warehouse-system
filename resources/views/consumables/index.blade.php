@@ -42,15 +42,33 @@
 
 
         <div class="row align-items-center">
-            <!-- Print Button -->
-            <div class="row">
-                <!-- Dropdown Filter -->
-                <div class="col-sm-auto mb-3">
+               <!-- Print Button -->
+               <div class="row align-items-center mb-3">
+                <!-- Tombol Tambah Data -->
+                <div class="col-md-6 d-flex justify-content-start">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Tambah Data
                     </button>
                 </div>
+
+                <!-- Form Import Data -->
+                <div class="col-md-6 d-flex justify-content-end">
+                    <form action="{{ route('consumable.import') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
+                        @csrf
+                        <div class="me-2">
+                            <label for="importFile" class="form-label mb-0">Import Data Excel:</label>
+                            <input type="file" class="form-control form-control-sm @error('file') is-invalid @enderror" id="importFile" name="file" required>
+                            @error('file')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-success btn-sm">Import Data</button>
+                    </form>
+                </div>
             </div>
+
                 <div class="row">
 
                     <div class="col-md-3 mb-3">
@@ -104,8 +122,8 @@
                             <td class="text-center">{{$data->jenis_quantity}}</td>
                             <td>{{$data->jenis_consumable}}</td>
                             <td class="text-center">Rp.{{$data->harga_consumable}}</td>
-                            <td>{{$data->project->nama_project}}</td>
-                            <td class="text-center">{{$data->project->sub_nama_project}} </td>
+                            <td>{{$data->project->nama_project ?? '-' }}</td>
+                            <td class="text-center">{{$data->project->sub_nama_project ?? '-' }} </td>
                             <td>
                                 <div class="mb-auto">
                                     <a href="{{route('consumable.edit',$data->id)}}" class="btn btn-warning btn-sm">Edit</a>

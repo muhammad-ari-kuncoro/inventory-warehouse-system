@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Tools;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use PHPExcel_IOFactory;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ToolsController extends Controller
 {
@@ -68,6 +70,52 @@ class ToolsController extends Controller
 
         }
 
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $path = $file->getRealPath();
+
+            // Baca file Excel
+            $spreadsheet = IOFactory::load($path);
+            $sheet = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+            // Proses setiap baris (abaikan header)
+            foreach ($sheet as $index => $row) {
+                // Lewati baris header
+                if ($index === 0) continue;
+
+                // Validasi setiap baris data
+                if (
+                    empty($row['A']) || empty($row['B']) || empty($row['C']) ||
+                    empty($row['D']) || empty($row['E']) || empty($row['F']) ||
+                    empty($row['G'])
+                ) {
+                    // Skip jika ada kolom yang kosong
+                    continue;
+                }
+
+                Tools::create([
+                    'kode_alat' => $row['A'],
+                    'nama_alat' => $row['B'],
+                    'spesifikasi_alat' => $row['C'],
+                    'jenis_alat' => $row['D'],
+                    'tipe_alat' => $row['E'],
+                    'quantity' => $row['F'],
+                    'jenis_quantity' => $row['G'],
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Data berhasil diimpor!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('delete', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
