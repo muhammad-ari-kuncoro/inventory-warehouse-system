@@ -77,7 +77,26 @@
     <link rel="stylesheet" href="{{ asset('asset/vendor/libs/apex-charts/apex-charts.css') }}" />
 
     <!-- Page CSS -->
+    <style>
+     #preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Background gelap transparan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    }
 
+    .hidden {
+    display: none;
+    }
+
+    </style>
+    {{-- GIni aja, karena dia global scope oke apa lan terus nanti, gw sibuk awkwkw --}}
     <!-- Helpers -->
     <script src="{{ asset('asset/vendor/js/helpers.js') }}"></script>
 

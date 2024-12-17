@@ -225,6 +225,21 @@
     <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
     <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                console.log('Preloader found. It will hide after 3 seconds...');
+                setTimeout(function () {
+                    preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
+                    console.log('Preloader hidden.');
+                }, 1500); // Durasi 3000 ms = 3 detik
+            } else {
+                console.error('Preloader element not found!');
+            }
+        });
+
+    </script>
+    <script>
         $(document).ready(function () {
             // Inisialisasi DataTable
             var table = $('#myTable7').DataTable({

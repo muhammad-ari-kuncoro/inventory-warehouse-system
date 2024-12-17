@@ -1,6 +1,15 @@
 @include('layouts.partials.dashboard.header')
 
 <body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <button class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...
+          </button>
+    </div>
+
+
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
@@ -19,7 +28,7 @@
                         <div class="container">
                             <div class="row">
                                 @yield('container')
-                             
+
 
 
 

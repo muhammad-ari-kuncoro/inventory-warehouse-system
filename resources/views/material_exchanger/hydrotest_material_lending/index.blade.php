@@ -2,7 +2,7 @@
 @section('container')
 <div class="card">
     <h5 class="card-header text-center mb-3">
-        Dashboard Menu Peminjaman Materials Hydrotest  Saat ini
+        Dashboard Menu Peminjaman Materials Hydrotest Saat ini
         <br>
         <span id="currentDateTime" class="ms-2 text-muted"></span>
     </h5>
@@ -43,57 +43,57 @@
                     <option value="" disabled>Nama Pengambil</option>
                     @foreach($data_tools as $data)
                     <option value="{{ $data->bagian_divisi }}">{{ $data->bagian_divisi }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div> --}}
-
-
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover display" id="myTable11">
-                <thead>
-                    <tr class="table-info text-center">
-                        <th>No</th>
-                        <th>Kode Peminjaman Material</th>
-                        <th>Tanggal Pengembalian</th>
-                        <th>Nama Materials</th>
-                        <th>Spesifikasi Materials</th>
-                        <th>Jenis Materials</th>
-                        <th>Nama Peminjam Materialsn</th>
-                        <th>Bagian Divisi</th>
-                        <th>Quantity</th>
-                        <th>Jenis Quantity</th>
-                        <th>Keterangan Material</th>
-                        <th>Aksi </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($Material_lending as $data )
-
-                    <tr>
-                        <td class="text-center">{{$loop->iteration}}</td>
-                        <td></td>
-                        <td class="text-center"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-center"></td>
-                        <td></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center "></td>
-                        <td>
-                            <div class="mb-1">
-                                <a href=""><span class="btn btn-primary btn-sm">Detail</a></span>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-
-                </tbody>
-            </table>
-        </div>
+        @endforeach
+        </select>
     </div>
+</div> --}}
+
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover display" id="myTable11">
+        <thead>
+            <tr class="table-info text-center">
+                <th>No</th>
+                <th>Kode Peminjaman Material</th>
+                <th>Tanggal Pengembalian</th>
+                <th>Nama Materials</th>
+                <th>Spesifikasi Materials</th>
+                <th>Jenis Materials</th>
+                <th>Nama Peminjam Materialsn</th>
+                <th>Bagian Divisi</th>
+                <th>Quantity</th>
+                <th>Jenis Quantity</th>
+                <th>Keterangan Material</th>
+                <th>Aksi </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($Material_lending as $data )
+
+            <tr>
+                <td class="text-center">{{$loop->iteration}}</td>
+                <td></td>
+                <td class="text-center"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-center"></td>
+                <td></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center "></td>
+                <td>
+                    <div class="mb-1">
+                        <a href=""><span class="btn btn-primary btn-sm">Detail</a></span>
+                    </div>
+                </td>
+            </tr>
+            @endforeach
+
+        </tbody>
+    </table>
+</div>
+</div>
 </div>
 
 @endsection
@@ -107,24 +107,38 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
 <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            console.log('Preloader found. It will hide after 3 seconds...');
+            setTimeout(function () {
+                preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
+                console.log('Preloader hidden.');
+            }, 1500); // Durasi 3000 ms = 3 detik
+        } else {
+            console.error('Preloader element not found!');
+        }
+    });
+
+</script>
 <script>
     $(document).ready(function () {
         // Inisialisasi DataTable
 
         var table = $('#myTable11').DataTable({
             dom: '<"d-flex justify-content-between"lBf>rtip', // Menempatkan tombol, filter, dan search secara sejajar
-            buttons: [
-                {
-                    extend: 'excel',
-                    text: 'Export Excel',
-                    className: 'btn btn-success btn-sm',
-                    exportOptions: {
-                        modifier: {
-                            search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
-                        }
+            buttons: [{
+                extend: 'excel',
+                text: 'Export Excel',
+                className: 'btn btn-success btn-sm',
+                exportOptions: {
+                    modifier: {
+                        search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
                     }
-                },
-            ],
+                }
+            }, ],
             layout: {
                 topStart: 'buttons'
             }
@@ -142,8 +156,13 @@
     function updateDateTime() {
         const now = new Date();
         const options = {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-            hour: '2-digit', minute: '2-digit', second: '2-digit'
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
         };
         document.getElementById('currentDateTime').textContent = now.toLocaleDateString('id-ID', options);
     }
@@ -154,15 +173,14 @@
     // Perbarui waktu setiap detik
     setInterval(updateDateTime, 1000);
 
-
-
 </script>
 <script>
-      $('.select-2').select2({
+    $('.select-2').select2({
         theme: "bootstrap-5",
         width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
         placeholder: $(this).data('placeholder'),
     });
+
 </script>
 
 

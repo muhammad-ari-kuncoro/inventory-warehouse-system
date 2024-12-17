@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('nama_peminjam');
             $table->string('kd_hydrotest_material_lending');
 
-            // $table->bigInteger('id_material_temporaries')->unsigned();
-            // $table->foreign('id_material_temporaries')->references('id')->on('material_temporaries');
+            $table->bigInteger('material_id')->unsigned();
+            $table->foreign('material_id')->references('id')->on('materials');
 
 
             $table->string('quantity');

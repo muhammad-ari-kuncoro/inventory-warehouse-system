@@ -15,10 +15,10 @@ class HydrotestMaterialLending extends Model
         'tgl_pinjam_material',
         'bagian_divisi',
         'nama_peminjam',
-        'kd_hydrotest_material_lending',
         'material_id',
         'quantity',
         'jenis_quantity',
+        'kd_hydrotest_material_lending',
         'jenis_material',
         'keterangan_material',
     ];
