@@ -52,7 +52,7 @@ class HydrotestMaterialLendingController extends Controller
             'keterangan_material'       => 'required|min:3|max:100',
         ]);
 
-        dd($request);
+        // dd($request);
 
         try {
             //code...

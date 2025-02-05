@@ -212,6 +212,22 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            console.log('Preloader found. It will hide after 3 seconds...');
+            setTimeout(function () {
+                preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
+                console.log('Preloader hidden.');
+            }, 1500); // Durasi 3000 ms = 3 detik
+        } else {
+            console.error('Preloader element not found!');
+        }
+    });
+
+</script>
+
+<script>
     $('.select-2').select2({
         theme: "bootstrap-5",
         width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',

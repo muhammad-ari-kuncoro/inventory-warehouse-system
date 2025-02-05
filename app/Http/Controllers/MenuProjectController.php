@@ -64,9 +64,14 @@ class MenuProjectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show($id)
     {
         //
+        $data['title'] = 'Edit Menu halaman';
+        $data['sub_title'] = 'Menu Project';
+        $data['find_id'] = Project::findOrFail($id);
+        return view('menu_project.detail', $data);
+
     }
 
     /**

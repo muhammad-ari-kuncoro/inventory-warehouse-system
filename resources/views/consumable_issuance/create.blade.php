@@ -16,7 +16,7 @@
 @endpush
 @section('container')
 
-<div class="row">
+<div class="row justify-content-center">
     <!-- Card 2: Detail Barang -->
     <div class="col-md-6">
          @if (session('success'))
@@ -149,6 +149,22 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            console.log('Preloader found. It will hide after 3 seconds...');
+            setTimeout(function () {
+                preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
+                console.log('Preloader hidden.');
+            }, 1500); // Durasi 3000 ms = 3 detik
+        } else {
+            console.error('Preloader element not found!');
+        }
+    });
+
+</script>
 
 <script>
     $('.select-2').select2({

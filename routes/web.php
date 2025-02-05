@@ -22,6 +22,7 @@ use App\Models\Consumables;
 use App\Models\HydrotestMaterialLending;
 use App\Models\MaterialTemporary;
 use Faker\Guesser\Name;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,7 @@ Route::post('/login_page',[LoginController::class,'authentication'])->name('logi
 Route::middleware('auth')->group(function (){
     // Route Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/viewProfile',[DashboardController::class, 'viewProfil'])->name('viewProfile');
 
       // Route Project Menu
     Route::prefix('project')->name('project.')->group(function(){
@@ -53,6 +55,7 @@ Route::middleware('auth')->group(function (){
         Route::get('edit/{id}', [MenuProjectController::class, 'edit'])->name('edit');
         Route::patch('update/{id}', [MenuProjectController::class, 'update'])->name('update');
         Route::get('/search',[MenuProjectController::class, 'index'])->name('search');
+        Route::get('/detail/{id}',[MenuProjectController::class,'show'])->name('detail');
 
 
     });

@@ -171,6 +171,13 @@
               </a>
           </li>
 
+          <li class="menu-item {{ ($sub_title === "Pengembalian Materials Hydrotest")  ? 'active' : ''}}">
+            <a href="" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-minus-front"></i>
+                <div data-i18n="Analytics">Pengembalian Materials HydroTest</div>
+            </a>
+        </li>
+
           {{-- <li class="menu-item {{ ($sub_title === "")  ? 'active' : ''}}">
             <a href="" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-minus-front"></i>

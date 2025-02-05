@@ -1,6 +1,17 @@
 @extends('layouts.dashboard-layout')
 @section('container')
 <div class="card">
+    <div class="card-header bg-light">
+        <!-- Breadcrumb Navigation -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ route('dashboard') }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active text-primary text-decoration-none" aria-current="page">Machines</li>
+            </ol>
+        </nav>
+    </div>
     <h5 class="card-header text-center">
         Dashboard Menu Good Received (Surat Jalan)
         <br>
@@ -100,7 +111,7 @@
                                             class="btn btn-warning btn-sm mb-2"><i
                                                 class='bx bx-edit-alt'></i></a></span>
                                     <a href="{{ route('good-received.show',$data->id) }}"><span
-                                            class="btn btn-info btn-sm mb-2"><i class='bx bx-show'></i></a></span>
+                                            class="btn btn-success btn-sm mb-2"><i class='bx bx-show'></i></a></span>
                                     <form action="{{ route('good-received.destroy', $data->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')

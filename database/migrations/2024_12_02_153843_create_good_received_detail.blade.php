@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('jenis_barang');
             $table->integer('quantity');
             $table->string('quantity_jenis');
-            $table->string('keterangan_barang');
+            $table->string('keterangan_barang')->nullable();
 
             $table->timestamps();
         });

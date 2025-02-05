@@ -16,6 +16,12 @@ class DashboardController extends Controller
         return view('dashboard.index',$data);
     }
 
+    public function viewProfile()
+    {
+        $data['sub_title'] = 'View Profile Account';
+        $data['title'] = 'Dashboard Halama  n';
+        return view('dashboard.index',$data);
+    }
     public function logout()
     {
         Auth::logout();

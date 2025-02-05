@@ -143,16 +143,7 @@
                         }
                     }
                 },
-                {
-                    extend: 'pdf',
-                    text: 'Export PDF',
-                    className: 'btn btn-danger btn-sm',
-                    exportOptions: {
-                        modifier: {
-                            search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
-                        }
-                    }
-                },
+
             ],
             layout: {
                 topStart: 'buttons'

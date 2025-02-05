@@ -6,8 +6,8 @@
         <script>
           document.write(new Date().getFullYear());
         </script>
-        , made with ❤️ by
-        <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
+        , made  by
+        <a href="https://www.linkedin.com/in/muhamad-ari-kuncoro-72a605215/" target="_blank" class="footer-link fw-bolder">Muhammad Ari Kuncoro </a>
       </div>
       <div>
     </div>
@@ -33,10 +33,13 @@
 <script src="{{ asset('../asset/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
 
 <script src="{{ asset('../asset/vendor/js/menu.js') }}"></script>
+
+
 <!-- endbuild -->
 
 <!-- Vendors JS -->
 <script src="{{ asset('../asset/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+
 
 <!-- Main JS -->
 <script src="{{ asset('../asset/js/main.js') }}"></script>

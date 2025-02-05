@@ -2,7 +2,7 @@
 @section('container')
 
 <!-- Logo -->
-<h4 class="mb-2 text-center text-bold">Selamat Datang !</h4>
+
 <div class="app-brand justify-content-center">
 
     <span class="app-brand-logo demo">
@@ -66,5 +66,22 @@
         <button type="submit" class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
     </div>
 </form>
+
+
+   <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                console.log('Preloader found. It will hide after 3 seconds...');
+                setTimeout(function () {
+                    preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
+                    console.log('Preloader hidden.');
+                }, 1500); // Durasi 3000 ms = 3 detik
+            } else {
+                console.error('Preloader element not found!');
+            }
+        });
+
+    </script>
 
   @endsection

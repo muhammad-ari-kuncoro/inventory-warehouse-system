@@ -32,7 +32,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../asset/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{asset('asset/img/favicon/favicon.ico')}}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -43,23 +43,82 @@
     />
 
     <!-- Icons. Uncomment required icon fonts -->
-    <link rel="stylesheet" href="../asset/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="{{asset('asset/vendor/fonts/boxicons.css')}}" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="../asset/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="../asset/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="../asset/css/demo.css" />
+    <link rel="stylesheet" href="{{asset('asset/vendor/css/core.css')}}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{asset('asset/vendor/css/theme-default.css')}}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{asset('asset/css/demo.css')}}" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="../asset/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="{{asset('asset/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
 
     <!-- Page CSS -->
     <!-- Page -->
-    <link rel="stylesheet" href="../asset/vendor/css/pages/page-auth.css" />
+    <link rel="stylesheet" href="{{asset('asset/vendor/css/pages/page-auth.css')}}" />
     <!-- Helpers -->
-    <script src="../asset/vendor/js/helpers.js"></script>
+    <script src="{{asset('asset/vendor/js/helpers.js')}}"></script>
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="../asset/js/config.js"></script>
+    <script src="{{asset('asset/js/config.js')}}"></script>
+
+       <!-- Page CSS -->
+       <style>
+        #preloader {
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background-color: rgb(255, 255, 255); /* Background gelap transparan */
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       z-index: 9999;
+       }
+
+       .hidden {
+       display: none;
+       }
+
+       </style>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        border-radius: 15px;
+    }
+
+    .form-control {
+        border-radius: 20px;
+        padding: 10px 15px;
+    }
+
+    .btn-primary {
+        border-radius: 20px;
+        background-color: #007bff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    h3 {
+        font-size: 1.75rem;
+    }
+
+    @media (max-width: 767.98px) {
+        .d-md-flex {
+            display: none !important;
+        }
+    }
+</style>
+
+
+@stack('styles')
   </head>

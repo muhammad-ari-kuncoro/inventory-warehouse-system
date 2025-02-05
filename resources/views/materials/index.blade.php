@@ -35,22 +35,26 @@
     <div class="card-body">
 
 
-        <div class="row align-items-center">
-            <!-- Print Button -->
-            <div class="row align-items-center mb-3">
-                <!-- Tombol Tambah Data -->
-                <div class="col-md-6 d-flex justify-content-start">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Tambah Data
-                    </button>
-                </div>
 
-                <!-- Form Import Data -->
-                <div class="col-md-6 d-flex justify-content-end">
+        <div class="row align-items-center">
+            <!-- Dropdown Filter -->
+            <div class="col-md-9 col-lg-6 mb-3">
+                <label for="projectFilter" class="form-label">Filter Jenis Quantity:</label>
+                <select id="projectFilter" class="form-select w-auto" style="max-width: 300px;">
+                    <option value="">Semua Jenis</option>
+                    <option value="Besar">Besar</option>
+                    <option value="Kecil">Kecil</option>
+                </select>
+            </div>
+
+        </div>
+            <!-- Form Import Data -->
+            <div class="row">
+                <div class="col-xs-9 justify-content-start">
                     <form action="{{ route('material.import') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
                         @csrf
-                        <div class="me-2">
-                            <label for="importFile" class="form-label mb-0">Import Data Excel:</label>
+                        <div class="mb-4">
+                            <label for="importFile" class="form-label">Import Data Excel:</label>
                             <input type="file" class="form-control form-control-sm @error('file') is-invalid @enderror" id="importFile" name="file" required>
                             @error('file')
                             <div class="invalid-feedback">
@@ -61,20 +65,17 @@
                         <button type="submit" class="btn btn-success btn-sm">Import Data</button>
                     </form>
                 </div>
-            </div>
-
-                <div class="row">
-
-                    <div class="col-md-3 mb-3">
-                        <label for="projectFilter" class="form-label">Filter Jenis quantity:</label>
-                        <select id="projectFilter" class="form-select">
-                            <option value="">Semua Jenis</option>
-                            <option value="Besar">Besar</option>
-                            <option value="Kecil">Kecil</option>
-
-                    </select>
+                <div class="col-xs-9 mt-3 d-flex">
+                    <a href="" class="btn btn-success">Export Data</a>
                 </div>
+                <!-- Button Tambah Data -->
+            <div class="col-xs-6 mb-3 d-flex justify-content-end">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Tambah Data
+                </button>
             </div>
+            </div>
+
             <!-- Add Button -->
 
 
@@ -124,7 +125,8 @@
                             <td>
                                 <div class="mb-1">
                                     <a href="{{ route('material.edit', $data->id) }}">
-                                        <span class="btn btn-warning btn-sm mb-3">Edit</span>
+                                        <span class="btn btn-warning btn-sm mb-3"><i
+                                            class='bx bx-edit-alt'></i></span>
                                     </a>
                                 </div>
                             </td>
@@ -176,7 +178,7 @@
                         <div class="mb-3">
                             <label for="quantity" class="form-label">Quantity Materials</label>
                             <input class="form-control rounded-top @error('quantity') is-invalid @enderror"
-                                type="number" name="quantity" placeholder="Harap Di Isi Quantity Material" required>
+                                type="number" name="quantity" placeholder="Harap Di Isi Quantity Material" required min="1">
                             @error('quantity')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -295,21 +297,8 @@
         $(document).ready(function () {
             // Inisialisasi DataTable
             var table = $('#myTable7').DataTable({
-                dom: '<"d-flex justify-content-between"lBf>rtip', // Menempatkan tombol, filter, dan search secara sejajar
-                buttons: [{
-                        extend: 'excel',
-                        text: 'Export Excel',
-                        className: 'btn btn-success btn-sm',
-                        exportOptions: {
-                            modifier: {
-                                search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
-                            }
-                        }
-                    },
-                ],
-                layout: {
-                    topStart: 'buttons'
-                },
+
+
                 drawCallback: function () {
                     // Loop melalui semua baris tabel setelah DataTable digambar ulang
                     $('#myTable7 tbody tr').each(function () {

@@ -77,7 +77,7 @@
                     <select class="form-select select-2 @error('material_id') is-invalid @enderror" name="material_id" data-placeholder="Pilih Salah Satu">
                         @foreach ($data_materials as $data )
                         <option></option>
-                        <option value="{{$data->id}}">{{$data->nama_material}} | {{$data->spesifikasi_material}} | {{$data->quantity}} ({{$data->jenis_quantity}})</option>
+                        <option value="{{$data->id}}">{{$data->nama_material}} | {{$data->spesifikasi_material}} | {{$data->quantity}} ({{$data->jenis_quantity}}) | {{$data->jenis_material}}  </option>
                         @endforeach
                     </select>
                     @error('material_id')
@@ -163,6 +163,22 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            console.log('Preloader found. It will hide after 3 seconds...');
+            setTimeout(function () {
+                preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
+                console.log('Preloader hidden.');
+            }, 1500); // Durasi 3000 ms = 3 detik
+        } else {
+            console.error('Preloader element not found!');
+        }
+    });
+
+</script>
 
 <script>
     $('.select-2').select2({

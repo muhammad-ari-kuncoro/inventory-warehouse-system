@@ -43,7 +43,7 @@ class MaterialController extends Controller
             'spesifikasi_material' => 'required|min:5|max:255',
             'jenis_quantity' => 'required|min:1|max:255',
             'quantity' => 'required|min:1|max:100',
-            'jenis_material' => 'required|min:5|max:255',
+            'jenis_material' => 'required|min:1|max:255',
             'harga_material' => 'required|min:1|max:255',
             'project_id' => 'nullable',
 

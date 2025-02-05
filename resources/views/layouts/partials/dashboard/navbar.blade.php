@@ -15,15 +15,7 @@
       </div>
 
       <ul class="navbar-nav flex-row align-items-center ms-auto">
-        <!-- Search Bar -->
-        <li class="nav-item me-3">
-          <div class="input-group">
-            <input type="text" class="form-control form-control-sm" placeholder="Search...">
-            <button class="btn btn-light btn-sm" type="button">
-              <i class="bx bx-search"></i>
-            </button>
-          </div>
-        </li>
+
 
         <!-- User -->
         <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -49,7 +41,7 @@
               </a>
             </li>
             <li><div class="dropdown-divider"></div></li>
-            <li><a class="dropdown-item" href="#"><i class="bx bx-user me-2"></i> <span class="align-middle">My Profile</span></a></li>
+            <li><a class="dropdown-item" href=""><i class="bx bx-user me-2"></i> <span class="align-middle">My Profile</span></a></li>
             <li><a class="dropdown-item" href="#"><i class="bx bx-cog me-2"></i> <span class="align-middle">Settings</span></a></li>
             <li><a class="dropdown-item" href="{{ route('logout_dashboard') }}"><i class="bx bx-power-off me-2"></i> <span class="align-middle">Log Out</span></a></li>
           </ul>

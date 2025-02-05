@@ -9,7 +9,7 @@
                 <li class="breadcrumb-item">
                     <a href="{{ route('dashboard') }}">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item active text-primary text-decoration-none" aria-current="page">Tools</li>
+                <li class="breadcrumb-item active text-primary text-decoration-none" aria-current="page">Machines</li>
             </ol>
         </nav>
     </div>

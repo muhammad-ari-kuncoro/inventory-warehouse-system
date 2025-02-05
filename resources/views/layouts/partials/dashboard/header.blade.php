@@ -84,7 +84,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Background gelap transparan */
+    background-color: rgb(255, 255, 255); /* Background gelap transparan */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -94,6 +94,73 @@
     .hidden {
     display: none;
     }
+
+    /* Atur ukuran gambar agar tidak terpotong */
+.logo-image {
+    width: auto; /* Sesuaikan lebar otomatis berdasarkan tinggi */
+    height: 90px; /* Tetapkan tinggi gambar */
+    object-fit: contain; /* Pastikan seluruh gambar ditampilkan tanpa crop */
+    display: block; /* Pastikan tidak ada margin atau spasi tambahan */
+    margin: 2 auto; /* Pusatkan gambar */
+}
+
+/* Pastikan elemen pembungkus gambar tidak memotong */
+.app-brand {
+    overflow: visible; /* Tidak memotong konten di dalam elemen */
+    text-align: center; /* Pusatkan konten */
+}
+
+/* Tambahkan jika ingin logo tetap terlihat saat di-scroll */
+.app-brand {
+    position: sticky; /* Tetap di posisi saat scroll */
+    background-color: white; /* Tambahkan warna latar belakang agar terlihat jelas */
+    padding: 10px 0;
+    }
+
+    <style>
+    .form-label {
+        font-weight: bold;
+    }
+
+    #projectFilter {
+        max-width: 100%; /* Agar select input tidak terlalu panjang */
+    }
+</style>
+<style>
+    #projectFilter {
+        max-width: 300px; /* Lebar maksimal dropdown */
+        min-width: 200px; /* Lebar minimal dropdown */
+    }
+
+    .form-label {
+        font-weight: bold; /* Supaya teks label lebih jelas */
+    }
+
+    .btn {
+        white-space: nowrap; /* Mencegah teks tombol memotong ke bawah */
+    }
+
+    form .form-control-sm {
+        max-width: 300px; /* Pastikan input file tidak terlalu panjang */
+    }
+</style>
+
+<style>
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-header {
+        border-radius: 10px 10px 0 0;
+    }
+    .form-control-plaintext {
+        padding: 0.375rem 0.75rem;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        background-color: #f8f9fa;
+    }
+</style>
+
 
     </style>
     {{-- GIni aja, karena dia global scope oke apa lan terus nanti, gw sibuk awkwkw --}}

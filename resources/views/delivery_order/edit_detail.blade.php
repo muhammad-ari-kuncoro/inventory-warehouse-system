@@ -88,7 +88,7 @@
 
             <div class="row mb-3">
                 <div class="col sm-4">
-                <a href="{{ route('delivery-order.create') }}" class="btn btn-secondary">Go Back</a>
+                <a href="{{ route('delivery-order.edit',$find_id->id) }}" class="btn btn-secondary">Go Back</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
 
@@ -100,3 +100,18 @@
 </div>
 
 @endsection
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            console.log('Preloader found. It will hide after 3 seconds...');
+            setTimeout(function () {
+                preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
+                console.log('Preloader hidden.');
+            }, 1500); // Durasi 3000 ms = 3 detik
+        } else {
+            console.error('Preloader element not found!');
+        }
+    });
+
+</script>
