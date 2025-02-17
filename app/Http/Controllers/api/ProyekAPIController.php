@@ -44,10 +44,31 @@ class ProyekAPIController extends Controller
             ], 500);
         }
     }
+
+
+    public function edit($id)
+    {
+        try {
+            // Cari data berdasarkan ID
+            $project = Project::findOrFail($id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data ditemukan!',
+                'data' => $project
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+                'error' => $e->getMessage()
+            ], 404);
+        }
+    }
+
+
     public function update(Request $request,$id)
     {
-
-
 
      // Validasi
      $request->validate([

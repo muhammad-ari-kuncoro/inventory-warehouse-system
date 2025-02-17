@@ -11,36 +11,28 @@ class UserAPIController extends Controller
 {
     public function login(Request $request)
     {
-        $validator = validator($request->all(), [
-            'username' => 'required',
-            'password' => 'required'
-        ]);
+          // Validasi request
+    $validateData = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|min:5|max:20'
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validasi gagal',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        // Cek apakah input "username" berbentuk email
-        $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-
-        // Coba login dengan email atau username
-        if (!Auth::attempt([$fieldType => $request->username, 'password' => $request->password])) {
-            return response()->json([
-                'message' => 'Username atau password salah'
-            ], 401);
-        }
-
+    if (Auth::attempt($validateData)) {
         $user = Auth::user();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('authToken')->plainTextToken;
 
         return response()->json([
-            'message' => 'Login berhasil',
+            'success' => true,
+            'message' => 'Login berhasil!',
             'token' => $token,
             'user' => $user
-        ]);
+        ], 200);
+    }
+
+    return response()->json([
+        'success' => false,
+        'message' => 'Login gagal, email atau password salah!'
+    ], 401);
     }
 
     public function logout(Request $request)

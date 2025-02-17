@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\MaterialAPIController;
 use App\Http\Controllers\api\ProyekAPIController;
 use App\Http\Controllers\api\UserAPIController;
 use App\Http\Controllers\ApiDataProyekController;
@@ -24,10 +25,22 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 Route::post('/login', [UserAPIController::class, 'login']);
-Route::post('/createApiProyek',[ProyekAPIController::class, 'store']);
 
-// bug tolong di perbaiki masalah ketika mengakses malah muncul halaman
-Route::put('/updateApiProyek/{id}', [ProyekAPIController::class, 'update']);
+Route::post('/createProyek',[ProyekAPIController::class, 'store']);
+Route::put('/update/{id}', [ProyekAPIController::class, 'update']);
+
+
+
+Route::prefix('project')->name('projectApi.')->group(function(){
+    // bug tolong di perbaiki masalah ketika mengakses malah muncul halaman
+    Route::delete('/delete/{id}',[ProyekAPIController::class, 'delete']);
+});
+
+Route::prefix('material')->name('materialApi.')->group(function(){
+    // bug
+    Route::post('/create',[MaterialAPIController::class, 'store']);
+
+});
 
 
 Route::middleware('auth:sanctum')->group(function () {
