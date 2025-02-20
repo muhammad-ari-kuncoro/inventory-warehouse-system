@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\api\ConsumableAPIController;
+use App\Http\Controllers\api\DeliveryOrderAPIController;
+use App\Http\Controllers\api\GoodReceivedAPIController;
 use App\Http\Controllers\api\MaterialAPIController;
 use App\Http\Controllers\api\ProyekAPIController;
 use App\Http\Controllers\api\UserAPIController;
@@ -7,6 +10,8 @@ use App\Http\Controllers\ApiDataProyekController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LoginUserController;
 use App\Http\Controllers\MenuProjectController;
+use App\Models\Consumables;
+use App\Models\DeliveryOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,20 +31,41 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::post('/login', [UserAPIController::class, 'login']);
 
-Route::post('/createProyek',[ProyekAPIController::class, 'store']);
-Route::put('/update/{id}', [ProyekAPIController::class, 'update']);
+Route::delete('/delete/{id}',[ProyekAPIController::class, 'delete']);
 
 
 
-Route::prefix('project')->name('projectApi.')->group(function(){
+
+
+Route::prefix('proyek')->group(function(){
+
+    // Route API Data Proyek
+    Route::post('/create-proyek',[ProyekAPIController::class, 'store']);
     // bug tolong di perbaiki masalah ketika mengakses malah muncul halaman
-    Route::delete('/delete/{id}',[ProyekAPIController::class, 'delete']);
+    Route::put('/update-proyek/{id}', [ProyekAPIController::class, 'update']);
+    Route::delete('/delete-api-proyek', [ProyekAPIController::class, 'delete']);
 });
 
-Route::prefix('material')->name('materialApi.')->group(function(){
-    // bug
-    Route::post('/create',[MaterialAPIController::class, 'store']);
+Route::prefix('material')->group(function(){
+    Route::post('/create-material',[MaterialAPIController::class, 'store']);
+    Route::put('/update-api-material',[MaterialAPIController::class, 'update']);
+    Route::delete('/delete-api-material',[MaterialAPIController::class,'delete']);
+});
 
+
+
+Route::prefix('consumable')->group(function(){
+    Route::post('/create-consumable',[ConsumableAPIController::class, 'store']);
+    Route::delete('/delete-api-consumable',[MaterialAPIController::class,'delete']);
+});
+
+
+Route::prefix('delivery-order')->group(function(){
+    Route::post('/create-delivery-order',[DeliveryOrderAPIController::class, 'store']);
+});
+
+Route::prefix('good-received')->group(function(){
+    Route::post('/create-good-received',[GoodReceivedAPIController::class, 'store']);
 });
 
 
