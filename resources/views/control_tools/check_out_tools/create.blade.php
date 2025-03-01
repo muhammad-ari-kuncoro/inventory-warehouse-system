@@ -39,8 +39,11 @@
 
                     <div class="mb-3">
                         <label for="bagian_divisi" class="form-label">Bagian Divisi</label>
-                        <input class="form-control rounded-top @error('bagian_divisi') is-invalid @enderror" type="text"
-                            name="bagian_divisi" placeholder="Harap Di Isi Bagian Divisi Pengambil ">
+                        <input class="form-control rounded-top @error('bagian_divisi') is-invalid @enderror"
+                               type="text"
+                               name="bagian_divisi"
+                               value="{{ Auth::user()->role }}"
+                               readonly>
                         @error('bagian_divisi')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -49,17 +52,20 @@
                     </div>
 
 
-
-
                     <div class="mb-3">
                         <label for="nama_peminjam_alat" class="form-label">Nama Peminjam</label>
-                        <input class="form-control rounded-top @error('nama_peminjam_alat') is-invalid @enderror" type="text" name="nama_peminjam_alat" placeholder="Harap Di Isi Nama Pengambil Consumable ">
+                        <input class="form-control rounded-top @error('nama_peminjam_alat') is-invalid @enderror"
+                               type="text"
+                               name="nama_peminjam_alat"
+                               value="{{ Auth::user()->username }}"
+                               readonly>
                         @error('nama_peminjam_alat')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                         @enderror
                     </div>
+
 
 
             </div>

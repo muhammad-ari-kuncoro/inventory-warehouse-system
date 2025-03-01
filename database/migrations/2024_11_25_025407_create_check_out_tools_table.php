@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('check_out_tools', function (Blueprint $table) {
             $table->id();
+
+            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->foreign("user_id")->references("id")->on("users");
+
             $table->string('tanggal_pengambilan');
             $table->string('bagian_divisi');
             $table->string('nama_peminjam_alat');

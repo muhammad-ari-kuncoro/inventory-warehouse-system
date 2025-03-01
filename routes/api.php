@@ -5,6 +5,7 @@ use App\Http\Controllers\api\DeliveryOrderAPIController;
 use App\Http\Controllers\api\GoodReceivedAPIController;
 use App\Http\Controllers\api\MaterialAPIController;
 use App\Http\Controllers\api\ProyekAPIController;
+use App\Http\Controllers\api\ToolsLoanCheckoutAPIController;
 use App\Http\Controllers\api\UserAPIController;
 use App\Http\Controllers\ApiDataProyekController;
 use App\Http\Controllers\LoginController;
@@ -69,10 +70,15 @@ Route::prefix('good-received')->group(function(){
 });
 
 
+
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserAPIController::class, 'logout']);
     Route::get('/getIdProyek/{id}',[ApiDataProyekController::class, 'showID']);
 
-
+    Route::prefix('checkout-checkin-tools')->group(function(){
+        Route::post('/checkout-tools',[ToolsLoanCheckoutAPIController::class, 'store']);
+    });
 
 });

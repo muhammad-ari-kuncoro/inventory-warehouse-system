@@ -30,6 +30,12 @@ class CheckOutTools extends Model
         return $this->belongsTo(Tools::class);
     }
 
+     // Relasi ke tabel Tools
+     public function user()
+     {
+         return $this->belongsTo(User::class);
+     }
+
 
 
     // Event lifecycle model
