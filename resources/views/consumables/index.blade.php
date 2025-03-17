@@ -174,7 +174,7 @@
                         <div class="mb-3">
                             <label for="quantity" class="form-label">Quantity Consumable</label>
                             <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number"
-                                name="quantity" placeholder="Harap Di Isi Quantity Material" required>
+                                name="quantity" placeholder="Harap Di Isi Quantity Material" required min="1">
                             @error('quantity')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -224,7 +224,7 @@
                         <label for="harga_consumable" class="form-label" name="harga_consumable">Harga Consumable </label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Rp</span>
-                            <input type="text" class="form-control" name="harga_consumable" id="hargaConsumable" aria-label="Amount (to the nearest Rupiah)" oninput="formatCurrency(this)">
+                            <input type="text" class="form-control" name="harga_consumable" id="hargaConsumable" aria-label="Amount (to the nearest Rupiah)" oninput="formatCurrency(this)" min="1">
                             <span class="input-group-text">.00</span>
                         </div>
 

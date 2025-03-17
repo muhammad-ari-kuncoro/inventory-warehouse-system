@@ -15,6 +15,16 @@ class DeliveryOrderAPIController extends Controller
     //
     public function storeItem(Request $request)
     {
+          // Pastikan user terautentikasi dengan JWT
+          $user = auth()->user();
+          if (!$user) {
+              return response()->json([
+                  'success' => false,
+                  'message' => 'Unauthorized. Silakan login untuk mengakses API.',
+              ], 401);
+          }
+
+
         $request->validate([
             'item_description' => 'required|string',
             'item_size' => 'nullable|string',
@@ -72,6 +82,15 @@ class DeliveryOrderAPIController extends Controller
     }
     public function store(Request $request)
     {
+          // Pastikan user terautentikasi dengan JWT
+          $user = auth()->user();
+          if (!$user) {
+              return response()->json([
+                  'success' => false,
+                  'message' => 'Unauthorized. Silakan login untuk mengakses API.',
+              ], 401);
+          }
+
         $request->validate([
             'tanggal_pengiriman' => 'required|date',
             'penerima' => 'required|string|min:1|max:255',

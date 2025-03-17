@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ProyekAPIController extends Controller
@@ -12,6 +13,14 @@ class ProyekAPIController extends Controller
     //
     public function store(Request $request)
     {
+         // Pastikan user terautentikasi dengan JWT
+         $user = auth()->user();
+         if (!$user) {
+             return response()->json([
+                 'success' => false,
+                 'message' => 'Unauthorized. Silakan login untuk mengakses API.',
+             ], 401);
+         }
         // Validasi
         $request->validate([
             'nama_project' => 'required|min:5|max:255',
@@ -45,9 +54,17 @@ class ProyekAPIController extends Controller
         }
     }
 
-
     public function edit($id)
     {
+        // Pastikan user terautentikasi dengan Sanctum
+        $user = Auth::guard('sanctum')->user();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Silakan login untuk mengakses API.',
+            ], 401);
+        }
+
         try {
             // Cari data berdasarkan ID
             $project = Project::findOrFail($id);
@@ -66,18 +83,25 @@ class ProyekAPIController extends Controller
         }
     }
 
-
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
+        // Pastikan user terautentikasi dengan Sanctum
+        $user = Auth::guard('sanctum')->user();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Silakan login untuk mengakses API.',
+            ], 401);
+        }
 
-     // Validasi
-     $request->validate([
-        'nama_project' => 'required|min:5|max:255',
-        'sub_nama_project' => 'required|min:5|max:255',
-        'kategori_project' => 'required|min:5|max:255',
-        'no_jo_project' => 'required|min:5|max:255',
-        'no_po_project' => 'required|min:3|max:255'
-    ]);
+        // Validasi
+        $request->validate([
+            'nama_project'     => 'required|min:3|max:255',
+            'sub_nama_project' => 'required|min:3|max:255',
+            'kategori_project' => 'required|min:3|max:255',
+            'no_jo_project'    => 'required|min:3|max:255',
+            'no_po_project'    => 'required|min:3|max:255'
+        ]);
 
         try {
             // Cari data berdasarkan ID
@@ -103,7 +127,7 @@ class ProyekAPIController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil diperbarui!',
-                'data' => $project
+                'data'    => $project
             ], 200);
 
         } catch (\Throwable $e) {
@@ -112,7 +136,7 @@ class ProyekAPIController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memperbarui data!',
-                'error' => 'Silakan coba lagi nanti.'
+                'error'   => 'Silakan coba lagi nanti.'
             ], 500);
         }
     }

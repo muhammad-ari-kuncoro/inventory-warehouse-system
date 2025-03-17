@@ -12,6 +12,15 @@ class ConsumableAPIController extends Controller
     //
     public function store(Request $request)
     {
+            // Pastikan user terautentikasi dengan JWT
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Silakan login untuk mengakses API.',
+            ], 401);
+        }
+
         // Validasi Input
         $request->validate([
             'nama_consumable' => 'required|min:5|max:255',
@@ -20,11 +29,11 @@ class ConsumableAPIController extends Controller
             'quantity' => 'required|min:1|max:100',
             'jenis_consumable' => 'required|min:5|max:255',
             'harga_consumable' => 'required|min:1|max:255',
-            'project_id' => 'nullable|exists:projects,id', // Pastikan project_id valid jika ada
+            'project_id' => 'nullable'
         ]);
 
         try {
-            // Simpan Data
+            // Simpan Data Consumable
             $consumable = Consumables::create([
                 'nama_consumable' => $request->nama_consumable,
                 'spesifikasi_consumable' => $request->spesifikasi_consumable,
@@ -32,7 +41,7 @@ class ConsumableAPIController extends Controller
                 'quantity' => $request->quantity,
                 'jenis_consumable' => $request->jenis_consumable,
                 'harga_consumable' => $request->harga_consumable,
-                'project_id' => $request->project_id
+                'project_id' => $request->project_id,
             ]);
 
             // Response JSON Berhasil
@@ -56,6 +65,15 @@ class ConsumableAPIController extends Controller
     }
     public function update(Request $request, $id)
     {
+            // Pastikan user terautentikasi dengan JWT
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Silakan login untuk mengakses API.',
+            ], 401);
+        }
+
         // Validasi Input
         $request->validate([
             'nama_consumable'        => 'required|min:5|max:255',
@@ -64,7 +82,7 @@ class ConsumableAPIController extends Controller
             'quantity'               => 'required|min:1|max:100',
             'jenis_consumable'       => 'required|min:5|max:255',
             'harga_consumable'       => 'required|min:1|max:255',
-            'project_id'             => 'nullable|exists:projects,id', // Pastikan project_id valid jika ada
+            'project_id'             => 'nullable', // Pastikan project_id valid jika ada
         ]);
 
         try {
@@ -79,7 +97,7 @@ class ConsumableAPIController extends Controller
                 ], 404);
             }
 
-            // Update data
+            // Update data consumable
             $consumable->update($request->only([
                 'nama_consumable',
                 'spesifikasi_consumable',
@@ -109,6 +127,7 @@ class ConsumableAPIController extends Controller
             ], 500);
         }
     }
+
 
 
 }
