@@ -10,6 +10,27 @@ use Illuminate\Support\Facades\Log;
 
 class ProyekAPIController extends Controller
 {
+    public function getdataAll()
+    {
+        $projects = Project::all();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data proyek  diambil',
+            'data' => $projects
+        ]);
+    }
+
+    public function getdataID($id)
+    {
+        $projects = Project::find($id);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data id proyek berhasil diambil',
+            'data' => $projects
+        ]);
+    }
+
     //
     public function store(Request $request)
     {

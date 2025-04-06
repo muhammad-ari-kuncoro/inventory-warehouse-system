@@ -10,6 +10,25 @@ use Illuminate\Support\Facades\Log;
 class MaterialAPIController extends Controller
 {
     //
+    public function getdataAll()
+    {
+        $material = Materials::all();
+        return response()->json([
+            'success' => true,
+            'message' => 'Data material  diambil',
+            'data' => $material
+        ]);
+    }
+
+    public function getDataID($id){
+        $materialId = Materials::find($id);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data proyek  diambil',
+            'data' => $materialId
+        ]);
+    }
+
     public function store(Request $request){
         //Validasi
 

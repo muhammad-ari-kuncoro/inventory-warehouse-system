@@ -11,6 +11,24 @@ use Illuminate\Support\Facades\Log;
 class ToolsAPIController extends Controller
 {
     //
+    public function getdataAll()
+    {
+        $tool = Tools::all();
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Tools  diambil',
+            'data' => $tool
+        ]);
+    }
+
+    public function getdataID($id){
+        $tool = Tools::find($id);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Tools  diambil',
+            'data' => $tool
+        ]);
+    }
     public function store(Request $request)
     {
            // Pastikan user terautentikasi dengan JWT

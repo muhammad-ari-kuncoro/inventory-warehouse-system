@@ -11,6 +11,7 @@ use App\Http\Controllers\api\UserAPIController;
 use App\Http\Controllers\ApiDataProyekController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LoginUserController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MenuProjectController;
 use App\Http\Controllers\ToolsController;
 use App\Models\Consumables;
@@ -44,6 +45,9 @@ Route::prefix('proyek')->group(function(){
 
     Route::middleware('auth:sanctum')->group(function () {
         // Route API Data Proyek
+        Route::get('/getdata-proyek',[ProyekAPIController::class, 'getdataAll']);
+        Route::get('/getid-data/{id}',[ProyekAPIController::class, 'getdataID']);
+
         Route::post('/create-project',[ProyekAPIController::class, 'store']);
         Route::put('/update-project/{id}', [ProyekAPIController::class, 'update']);
         // bug tolong di perbaiki masalah ketika mengakses malah muncul halaman
@@ -53,10 +57,11 @@ Route::prefix('proyek')->group(function(){
 });
 
 Route::prefix('material')->group(function(){
-
     Route::middleware('auth:sanctum')->group(function(){
+        Route::get('/getdata-material',[MaterialController::class, 'getdataAll']);
+        Route::get('/getid-data/{id}',[MaterialController::class, 'getdataID']);
         Route::post('/create-material',[MaterialAPIController::class, 'store']);
-        Route::put('/update-api-material',[MaterialAPIController::class, 'update']);
+        Route::put('/update-api-material/{id}',[MaterialAPIController::class, 'update']);
         Route::delete('/delete-api-material',[MaterialAPIController::class,'delete']);
 
     });
@@ -66,6 +71,10 @@ Route::prefix('tools')->group(function(){
 
     Route::middleware('auth:sanctum')->group(function(){
         Route::post('/create-tools',[ToolsAPIController::class, 'store']);
+        Route::get('/getdata-tools',[ToolsController::class, 'getdataAll']);
+        Route::get('/getid-data/{id}',[ToolsController::class, 'getdataID']);
+
+        Route::put('/update-api-tools/{id}',[ToolsController::class,'update']);
         // Route::put('/update-api-material',[ToolsController::class, 'update']);
         // Route::delete('/delete-api-material',[MaterialAPIController::class,'delete']);
 
@@ -84,12 +93,26 @@ Route::prefix('consumable')->group(function(){
 
 
 Route::prefix('delivery-order')->group(function(){
-    Route::post('/create-delivery-order',[DeliveryOrderAPIController::class, 'store']);
+    Route::middleware('auth:sanctum')->group(function(){
+        Route::post('/create-delivery-order-store-item',[DeliveryOrderAPIController::class, 'storeItem']);
+        Route::post('/create-delivery-order-store',[DeliveryOrderAPIController::class, 'store']);
+        Route::post('/delete-draft',[DeliveryOrderAPIController::class, 'deleteDraft']);
+    });
 });
 
+
+
 Route::prefix('good-received')->group(function(){
-    Route::post('/create-good-received',[GoodReceivedAPIController::class, 'store']);
+    Route::middleware('auth:sanctum')->group(function(){
+        Route::post('/create-good-received-store',[GoodReceivedAPIController::class, 'store']);
+        Route::post('/create-good-received',[GoodReceivedAPIController::class, 'storeGoodReceived']);
+        Route::post('/create-good-received-store-item-update/{id}',[GoodReceivedAPIController::class, 'store']);
+
+    });
 });
+
+
+
 
 
 
