@@ -27,6 +27,14 @@
                   <div data-i18n="Analytics">Dashboard</div>
               </a>
           </li>
+          <li class="menu-item {{ ($sub_title === "Dashboard")  ? '' : ''}}">
+              <a href="" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-user"></i>
+                  <div data-i18n="Analytics">Created Users</div>
+              </a>
+          </li>
+
+
 
           <!-- Layouts project -->
           <li class="menu-header small text-uppercase">

@@ -120,7 +120,7 @@ Route::prefix('good-received')->group(function(){
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserAPIController::class, 'logout']);
-    Route::get('/getIdProyek/{id}',[ApiDataProyekController::class, 'showID']);
+    Route::get('/getIdProyek/{id}',[ProyekAPIController::class, 'showID']);
 
     Route::prefix('checkout-checkin-tools')->group(function(){
         Route::post('/checkout-tools',[ToolsLoanCheckoutAPIController::class, 'store']);
