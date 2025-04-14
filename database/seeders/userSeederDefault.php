@@ -24,6 +24,8 @@ class userSeederDefault extends Seeder
             'email' => 'administrator@gmail.com',
             'password' => bcrypt('admin123'),
             'role' => 'admin',
+            'posisi' => 'Administrator User',
+            'image' => '1.png'
         ],
 
     );

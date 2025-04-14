@@ -4,6 +4,7 @@ use App\Http\Controllers\CheckInToolsController;
 use App\Http\Controllers\CheckOutToolsController;
 use App\Http\Controllers\ConsumableController;
 use App\Http\Controllers\ConsumableIssuanceController;
+use App\Http\Controllers\CreatedUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
@@ -59,6 +60,15 @@ Route::middleware('auth')->group(function (){
 
 
     });
+
+    Route::prefix('userData')->name('userData.')->group(function (){
+        Route::get('/',[CreatedUserController::class, 'index'])->name('index');
+        Route::post('/create',[CreatedUserController::class, 'store'])->name('create');
+        Route::get('read-user/{id}',[CreatedUserController::class, 'show'])->name('read-user');
+        Route::put('update-image-user/{id}',[CreatedUserController::class, 'update'])->name('update-image-user');
+    });
+
+
     //   Route Stock (Menu Material , Menu Consumable , Menu Tools)
     Route::prefix('material')->name('material.')->group(function(){
         Route::get('/',[MaterialController::class, 'index'])->name('index');
