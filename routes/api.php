@@ -53,8 +53,8 @@ Route::prefix('proyek')->group(function(){
 
 Route::prefix('material')->group(function(){
     Route::middleware('auth:sanctum')->group(function(){
-        Route::get('/getdata-material',[MaterialController::class, 'getdataAll']);
-        Route::get('/getid-data/{id}',[MaterialController::class, 'getdataID']);
+        Route::get('/getdata-material',[MaterialAPIController::class, 'getdataAll']);
+        Route::get('/getid-data/{id}',[MaterialAPIController::class, 'getdataID']);
         Route::post('/create-material',[MaterialAPIController::class, 'store']);
         Route::put('/update-api-material/{id}',[MaterialAPIController::class, 'update']);
         Route::delete('/delete-api-material',[MaterialAPIController::class,'delete']);
