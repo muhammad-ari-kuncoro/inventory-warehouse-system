@@ -9,7 +9,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ConsumableIssuanceApiController extends Controller
+class ConsumableIssuanceAPIController extends Controller
 {
     // GET: /api/consumable-issuance
     public function index()
@@ -28,7 +28,7 @@ class ConsumableIssuanceApiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tanggal_pengambilan' => 'required|date',
+            'tanggal_pengambilan' => 'required',
             'consumable_id' => 'required|exists:consumables,id',
             'project_id' => 'required|exists:menu_project,id',
             'quantity' => 'required|numeric|min:1',
@@ -88,7 +88,7 @@ class ConsumableIssuanceApiController extends Controller
         }
 
         $request->validate([
-            'tanggal_pengambilan' => 'required|date',
+            'tanggal_pengambilan' => 'required',
             'consumable_id' => 'required|exists:consumables,id',
             'project_id' => 'required|exists:menu_project,id',
             'quantity' => 'required|numeric|min:1',

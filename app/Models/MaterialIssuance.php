@@ -11,17 +11,7 @@ class MaterialIssuance extends Model
     use HasFactory;
 
     protected $table = 'material_issuance'; // Nama tabel
-    protected $fillable = [
-        'tanggal_pengambilan',
-        'nama_pengambil',
-        'bagian_divisi',
-        'kd_material_item',
-        'material_id',
-        'project_id',
-        'quantity',
-        'jenis_quantity',
-        'keterangan_material',
-    ];
+    protected $guarded = [];
 
     // Relasi ke tabel materials
     public function material()
@@ -33,6 +23,10 @@ class MaterialIssuance extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     // Event lifecycle model

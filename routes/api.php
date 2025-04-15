@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\ConsumableAPIController;
+use App\Http\Controllers\Api\ConsumableIssuanceAPIController;
 use App\Http\Controllers\api\DeliveryOrderAPIController;
 use App\Http\Controllers\api\GoodReceivedAPIController;
 use App\Http\Controllers\api\MaterialAPIController;
@@ -8,15 +9,9 @@ use App\Http\Controllers\api\ProyekAPIController;
 use App\Http\Controllers\api\ToolsAPIController;
 use App\Http\Controllers\api\ToolsLoanCheckoutAPIController;
 use App\Http\Controllers\api\UserAPIController;
-use App\Http\Controllers\ApiDataProyekController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\LoginUserController;
 use App\Http\Controllers\MaterialController;
-use App\Http\Controllers\MenuProjectController;
+use App\Http\Controllers\api\MaterialIssuanceAPIController;
 use App\Http\Controllers\ToolsController;
-use App\Models\Consumables;
-use App\Models\DeliveryOrder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -71,10 +66,9 @@ Route::prefix('tools')->group(function(){
 
     Route::middleware('auth:sanctum')->group(function(){
         Route::post('/create-tools',[ToolsAPIController::class, 'store']);
-        Route::get('/getdata-tools',[ToolsController::class, 'getdataAll']);
-        Route::get('/getid-data/{id}',[ToolsController::class, 'getdataID']);
-
-        Route::put('/update-api-tools/{id}',[ToolsController::class,'update']);
+        Route::get('/getdata-tools',[ToolsAPIController::class, 'getdataAll']);
+        Route::get('/getid-data/{id}',[ToolsAPIController::class, 'getdataID']);
+        Route::put('/update-api-tools/{id}',[ToolsAPIController::class,'update']);
         // Route::put('/update-api-material',[ToolsController::class, 'update']);
         // Route::delete('/delete-api-material',[MaterialAPIController::class,'delete']);
 
@@ -110,6 +104,23 @@ Route::prefix('good-received')->group(function(){
 
     });
 });
+
+
+Route::prefix('consumable-issuance')->group(function(){
+    Route::middleware('auth:sanctum')->group(function(){
+        Route::post('/create-consumable-issuance',[ConsumableIssuanceAPIController::class, 'store']);
+        Route::delete('/delete-consumable-issuance/{id}',[ConsumableIssuanceAPIController::class,'delete']);
+    });
+});
+
+
+Route::prefix('material-issuance')->group(function(){
+    Route::middleware('auth:sanctum')->group(function(){
+        Route::post('/create-material-issuance',[MaterialIssuanceAPIController::class, 'store']);
+        Route::delete('/delete-material-issuance/{id}',[MaterialIssuanceAPIController::class,'delete']);
+    });
+});
+
 
 
 
