@@ -122,8 +122,8 @@
                                 <option></option>
                                 @foreach ($materials as $material)
                                 <option value="{{ $material->id }}">{{ $material->nama_material }} |
-                                    {{$material->spesifikasi_material}} | ({{$material->quantity}})
-                                    {{$material->jenis_quantity}}</option>
+                                    {{$material->spesifikasi_material}} | Stok Saat Ini : ({{$material->quantity}})
+                                    {{$material->jenis_quantity}} | Kebutuhan Proyek: {{ $material->project->nama_project }} | {{ $material->project->sub_nama_project }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -135,8 +135,8 @@
                                 <option></option>
                                 @foreach ($consumables as $consumable)
                                 <option value="{{ $consumable->id }}">{{ $consumable->nama_consumable }} |
-                                    {{$consumable->spesifikasi_consumable}} | ({{$consumable->quantity}})
-                                    {{$consumable->jenis_quantity}}</option>
+                                    {{$consumable->spesifikasi_consumable}} | Stok Saat Ini : ({{$consumable->quantity}})
+                                    {{$consumable->jenis_quantity}} | Kebutuhan Proyek: {{ $consumable->project->nama_project }} | {{ $consumable->project->sub_nama_project }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -146,7 +146,7 @@
                             <select name="tools_id" class="form-select select-2" data-placeholder="Pilih Salah Satu">
                                 <option></option>
                                 @foreach ($tools as $tool)
-                                <option value="{{ $tool->id }}">{{ $tool->nama_alat }} | {{$tool->spesifikasi_alat}} |
+                                <option value="{{ $tool->id }}">{{ $tool->nama_alat }} | {{$tool->spesifikasi_alat}} | Stok Saat Ini :
                                     ({{$tool->quantity}}) {{$tool->jenis_quantity}}</option>
                                 @endforeach
                             </select>
