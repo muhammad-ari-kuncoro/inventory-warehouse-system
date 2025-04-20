@@ -11,6 +11,8 @@ use App\Http\Controllers\api\ToolsLoanCheckoutAPIController;
 use App\Http\Controllers\api\UserAPIController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\api\MaterialIssuanceAPIController;
+use App\Http\Controllers\api\ToolsCheckInController;
+use App\Http\Controllers\api\ToolsCheckoutController;
 use App\Http\Controllers\GoodsReceivedController;
 use App\Http\Controllers\ToolsController;
 use Illuminate\Support\Facades\Route;
@@ -133,18 +135,19 @@ Route::prefix('material-issuance')->group(function(){
 });
 
 // Route: Peminjaman Alat
-Route::prefix('tools-check-in-api')->group(function(){
+Route::prefix('tools-check-out-api')->group(function(){
     Route::middleware('auth:sanctum')->group(function(){
-        Route::post('/create-check-out-tools-api',[MaterialIssuanceAPIController::class, 'store']);
+        Route::get('/data-tools-check-out',[ToolsCheckoutController::class, 'index']);
+        Route::post('/create-data-tools-checkout',[ToolsCheckoutController::class, 'store']);
     });
 });
 
 
 // Route: Pengembalian Alat
-Route::prefix('material-issuance')->group(function(){
+Route::prefix('tools-check-in-api')->group(function(){
     Route::middleware('auth:sanctum')->group(function(){
-        Route::post('/create-material-issuance',[MaterialIssuanceAPIController::class, 'store']);
-        Route::delete('/delete-material-issuance/{id}',[MaterialIssuanceAPIController::class,'delete']);
+        Route::get('/data-tools-check-in',[ToolsCheckInController::class, 'index']);
+        Route::post('/data-tools-check-in',[ToolsCheckInController::class, 'store']);
     });
 });
 
