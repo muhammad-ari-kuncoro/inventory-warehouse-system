@@ -31,7 +31,6 @@ class MaterialAPIController extends Controller
 
     public function store(Request $request){
         //Validasi
-
         $user = auth()->user();
         if (!$user) {
             return response()->json([
@@ -51,7 +50,6 @@ class MaterialAPIController extends Controller
             'project_id' => 'nullable',
 
         ]);
-
              // Menangani Data
              try {
                 $material = Materials::create([
@@ -70,17 +68,16 @@ class MaterialAPIController extends Controller
                     'data' => $material
                 ], 201);
 
-
             } catch (\Exception $e) {
-                // Log error untuk debugging
-            Log::error('Error saat menyimpan data: ' . $e->getMessage());
+                    // Log error untuk debugging
+                Log::error('Error saat menyimpan data: ' . $e->getMessage());
 
-                // Response JSON Gagal
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan saat menyimpan data!',
-                'error' => $e->getMessage()
-            ], 500);
+                    // Response JSON Gagal
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan saat menyimpan data!',
+                    'error' => $e->getMessage()
+                ], 500);
             }
         }
         public function update(Request $request , $id)
@@ -93,44 +90,52 @@ class MaterialAPIController extends Controller
                 ], 401);
             }
 
+            // Validasi input
             $request->validate([
                 'nama_material' => 'required|min:5|max:255',
                 'spesifikasi_material' => 'required|min:5|max:255',
                 'jenis_quantity' => 'required|min:1|max:255',
-                'quantity' => 'required|min:1|max:100',
+                'quantity' => 'required|integer|min:1|max:100',
                 'jenis_material' => 'required|min:1|max:255',
-                'harga_material' => 'required|min:1|max:255',
-                'project_id' => 'nullable',
-
+                'harga_material' => 'required|numeric|min:0',
+                'project_id' => 'nullable|exists:projects,id',
             ]);
 
             try {
-                // ambil data berdasarkan ID
+                // ambil data material berdasarkan ID
                 $material = Materials::find($id);
 
-                // kondisi jika data tidak ada
-                if(!$material){
+                if (!$material) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'data Tidak ditemukan'
-                    ]);
+                        'message' => 'Data material tidak ditemukan.',
+                    ], 404);
                 }
 
-                // update data material
-                 // Update data consumable
-            $material->update($request->only([
-                'nama_material',
-                'spesifikasi_material',
-                'jenis_quantity',
-                'quantity',
-                'jenis_material',
-                'harga_material',
-                'project_id'
-            ]));
-            } catch (\Throwable $th) {
-                //throw $th;
-            }
+                // Update data hanya dengan kolom yang diperbolehkan
+                $material->update($request->only([
+                    'nama_material',
+                    'spesifikasi_material',
+                    'jenis_quantity',
+                    'quantity',
+                    'jenis_material',
+                    'harga_material',
+                    'project_id'
+                ]));
 
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data material berhasil diperbarui.',
+                    'data' => $material,
+                ]);
+
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan saat memperbarui data.',
+                    'error' => $th->getMessage(),
+                ], 500);
+            }
 
         }
     }

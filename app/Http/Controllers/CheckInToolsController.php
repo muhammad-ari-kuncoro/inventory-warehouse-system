@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CheckInTools;
 use App\Http\Controllers\Controller;
+use App\Models\CheckOutTools;
 use App\Models\Tools;
 use Illuminate\Http\Request;
 
@@ -41,36 +42,28 @@ class CheckInToolsController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $request->validate([
-            'tanggal_pengembalian'   => 'required|min:3|max:100',
-            'bagian_divisi'         => 'required|min:3|max:100',
-            'nama_pengembalian'     => 'required|min:3|max:100',
-            'tool_id'               => 'required|exists:tools,id',
-            'quantity'              => 'required|numeric|min:1',
-            'jenis_quantity'        => 'required|min:1|max:100',
-            'keterangan_alat'       => 'required|min:3|max:100',
+
+    }
+    public function checkin($id) {
+        $peminjaman = CheckOutTools::findOrFail($id);
+
+        // Ambil data alat dari relasi
+        $alat = $peminjaman->tool;
+
+        // Tambahkan quantity yang dipinjam ke stok alat
+        $alat->quantity += $peminjaman->quantity;
+        $alat->save();
+
+        // Update status peminjaman
+        $peminjaman->update(['status_kembali' => true]);
+
+        // Simpan ke tabel pengembalian
+        CheckInTools::create([
+            'checkout_tool_id' => $peminjaman->id,
+            'tanggal_pengembalian' => now(),
         ]);
 
-        // dd($request);
-        try {
-            //code...
-            CheckInTools::create([
-                'tanggal_pengembalian'              => $request->tanggal_pengembalian,
-                'bagian_divisi'                     => $request->bagian_divisi,
-                'nama_pengembalian'                 => $request->nama_pengembalian,
-                'tool_id'                           => $request->tool_id,
-                'quantity'                          => $request->quantity,
-                'jenis_quantity'                    => $request->jenis_quantity,
-                'keterangan_alat'                   => $request->keterangan_alat,
-            ]);
-            return redirect()->route('check-in-tools.index')->with('success', 'Data berhasil ditambahkan!');
-        } catch (\Exception $e) {
-            //throw $th;
-            //erros jika data tidak sesuai
-            // Simpan pesan error jika terjadi kesalahan
-            return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
-        }
+        return redirect()->back()->with('success', 'Alat berhasil dikembalikan dan stok diperbarui.');
     }
 
     /**

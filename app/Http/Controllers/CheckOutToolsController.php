@@ -7,7 +7,9 @@ use App\Models\Consumables;
 use Illuminate\Http\Request;
 use App\Models\CheckOutTools;
 use App\Http\Controllers\Controller;
+use App\Models\CheckInTools;
 use App\Models\Tools;
+use Illuminate\Support\Facades\Auth;
 
 class CheckOutToolsController extends Controller
 {
@@ -20,7 +22,11 @@ class CheckOutToolsController extends Controller
         $data['sub_title'] = 'Peminjaman Alat';
         $data['title'] = 'Menu Peminjaman Alat Halaman';
         // $data['data_project'] = Project::all();
-        $data['data_tools'] = CheckOutTools::all();
+        $data['data_tools'] = CheckOutTools::where('status_kembali', false)
+        ->where('user_id', auth()->id()) // opsional, biar cuma lihat milik sendiri
+        ->with('tool')
+        ->get();
+
         return view('control_tools.check_out_tools.index',$data);
     }
 
@@ -42,38 +48,28 @@ class CheckOutToolsController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $request->validate([
-            'tanggal_pengambilan' => 'required|min:3|max:100',
-            'bagian_divisi' => 'required|min:3|max:100',
-            'nama_peminjam_alat' => 'required|min:3|max:100',
             'tool_id' => 'required|exists:tools,id',
-            'quantity' => 'required|numeric|min:1',
-            'jenis_quantity' => 'required|min:1|max:100',
-            'keterangan_alat' => 'required|min:3|max:100',
+            'quantity'  => 'required|integer|min:1',
         ]);
-        // dd($request);
 
-         // dd($request);
-         try {
-            //code...
-            CheckOutTools::create([
-                'tanggal_pengambilan'               => $request->tanggal_pengambilan,
-                'bagian_divisi'                     => $request->bagian_divisi,
-                'nama_peminjam_alat'                => $request->nama_peminjam_alat,
-                'tool_id'                           => $request->tool_id,
-                'quantity'                          => $request->quantity,
-                'jenis_quantity'                    => $request->jenis_quantity,
-                'keterangan_alat'                   => $request->keterangan_alat
-            ]);
-            return redirect()->route('check-out-tools.index')->with('success', 'Data berhasil ditambahkan!');
+        $alat = Tools::findOrFail($request->tool_id);
 
-        } catch (\Exception $e) {
-            //throw $th;
-            //erros jika data tidak sesuai
-            // Simpan pesan error jika terjadi kesalahan
-            return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
+        if ($request->quantity > $alat->quantity) {
+            return redirect()->back()->with('error', 'Jumlah yang diminta melebihi quantity tersedia.');
         }
+
+        // $alat->quantity -= $request->quantity;
+        $alat->save();
+
+        CheckOutTools::create([
+            'user_id'       => Auth::id(), // otomatis ambil user yg login
+            'tool_id'       => $request->tool_id,
+            'quantity'        => $request->quantity,
+            'tanggal_pengambilan'=> now()
+        ]);
+
+        return redirect()->route('check-out-tools.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**

@@ -50,20 +50,16 @@
 
 
         <div class="table-responsive">
-            <table class="table table-bordered table-hover display" id="myTable11">
+            <table class="table table-bordered table-hover display" id="myTable7">
                 <thead>
                     <tr class="table-info text-center">
                         <th>No</th>
-                        <th>Waktu Peminjaman</th>
                         <th>Kode Peminjam Alat</th>
                         <th>Tanggal Peminjaman</th>
                         <th>Nama Alat </th>
                         <th>Spesifikasi Alat</th>
-                        <th>Nama Peminjam</th>
-                        <th>Bagian Divisi</th>
                         <th>Quantity</th>
                         <th>Jenis Quantity</th>
-                        <th>Keterangan Barang</th>
                         <th>Aksi </th>
                     </tr>
                 </thead>
@@ -72,20 +68,23 @@
 
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>{{$data->created_at}}</td>
                         <td>{{ $data->kd_peminjam_tool }}</td>
                         <td class="text-center">{{ $data->tanggal_pengambilan }}</td>
                         <td>{{ $data->tool->nama_alat }}</td>
                         <td>{{ $data->tool->spesifikasi_alat }}</td>
-                        <td>{{ $data->nama_peminjam_alat }}</td>
-                        <td>{{ $data->bagian_divisi }}</td>
                         <td class="text-center">{{ $data->quantity }}</td>
-                        <td class="text-center ">{{ $data->jenis_quantity }}</td>
-                        <td>{{ $data->keterangan_alat }}</td>
+                        <td class="text-center ">{{ $data->tool->jenis_quantity }}</td>
                         <td>
                             <div class="mb-1">
                                 <a href="{{ route('check-out-tools.show',$data->id) }}"><span class="btn btn-primary btn-sm">Detail</a></span>
                             </div>
+                            @if(!$data->status_kembali)
+                            <form action="{{ route('check-in-tools.checkin', $data->id) }}" method="POST" onsubmit="return confirm('Apakah kamu yakin ingin mengembalikan alat ini?')">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-sm">Kembalikan</button>
+                            </form>
+                        @endif
+
                         </td>
                     </tr>
                     @endforeach
@@ -126,7 +125,7 @@
     $(document).ready(function () {
         // Inisialisasi DataTable
 
-        var table = $('#myTable11').DataTable({
+        var table = $('#myTable7').DataTable({
             dom: '<"d-flex justify-content-between"lBf>rtip', // Menempatkan tombol, filter, dan search secara sejajar
             buttons: [
                 {

@@ -8,11 +8,76 @@ use App\Models\DeliveryOrder;
 use Illuminate\Support\Facades\DB;
 use App\Models\DeliveryOrderDetail;
 use App\Http\Controllers\Controller;
+use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 class DeliveryOrderAPIController extends Controller
 {
     //
+
+    public function getdataALL()
+    {
+        try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized. Silakan login.'
+                ], 401);
+            }
+            $data_delivery_order = DeliveryOrder::where('do_no', '!=', 'draft')->get();
+            $data_project = Project::all();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data delivery order berhasil diambil.',
+                'data' => [
+                    'delivery_orders' => $data_delivery_order,
+                    'projects' => $data_project
+                ]
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil data.',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getdataDraft()
+    {
+        try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized. Silakan login.'
+                ], 401);
+            }
+
+            $data_project = Project::all();
+            $do_draft = DeliveryOrder::where('user_id', $user->id)
+                            ->where('do_no', 'draft')
+                            ->first();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data draft delivery order berhasil diambil.',
+                'data' => [
+                    'projects' => $data_project,
+                    'do_draft' => $do_draft
+                ]
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil data draft.',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
     public function storeItem(Request $request)
     {
           // Pastikan user terautentikasi dengan JWT
@@ -138,6 +203,13 @@ class DeliveryOrderAPIController extends Controller
     public function deleteDraft()
     {
         try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized. Silakan login untuk mengakses API.',
+                ], 401);
+            }
             // Cari draft DO berdasarkan user yang login
             $doDraft = DeliveryOrder::where('user_id', Auth::id())->where('do_no', 'draft')->first();
 
@@ -167,5 +239,94 @@ class DeliveryOrderAPIController extends Controller
             ], 500);
         }
     }
+
+    public function detilUpdateAPI($id)
+    {
+        try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized. Silakan login untuk mengakses API.',
+                ], 401);
+            }
+            $detail = DeliveryOrderDetail::findOrFail($id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Detail delivery order ditemukan',
+                'data' => $detail
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Detail tidak ditemukan',
+                'error' => $th->getMessage()
+            ], 404);
+        }
+    }
+    public function apiUpdateDetail(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'item_description' => 'required',
+                'item_size' => 'nullable',
+                'item_weight' => 'nullable',
+                'item_qty' => 'nullable',
+                'satuan_barang' => 'nullable',
+            ]);
+
+            $detail = DeliveryOrderDetail::findOrFail($id);
+
+            $detail->update([
+                'item_description' => trim($request->item_description),
+                'item_size' => $request->item_size,
+                'item_weight' => $request->item_weight,
+                'item_qty' => $request->item_qty,
+                'item_measurement' => $request->satuan_barang,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Detail berhasil diupdate',
+                'data' => $detail
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengupdate detail',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+    public function apiPrintPDF($id)
+{
+    try {
+        $deliveryOrder = DeliveryOrder::with('details')->findOrFail($id);
+
+        $totalQty = $deliveryOrder->details->sum('item_qty');
+        $totalWeight = $deliveryOrder->details->sum('item_weight');
+
+        $data['deliveryOrder'] = $deliveryOrder;
+        $data['totalQty'] = $totalQty;
+        $data['totalWeight'] = $totalWeight;
+
+        $pdf = Pdf::loadView('delivery_order.pdf', $data);
+
+        $fileName = preg_replace('/[\/\\\\]/', '_', $deliveryOrder->do_no) . '.pdf';
+
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="' . $fileName . '"');
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Gagal generate PDF',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
 
 }

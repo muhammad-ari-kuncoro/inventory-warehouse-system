@@ -26,132 +26,25 @@
             <div class="card-body">
                 <form action="{{ route('check-out-tools.store') }}" method="post">
                     @csrf
-                    <div class="mb-3">
-                        <label for="tanggal_pengambilan" class="form-label">Tanggal pengambilan</label>
-                        <input class="form-control rounded-top @error('tanggal_pengambilan') is-invalid @enderror" type="date"
-                            name="tanggal_pengambilan" placeholder="Harap Di Isi Tanggal pengambilan Consumbable">
-                        @error('tanggal_pengambilan')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="bagian_divisi" class="form-label">Bagian Divisi</label>
-                        <input class="form-control rounded-top @error('bagian_divisi') is-invalid @enderror"
-                               type="text"
-                               name="bagian_divisi"
-                               value="{{ Auth::user()->role }}"
-                               readonly>
-                        @error('bagian_divisi')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-
-
-                    <div class="mb-3">
-                        <label for="nama_peminjam_alat" class="form-label">Nama Peminjam</label>
-                        <input class="form-control rounded-top @error('nama_peminjam_alat') is-invalid @enderror"
-                               type="text"
-                               name="nama_peminjam_alat"
-                               value="{{ Auth::user()->username }}"
-                               readonly>
-                        @error('nama_peminjam_alat')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-
-
-
-            </div>
-        </div>
+                   <!-- Pilih Alat -->
+    <div class="mb-3">
+        <label for="tool_id" class="form-label">Nama Alat</label>
+        <select name="tool_id" id="tool_id" class="form-select" required>
+            <option value="">-- Pilih Alat --</option>
+            @foreach($data_tools as $a)
+                <option value="{{ $a->id }}">{{ $a->nama_alat }} (Stok: {{ $a->quantity }})</option>
+            @endforeach
+        </select>
     </div>
 
-    <!-- Card 2: Detail Barang -->
-    <div class="col-md-6">
-        <div class="card">
-            <h5 class="card-header text-center text-bold">
-                Data Barang
-            </h5>
-            <div class="card-body">
-
-                <div class="mb-3">
-                    <label for="tool_id" class="form-label">Nama Alat</label>
-                    <select class="form-select select-2 @error('tool_id') is-invalid @enderror" name="tool_id" data-placeholder="Pilih Salah Satu">
-                        @foreach ($data_tools as $data )
-                        <option></option>
-                        <option value="{{$data->id}}">{{$data->nama_alat}} | {{$data->spesifikasi_alat}} | {{$data->quantity}} ({{$data->jenis_quantity}})</option>
-                        @endforeach
-                    </select>
-                    @error('tool_id')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">quantity</label>
-                    <input class="form-control rounded-top @error('quantity') is-invalid @enderror"
-                           type="number"
-                           name="quantity"
-                           value="{{ old('quantity') }}"
-                           placeholder="Harap diisi quantity"
-                           min="1">
-                    @error('quantity')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
-                    <label for="jenis_quantity" class="form-label" name="jenis_quantity">Jenis quantity </label>
-                    <select class="form-select select-2 rounded-top @error('jenis_quantity') is-invalid @enderror" name="jenis_quantity" data-placeholder="Pilih Salah Satu " required>
-                        <option selected disabled></option>
-                        <option value="Pcs">Pcs</option>
-                        <option value="Unit">Unit</option>
-                        <option value="KLG">Kaleng</option>
-                        <option value="Batang">Batang</option>
-                        <option value="Set">Set</option>
-                        <option value="Karung">Karung</option>
-                        <option value="Box">Box</option>
-                        <option value="Pasang">Pasang</option>
-                        <option value="Kilo Gram">KG</option>
-                        <option value="Lusin">Lusin</option>
-                        @error('jenis_quantity')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </select>
-                </div>
-
-
-
-
-
-
-                <div class="mb-3">
-                    <label class="form-label">Keterangan Alat</label>
-                    <textarea class="form-control" placeholder="Catatan Keterangan Barang (Opsional)" name="keterangan_alat"  style="height: 100px"></textarea>
-                </div>
-
-                <div class="mb-3 text-center">
-                    <a href="{{ route('check-out-tools.index') }}" class="btn btn-secondary">Go Back</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-
-                </form>
-            </div>
-        </div>
+    <!-- Jumlah -->
+    <div class="mb-3">
+        <label for="quantity" class="form-label">quantity Pinjam</label>
+        <input type="number" name="quantity" class="form-control" min="1" required>
     </div>
-</div>
+
+    <!-- Tombol Submit -->
+    <button type="submit" class="btn btn-primary">Pinjam Alat</button>
 
 @endsection
 

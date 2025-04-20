@@ -30,4 +30,9 @@ class Tools extends Model
         });
     }
 
+    public function peminjaman() {
+        return $this->hasMany(CheckInTools::class);
+    }
+
+
 }

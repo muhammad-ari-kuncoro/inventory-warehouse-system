@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Materials;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use Illuminate\Support\Facades\Auth;
+
 class MaterialIssuanceController extends Controller
 {
     /**
@@ -43,8 +45,6 @@ class MaterialIssuanceController extends Controller
         //
         $request->validate([
             'tanggal_pengambilan'        => 'required|min:3|max:100',
-            'nama_pengambil'             => 'required|min:3|max:100',
-            'bagian_divisi'              => 'required|min:3|max:100',
             'material_id'                => 'required|exists:materials,id',
             'project_id'                 => 'required|exists:menu_project,id',
             'quantity'                   => 'required|numeric|min:1',
@@ -56,8 +56,7 @@ class MaterialIssuanceController extends Controller
             //code...
             MaterialIssuance::create([
                 'tanggal_pengambilan'               => $request->tanggal_pengambilan,
-                'nama_pengambil'                    => $request->nama_pengambil,
-                'bagian_divisi'                     => $request->bagian_divisi,
+                'user_id'                           => Auth::user()->id,
                 'material_id'                       => $request->material_id,
                 'project_id'                        => $request->project_id,
                 'quantity'                          => $request->quantity,

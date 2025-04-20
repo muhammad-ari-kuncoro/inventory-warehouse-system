@@ -11,25 +11,21 @@ class CheckInTools extends Model
 {
     use HasFactory;
     protected $table = 'check_in_tools'; // Nama tabel
-    protected $fillable = [
-
-        'tanggal_pengembalian',
-        'bagian_divisi',
-        'nama_pengembalian',
-        'kd_pengembalian_alat',
-        'tool_id',
-        'quantity',
-        'jenis_quantity',
-        'keterangan_alat',
-
-
-    ];
+    protected $guarded = [];
 
     // Relasi ke tabel Tools
     public function tool()
     {
         return $this->belongsTo(Tools::class);
     }
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function pengembalian() {
+        return $this->hasOne(CheckOutTools::class, 'checkout_tool_id');
+    }
+
 
     protected static function boot()
     {

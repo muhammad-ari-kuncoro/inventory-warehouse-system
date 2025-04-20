@@ -26,6 +26,11 @@ class User extends Authenticatable
         'image'
     ];
 
+    public function peminjamanAlat() {
+        return $this->hasMany(CheckInTools::class);
+    }
+
+
     /**
      * The attributes that should be hidden for serialization.
      *

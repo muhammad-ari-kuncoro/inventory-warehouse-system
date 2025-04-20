@@ -13,17 +13,16 @@ return new class extends Migration
     {
         Schema::create('check_in_tools', function (Blueprint $table) {
             $table->id();
+
+            $table->bigInteger('checkout_tool_id')->unsigned()->nullable();
+            $table->foreign("checkout_tool_id")->references("id")->on('check_out_tools');
             $table->string('tanggal_pengembalian');
-            $table->string('bagian_divisi');
-            $table->string('nama_pengembalian');
+
             $table->string('kd_pengembalian_alat');
 
             $table->bigInteger('tool_id')->unsigned()->nullable();
             $table->foreign("tool_id")->references("id")->on('tools');
-
             $table->integer('quantity');
-            $table->string('jenis_quantity');
-            $table->string('keterangan_alat');
 
             $table->timestamps();
         });

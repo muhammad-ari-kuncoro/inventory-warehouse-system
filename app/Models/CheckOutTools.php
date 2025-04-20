@@ -13,16 +13,7 @@ class CheckOutTools extends Model
     use HasFactory;
 
     protected $table = 'check_out_tools'; // Nama tabel
-    protected $fillable = [
-        'tanggal_pengambilan',
-        'bagian_divisi',
-        'nama_peminjam_alat',
-        'kd_peminjam_tool',
-        'tool_id',
-        'quantity',
-        'jenis_quantity',
-        'keterangan_alat',
-    ];
+    protected $guarded = [];
 
     // Relasi ke tabel Tools
     public function tool()
@@ -30,11 +21,16 @@ class CheckOutTools extends Model
         return $this->belongsTo(Tools::class);
     }
 
-     // Relasi ke tabel Tools
-     public function user()
-     {
-         return $this->belongsTo(User::class);
-     }
+    //  // Relasi ke tabel Tools
+    //  public function user()
+    //  {
+    //      return $this->belongsTo(User::class);
+    //  }
+
+     public function peminjaman() {
+        return $this->belongsTo(PeminjamanAlat::class);
+    }
+
 
 
 

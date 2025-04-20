@@ -16,6 +16,29 @@ use Illuminate\Support\Facades\Log;
 class GoodReceivedAPIController extends Controller
 {
     //
+    public function dataALL()
+    {
+        try {
+            $data = GoodReceived::where('kd_sj', '!=', 'drafts')
+                ->with('project') // kalau relasi ada
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Barang Masuk berhasil diambil.',
+                'data' => $data
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil data Barang Masuk',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
 
     public function storeGoodReceived(Request $request)
     {
@@ -108,48 +131,48 @@ class GoodReceivedAPIController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Unauthorized. Silakan login untuk mengakses API.',
-                ], 401);
+                    ], 401);
+                }
+
+        // Validate the incoming request
+        $validated = $request->validate([
+            'tanggal_masuk' => 'required|min:1|max:255',
+            'nama_supplier' => 'required|min:1|max:255',
+            'kode_surat_jalan' => 'required|min:1|max:100',
+            'project_id' => 'nullable',
+        ]);
+
+        try {
+            $doDraft = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
+            if (!$doDraft) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Harap Masukkan Barang!',
+                ], 400);
             }
 
-    // Validate the incoming request
-    $validated = $request->validate([
-        'tanggal_masuk' => 'required|min:1|max:255',
-        'nama_supplier' => 'required|min:1|max:255',
-        'kode_surat_jalan' => 'required|min:1|max:100',
-        'project_id' => 'nullable',
-    ]);
+            $doDraft->kd_sj             = $this->generatekdSJ();
+            $doDraft->tanggal_masuk     = $request->tanggal_masuk;
+            $doDraft->project_id        = $request->project_id;
+            $doDraft->nama_supplier     = $request->nama_supplier;
+            $doDraft->kode_surat_jalan  = $request->kode_surat_jalan;
+            $doDraft->project_id        = $request->project_id;
 
-    try {
-        $doDraft = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
-        if (!$doDraft) {
+            $doDraft->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil ditambahkan!',
+                'data' => $doDraft,
+            ], 201);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Harap Masukkan Barang!',
-            ], 400);
+                'message' => 'Terjadi kesalahan saat menyimpan data!',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        $doDraft->kd_sj             = $this->generatekdSJ();
-        $doDraft->tanggal_masuk     = $request->tanggal_masuk;
-        $doDraft->project_id        = $request->project_id;
-        $doDraft->nama_supplier     = $request->nama_supplier;
-        $doDraft->kode_surat_jalan  = $request->kode_surat_jalan;
-        $doDraft->project_id        = $request->project_id;
-
-        $doDraft->save();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Data berhasil ditambahkan!',
-            'data' => $doDraft,
-        ], 201);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Terjadi kesalahan saat menyimpan data!',
-            'error' => $e->getMessage(),
-        ], 500);
     }
-}
 
 public function storeItemUpdate(Request $request, $id)
 {

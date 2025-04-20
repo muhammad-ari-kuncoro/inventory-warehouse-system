@@ -11,6 +11,7 @@ use App\Http\Controllers\api\ToolsLoanCheckoutAPIController;
 use App\Http\Controllers\api\UserAPIController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\api\MaterialIssuanceAPIController;
+use App\Http\Controllers\GoodsReceivedController;
 use App\Http\Controllers\ToolsController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,7 +36,7 @@ Route::delete('/delete/{id}',[ProyekAPIController::class, 'delete']);
 
 
 
-
+// Route API menu proyek
 Route::prefix('proyek')->group(function(){
 
     Route::middleware('auth:sanctum')->group(function () {
@@ -44,29 +45,35 @@ Route::prefix('proyek')->group(function(){
         Route::get('/getid-data/{id}',[ProyekAPIController::class, 'getdataID']);
 
         Route::post('/create-project',[ProyekAPIController::class, 'store']);
+
+        Route::get('/edit-project/{id}',[ProyekAPIController::class, 'edit']);
         Route::put('/update-project/{id}', [ProyekAPIController::class, 'update']);
-        // bug tolong di perbaiki masalah ketika mengakses malah muncul halaman
-        Route::delete('/delete-api-proyek', [ProyekAPIController::class, 'delete']);
+
 
     });
 });
 
+//Route API Menu Material
 Route::prefix('material')->group(function(){
     Route::middleware('auth:sanctum')->group(function(){
         Route::get('/getdata-material',[MaterialAPIController::class, 'getdataAll']);
         Route::get('/getid-data/{id}',[MaterialAPIController::class, 'getdataID']);
+
         Route::post('/create-material',[MaterialAPIController::class, 'store']);
         Route::put('/update-api-material/{id}',[MaterialAPIController::class, 'update']);
-        Route::delete('/delete-api-material',[MaterialAPIController::class,'delete']);
 
     });
 });
 
+
+// Route API Menu Tools
 Route::prefix('tools')->group(function(){
 
     Route::middleware('auth:sanctum')->group(function(){
         Route::post('/create-tools',[ToolsAPIController::class, 'store']);
         Route::get('/getdata-tools',[ToolsAPIController::class, 'getdataAll']);
+
+
         Route::get('/getid-data/{id}',[ToolsAPIController::class, 'getdataID']);
         Route::put('/update-api-tools/{id}',[ToolsAPIController::class,'update']);
         // Route::put('/update-api-material',[ToolsController::class, 'update']);
@@ -76,16 +83,18 @@ Route::prefix('tools')->group(function(){
 });
 
 
-
-
+// Route: API Consumbale
 Route::prefix('consumable')->group(function(){
     Route::middleware('auth:sanctum')->group(function(){
         Route::post('/create-consumable',[ConsumableAPIController::class, 'store']);
+        Route::put('/update-api-consumable',[ConsumableAPIController::class, 'update']);
         Route::delete('/delete-api-consumable',[MaterialAPIController::class,'delete']);
     });
 });
 
 
+
+// Route: Delivery Order
 Route::prefix('delivery-order')->group(function(){
     Route::middleware('auth:sanctum')->group(function(){
         Route::post('/create-delivery-order-store-item',[DeliveryOrderAPIController::class, 'storeItem']);
@@ -95,9 +104,11 @@ Route::prefix('delivery-order')->group(function(){
 });
 
 
-
+// Route: Good Received
 Route::prefix('good-received')->group(function(){
     Route::middleware('auth:sanctum')->group(function(){
+        Route::get('/data-good-received-all',[GoodsReceivedController::class, 'dataALL']);
+
         Route::post('/create-good-received-store',[GoodReceivedAPIController::class, 'store']);
         Route::post('/create-good-received',[GoodReceivedAPIController::class, 'storeGoodReceived']);
         Route::post('/create-good-received-store-item-update/{id}',[GoodReceivedAPIController::class, 'store']);
@@ -105,7 +116,7 @@ Route::prefix('good-received')->group(function(){
     });
 });
 
-
+// Route: Consumable Issuance
 Route::prefix('consumable-issuance')->group(function(){
     Route::middleware('auth:sanctum')->group(function(){
         Route::post('/create-consumable-issuance',[ConsumableIssuanceAPIController::class, 'store']);
@@ -113,13 +124,33 @@ Route::prefix('consumable-issuance')->group(function(){
     });
 });
 
-
+// Route: material Issuance
 Route::prefix('material-issuance')->group(function(){
     Route::middleware('auth:sanctum')->group(function(){
         Route::post('/create-material-issuance',[MaterialIssuanceAPIController::class, 'store']);
         Route::delete('/delete-material-issuance/{id}',[MaterialIssuanceAPIController::class,'delete']);
     });
 });
+
+// Route: Peminjaman Alat
+Route::prefix('tools-check-in-api')->group(function(){
+    Route::middleware('auth:sanctum')->group(function(){
+        Route::post('/create-check-out-tools-api',[MaterialIssuanceAPIController::class, 'store']);
+    });
+});
+
+
+// Route: Pengembalian Alat
+Route::prefix('material-issuance')->group(function(){
+    Route::middleware('auth:sanctum')->group(function(){
+        Route::post('/create-material-issuance',[MaterialIssuanceAPIController::class, 'store']);
+        Route::delete('/delete-material-issuance/{id}',[MaterialIssuanceAPIController::class,'delete']);
+    });
+});
+
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\CheckinToolsRentalAPIController;
 use App\Http\Controllers\CheckInToolsController;
 use App\Http\Controllers\CheckOutToolsController;
 use App\Http\Controllers\ConsumableController;
@@ -188,6 +189,7 @@ Route::middleware('auth')->group(function (){
         Route::get('create',[CheckInToolsController::class, 'create'])->name('create');
         Route::post('store',[CheckInToolsController::class, 'store'])->name('store');
         Route::get('detail/{id}',[CheckInToolsController::class, 'show'])->name('show');
+        Route::post('/checkin/{id}', [CheckInToolsController::class, 'checkin'])->name('checkin');
 
     });
 

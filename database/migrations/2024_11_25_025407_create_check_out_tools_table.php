@@ -17,17 +17,16 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign("user_id")->references("id")->on("users");
 
-            $table->string('tanggal_pengambilan');
-            $table->string('bagian_divisi');
-            $table->string('nama_peminjam_alat');
-            $table->string('kd_peminjam_tool');
-
             $table->bigInteger('tool_id')->unsigned()->nullable();
             $table->foreign("tool_id")->references("id")->on("tools");
 
+
+            $table->string('tanggal_pengambilan');
+            $table->string('kd_peminjam_tool');
+
+
             $table->integer('quantity');
-            $table->string('jenis_quantity');
-            $table->string('keterangan_alat');
+            $table->boolean('status_kembali')->default(false);
             $table->timestamps();
         });
     }
