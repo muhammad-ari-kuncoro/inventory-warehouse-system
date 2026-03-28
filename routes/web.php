@@ -66,7 +66,8 @@ Route::middleware('auth')->group(function (){
         Route::get('/',[CreatedUserController::class, 'index'])->name('index');
         Route::post('/create',[CreatedUserController::class, 'store'])->name('create');
         Route::get('read-user/{id}',[CreatedUserController::class, 'show'])->name('read-user');
-        Route::put('update-image-user/{id}',[CreatedUserController::class, 'update'])->name('update-image-user');
+        Route::get('/edit-data/{id}', [CreatedUserController::class, 'edit'])->name('edit-user');
+        Route::put('/update/{id}',[CreatedUserController::class, 'update'])->name('update-user');
     });
 
 

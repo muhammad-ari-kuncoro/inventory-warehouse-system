@@ -17,8 +17,8 @@ class CreatedUserController extends Controller
         //
 
         $data['title'] = 'Menu Halaman User Halaman';
-        $data['sub_title'] = 'Menu User Poduksi';
-        $data['data_user'] =  User::where('role', 'produksi')->get();
+        $data['sub_title'] = 'Created Users';
+        $data['data_user'] = User::whereIn('role', ['produksi','warehouse_staff'])->get();
         return view('user_data.index', $data);
     }
 
@@ -35,87 +35,95 @@ class CreatedUserController extends Controller
      */
     public function store(Request $request)
     {
-    $request->validate([
-        'username' => 'required|min:3|max:255',
-        'email' => 'required|email|min:3|max:255',
-        'password' => 'required|min:6|max:255',
-        'role' => 'required|min:2|max:255',
-        'posisi' => 'required|min:2|max:255',
-    ]);
-
-    // dd($request->all()); // Bisa dipakai buat debug data yang dikirim
-
-    try {
-        User::create([
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-            'posisi' => $request->posisi,
+        $request->validate([
+            'username' => 'required|min:3|max:255',
+            'email' => 'required|email|min:3|max:255',
+            'password' => 'required|min:6|max:255',
+            'role' => 'required|min:2|max:255',
+            'posisi' => 'required|min:2|max:255',
         ]);
 
-        return redirect()->route('userData.index')->with('success', 'Data berhasil ditambahkan!');
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error','Terjadi kesalahan saat menyimpan data!');
+        try {
+            User::create([
+                'username'  => $request->username,
+                'email'     => $request->email,
+                'password'  => Hash::make($request->password),
+                'posisi'    => $request->posisi,
+                'role'      => $request->role,
+            ]);
+
+            return redirect()->route('userData.index')->with('success', 'Data berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data!');
+        }
     }
-}
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        $data_user = User::where('role', 'produksi')->where('id', $id)->first();
+        $data_user = User::whereIn('role',['produksi','warehouse_staff'])->where('id', $id)->first();
 
         if (!$data_user) {
             // Redirect ke halaman lain atau tampilkan error
             return redirect()->route('dashboard')->with('error', 'User tidak ditemukan.');
         }
 
-        return view('user_data.show', [
-            'title' => 'Menu Halaman User Halaman',
-            'sub_title' => 'Menu User Produksi',
-            'data_user' => $data_user
-        ]);
+        $data['title'] = 'Menu Halaman User Halaman';
+        $data['sub_title'] = 'Created Users';
+        $data['data_user'] = $data_user;
+
+        return view('user_data.show', $data);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $data['title'] = 'Halaman Edit User';
+        $data['sub_title'] = 'Created Users';
+        $data['data_user'] = User::findOrFail($id);
+        return view('user_data.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+        try {
+            $request->validate([
+                'username' => 'required|min:3|max:255',
+                'email' => 'required|email|unique:users,email,' . $id,
+                'role' => 'required|in:admin,produksi,warehouse_staff',
+                'posisi' => 'required|min:2|max:255',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
 
-        $user = User::findOrFail($id);
+            $user = User::findOrFail($id);
 
-        if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada
-            if ($user->image && Storage::exists('public/' . $user->image)) {
-                Storage::delete('public/' . $user->image);
+            if ($request->hasFile('image')) {
+                // Hapus gambar lama jika bukan default
+                if ($user->image && $user->image !== '1.png' && Storage::exists('public/user_images/' . $user->image)) {
+                    Storage::delete('public/user_images/' . $user->image);
+                }
+
+                $filename = $request->file('image')->hashName(); // ✅ hindari konflik nama file
+                $request->file('image')->storeAs('user_images', $filename, 'public');
+                $user->image = $filename;
             }
-            $filename =  $request->file('image')->getClientOriginalName();
-            $request->file('image')->storeAs('user_images', $filename, 'public');
-            $user->image = $filename;
 
+            // ✅ update data ke $user yang sudah di-find, bukan findOrFail ulang
+            $user->username     = $request->username;
+            $user->email        = $request->email;
+            $user->role         = $request->role;
+            $user->posisi       = $request->posisi;
+            $user->save();
 
+            return redirect()->route('userData.index')->with('editSuccess', 'Data user berhasil diperbarui!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data!');
         }
-
-        $user->save();
-
-        return redirect()->back()->with('success', 'Gambar berhasil diperbarui!');
     }
-
 
     /**
      * Remove the specified resource from storage.

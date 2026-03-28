@@ -2,7 +2,6 @@
 @section('container')
 <div class="card">
     <div class="card-header bg-light">
-        <!-- Breadcrumb Navigation -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
@@ -12,8 +11,6 @@
             </ol>
         </nav>
     </div>
-
-    {{-- Session Notifikasi --}}
     @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong class="text-dark">{!! session()->get('success') !!}</strong>
@@ -33,43 +30,22 @@
 
     <div class="card-body">
         <div class="row">
-
-            <!-- Image -->
             <div class="row">
-                <!-- Gambar Saat Ini -->
                 <div class="col-md-auto">
-                    <form action="{{ route('userData.update-image-user', $data_user->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-
-                        <!-- Gambar di tengah -->
                         <div class="mb-3 text-center">
                             <img id="previewImage"
                                  src="{{ $data_user->image ? asset('storage/user_images/' . $data_user->image) : asset('img/avatars/1.png') }}"
                                  class="img-thumbnail mb-3" style="max-width: 200px;" alt="Foto User">
                         </div>
-
-
-                        <!-- Input file -->
-                        <div class="mb-3">
-                            <label for="uploadImage" class="form-label">Pilih Gambar</label>
-                            <input class="form-control" type="file" id="uploadImage" name="image" accept="image/*">
-                        </div>
-
-                        <!-- Tombol -->
-                        <div class="d-flex justify-content-between">
-                            <a href="{{ route('dashboard') }}" class="btn btn-secondary">Kembali</a>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
                     </form>
                 </div>
-
-            <!-- Detail -->
-            <!-- Detail -->
             <div class="col-md-8">
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
-                        <h5 class="card-title mb-4">Informasi User</h5>
+                        <h5 class="card-title mb-4">Informasi User (Pengguna)</h5>
 
                         <div class="mb-3">
                             <strong>Nama:</strong>
@@ -95,11 +71,7 @@
                             <strong>Tanggal Bergabung:</strong>
                             <div class="text-muted">{{ $data_user->created_at->format('d M Y') }}</div>
                         </div>
-
-                        <!-- Tombol Kembali -->
-                        <div class="d-flex justify-content-end">
-                            <a href="{{ route('dashboard') }}" class="btn btn-secondary px-4">Kembali</a>
-                        </div>
+                            <a href="{{ route('userData.index') }}" class="btn btn-secondary">Batal</a>
                     </div>
                 </div>
             </div>
@@ -112,97 +84,6 @@
     </div>
 </div>
 
-
-<!-- Modal -->
-{{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Menu User</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-
-        <div class="modal-body">
-          <form action="{{ route('userData.create') }}" method="POST">
-@csrf
-
-<!-- Username -->
-<div class="mb-3">
-    <label for="username" class="form-label">Nama Anda</label>
-    <input class="form-control rounded-top @error('username') is-invalid @enderror" type="text" name="username"
-        placeholder="Harap Di Isi Nama Anda" required>
-    @error('username')
-    <div class="invalid-feedback">
-        {{ $message }}
-    </div>
-    @enderror
-</div>
-
-<!-- Email -->
-<div class="mb-3">
-    <label for="email" class="form-label">Email Anda</label>
-    <input class="form-control rounded-top @error('email') is-invalid @enderror" type="email" name="email"
-        placeholder="Harap Di Isi Email" required>
-    @error('email')
-    <div class="invalid-feedback">
-        {{ $message }}
-    </div>
-    @enderror
-</div>
-
-<!-- Role -->
-<div class="mb-3">
-    <label for="role" class="form-label">Role Anda</label>
-    <input class="form-control" type="text" name="role" value="Produksi" readonly>
-    @error('role')
-    <div class="invalid-feedback">
-        {{ $message }}
-    </div>
-    @enderror
-</div>
-
-<!-- Password -->
-<div class="mb-3">
-    <label for="password" class="form-label">Password Anda</label>
-    <input class="form-control rounded-top @error('password') is-invalid @enderror" type="password" name="password"
-        placeholder="Masukkan Password" required>
-    @error('password')
-    <div class="invalid-feedback">
-        {{ $message }}
-    </div>
-    @enderror
-</div>
-
-<!-- Posisi -->
-<div class="mb-3">
-    <label for="posisi" class="form-label">Posisi Pekerjaan</label>
-    <select class="form-select rounded-top @error('posisi') is-invalid @enderror" name="posisi" required>
-        <option selected disabled>Pilih Posisi</option>
-        <option value="Fitter (Produksi)">Fitter(Produksi)</option>
-        <option value="Helper (Produksi)">Helper(Produksi)</option>
-        <option value="Welder (Produksi)">Welder(Produksi)</option>
-        <option value="Supervisor (Produksi)">Supervisor(Produksi)</option>
-    </select>
-    @error('posisi')
-    <div class="invalid-feedback">
-        {{ $message }}
-    </div>
-    @enderror
-</div>
-
-<!-- Footer -->
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-primary">Save changes</button>
-</div>
-
-</form>
-</div>
-
-</div>
-</div>
-</div> --}}
 
 @endsection
 @push('styles')

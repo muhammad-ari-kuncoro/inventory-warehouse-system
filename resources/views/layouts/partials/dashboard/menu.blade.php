@@ -21,13 +21,13 @@
           <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Dashboard Page</span>
           </li>
-          <li class="menu-item {{ ($sub_title === "Dashboard")  ? '' : ''}}">
+          <li class="menu-item {{ ($sub_title === "Dashboard")  ? 'active' : ''}}">
               <a href="{{ route('dashboard') }}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-home-circle"></i>
                   <div data-i18n="Analytics">Dashboard</div>
               </a>
           </li>
-          <li class="menu-item {{ ($sub_title === "Dashboard")  ? '' : ''}}">
+          <li class="menu-item {{ ($sub_title === "Created Users")  ? 'active' : ''}}">
               <a href="{{ route('userData.index') }}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-user"></i>
                   <div data-i18n="Analytics">Created Users</div>
@@ -44,8 +44,8 @@
 
 
             <!-- Layouts -->
-            <li class="menu-item active">
-                <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <li class="menu-item">
+                <a href="" class="menu-link menu-toggle">
                   <i class="menu-icon tf-icons bx bx-receipt"></i>
                   <div data-i18n="Layouts">Proyek</div>
                 </a>
@@ -69,7 +69,7 @@
           </li>
 
           <!-- Layouts -->
-          <li class="menu-item active">
+          <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-data"></i>
               <div data-i18n="Layouts">Data Stok</div>
@@ -100,7 +100,7 @@
 
 
             <!-- Layouts -->
-            <li class="menu-item active ">
+            <li class="menu-item">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                   <i class="menu-icon tf-icons bx bx-buildings"></i>
                   <div data-i18n="Layouts">Assets</div>
@@ -155,7 +155,7 @@
 
 
             <!-- Layouts -->
-            <li class="menu-item active">
+            <li class="menu-item">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class='menu-icon tf-icons bx bx-file'></i>
                     <div data-i18n="Layouts">Document Gudang</div>
@@ -195,7 +195,7 @@
           </li>
 
             <!-- Layouts -->
-            <li class="menu-item active ">
+            <li class="menu-item">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                   <i class="menu-icon tf-icons bx bx-layout"></i>
                   <div data-i18n="Layouts">Produksi </div>
@@ -229,7 +229,7 @@
 
 
             <!-- Layouts -->
-            <li class="menu-item active">
+            <li class="menu-item">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                   <i class="menu-icon tf-icons bx bxs-wrench"></i>
                   <div data-i18n="Layouts">Perlengkapan</div>
@@ -262,7 +262,7 @@
 
 
             <!-- Layouts -->
-            <li class="menu-item active">
+            <li class="menu-item">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                   <i class="menu-icon tf-icons bx bxs-group"></i>
                   <div data-i18n="Layouts">Perlengkapan Pengujian</div>
