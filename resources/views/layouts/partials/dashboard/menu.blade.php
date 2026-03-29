@@ -38,23 +38,29 @@
 
           <!-- Layouts project -->
           <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">Project</span>
+              <span class="menu-header-text">Menu Project</span>
           </li>
 
 
 
             <!-- Layouts -->
-            <li class="menu-item">
+            <li class="menu-item {{ $sub_title  === "Main Project" ? 'active' : '' }}">
                 <a href="" class="menu-link menu-toggle">
                   <i class="menu-icon tf-icons bx bx-receipt"></i>
-                  <div data-i18n="Layouts">Proyek</div>
+                  <div data-i18n="Layouts">Project</div>
                 </a>
 
                 <ul class="menu-sub">
-                    <li class="menu-item {{ ($sub_title === "Menu Project")  ? 'active' : ''}}">
+                    <li class="menu-item {{ ($sub_title === "Main Project")  ? 'active' : ''}}">
                         <a href="{{ route('project.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-layout"></i>
-                            <div data-i18n="Layouts">Menu Project</div>
+                            <div data-i18n="Layouts">Main Project</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ ($sub_title === "Sub Project")  ? 'active' : ''}}">
+                        <a href="" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-layer"></i>
+                            <div data-i18n="Layouts">Sub Project</div>
                         </a>
                     </li>
                 </ul>

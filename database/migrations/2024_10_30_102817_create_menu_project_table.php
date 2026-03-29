@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('kode_project');
             $table->string('no_po_project');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

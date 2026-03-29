@@ -1,121 +1,112 @@
 @extends('layouts.dashboard-layout')
 @section('container')
+    <div class="card">
+        <div class="card-header bg-light">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('dashboard') }}" class="text-primary text-decoration-none">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('project.index') }}" class="text-primary text-decoration-none">Project</a>
+                    </li>
+                    <li class="breadcrumb-item active">Edit Data Project</li>
+                </ol>
+            </nav>
+        </div>
 
-<div class="card">
-    <h5 class="card-header text-center">
+        <div class="card-body">
+            <form action="{{ route('project.update', $find_id->id) }}" method="POST">
+                @csrf
+                @method('PATCH')
 
-    </h5>
-    <div class="card-body">
-        <form action="{{ route('project.update',$find_id->id) }}" method="post">
-            @csrf
-            @method('patch')
-            <div class="mb-3">
-                <label for="nama_project" class="form-label">Nama Project </label>
-                <input class="form-control rounded-top @error('nama_project') is-invalid @enderror" type="text" name="nama_project"
-                    placeholder="Harap Di Isi Nama Project" value="{{ old('nama_project', $find_id->nama_project)}}">
+                <div class="mb-3">
+                    <label for="nama_project" class="form-label fw-semibold">Client Project Name</label>
+                    <input type="text" class="form-control @error('nama_project') is-invalid @enderror" id="nama_project"
+                        name="nama_project" value="{{ old('nama_project', $find_id->nama_project) }}"
+                        placeholder="Please fill in the item project name field ..." required>
                     @error('nama_project')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
+                        <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-            </div>
-
-            <div class="mb-3">
-                <label for="sub_nama_project" class="form-label">Sub Nama Project </label>
-                <input class="form-control rounded-top @error('sub_nama_project') is-invalid @enderror " type="text" name="sub_nama_project"
-                    placeholder="Harap Di Isi Sub Nama Project" value="{{ old('sub_nama_project', $find_id->sub_nama_project)}}">
-
-                    @error('sub_nama_project')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-
-            </div>
-
-            <div class="mb-3">
-                <label for="" class="form-label">Kategori Nama Project Lama </label>
-                <input class="form-control rounded-top" type="text"
-                    placeholder="{{ old('kategori_project', $find_id->kategori_project)}}" disabled>
-            </div>
-
-
-            <div class="mb-3">
-                <label for="kategori_project" class="form-label" name="kategori_project">Kategori Nama Project baru </label>
-                <select class="form-select rounded-top @error('kategori_project') is-invalid @enderror" name="kategori_project" >
-
-                    <option value="" disabled {{ old('kategori_project'), $find_id->kategori_project === null ? 'selected' : '' }}>Pilih salah satu</option>
-                    <option value="General Industri" {{ old('kategori_project') == $find_id->kategori_project ? 'selected' : '' }}>General Industri</option>
-                    <option value="Oil Dan Migas Industri" {{ old('kategori_project') == $find_id->kategori_project ? 'selected' : '' }}>Oil Dan Migas Industri</option>
-                    <option value="Panas Bumi Industri" {{ old('kategori_project') == $find_id->kategori_project ? 'selected' : '' }}>Panas Bumi Industri</option>
-
-                    @error('kategori_project')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-
-
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="no_jo_project" class="form-label">No Jo Project </label>
-                <input class="form-control rounded-top @error('no_jo_project') is-invalid @enderror" type="text" name="no_jo_project"
-                    placeholder="Harap Di Isi No Jo Project" value="{{ old('no_jo_project', $find_id->no_jo_project)}}">
-
-                    @error('no_jo_project')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-
-
-            </div>
-
-            <div class="mb-3">
-                <label for="no_po_project" class="form-label">No Po Project </label>
-                <input class="form-control rounded-top @error('no_po_project') is-invalid @enderror" type="text" name="no_po_project"
-                    placeholder="Harap Di Isi No Jo Project" value="{{ old('no_po_project', $find_id->no_po_project)}}">
-
-                    @error('no_po_project')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-
-
-            </div>
-
-
-
-
-            <div class="row mb-3">
-                <div class="col sm-4">
-                <a href="{{ route('project.index') }}" class="btn btn-secondary">Go Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
 
+                <div class="mb-3">
+                    <label for="sub_nama_project" class="form-label fw-semibold">Item project</label>
+                    <input type="text" class="form-control @error('sub_nama_project') is-invalid @enderror"
+                        id="sub_nama_project" name="sub_nama_project"
+                        value="{{ old('sub_nama_project', $find_id->sub_nama_project) }}"
+                        placeholder="Please fill in the item project name field ..." required>
+                    @error('sub_nama_project')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
-            </div>
-        </form>
+                <div class="mb-3">
+                    <label for="kategori_project" class="form-label fw-semibold">Category Name Project</label>
+                    <div class="mb-2">
+                        <span class="text-muted small">Kategori saat ini: </span>
+                        <span class="badge bg-secondary">{{ $find_id->kategori_project ?? '-' }}</span>
+                    </div>
 
+                    <select class="form-select @error('kategori_project') is-invalid @enderror" name="kategori_project"
+                        id="kategori_project" required>
+                        <option value="" disabled
+                            {{ old('kategori_project', $find_id->kategori_project) == '' ? 'selected' : '' }}>
+                            -- Pilih Kategori --
+                        </option>
+                        @foreach (['General Industry', 'Migas', 'Geothermal'] as $kategori)
+                            <option value="{{ $kategori }}"
+                                {{ old('kategori_project', $find_id->kategori_project) == $kategori ? 'selected' : '' }}>
+                                {{ $kategori }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('kategori_project')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="no_jo_project" class="form-label fw-semibold">No. Jo (JOB Order) Project</label>
+                        <input type="text" class="form-control @error('no_jo_project') is-invalid @enderror"
+                            id="no_jo_project" name="no_jo_project"
+                            value="{{ old('no_jo_project', $find_id->no_jo_project) }}"
+                            placeholder="Please fill in the no jo (Job Order) project field ... " required>
+                        @error('no_jo_project')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="no_po_project" class="form-label fw-semibold">No. PO(Purchase Order) Project</label>
+                        <input type="text" class="form-control @error('no_po_project') is-invalid @enderror"
+                            id="no_po_project" name="no_po_project"
+                            value="{{ old('no_po_project', $find_id->no_po_project) }}"
+                            placeholder="Please fill in the no po (Purchase Order) project field ... " required>
+                        @error('no_po_project')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a href="{{ route('project.index') }}" class="btn btn-secondary">Batal</a>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+
+            </form>
+        </div>
     </div>
-</div>
-
 @endsection
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const preloader = document.getElementById('preloader');
-        if (preloader) {
-            console.log('Preloader found. It will hide after 3 seconds...');
-            setTimeout(function () {
-                preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
-                console.log('Preloader hidden.');
-            }, 1500); // Durasi 3000 ms = 3 detik
-        } else {
-            console.error('Preloader element not found!');
-        }
-    });
 
-</script>
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(() => preloader.style.display = 'none', 1500);
+            }
+        });
+    </script>
+@endpush
