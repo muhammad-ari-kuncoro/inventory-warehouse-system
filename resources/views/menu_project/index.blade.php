@@ -57,14 +57,11 @@
                     <thead>
                         <tr class="table-info text-center">
                             <th>No</th>
-                            <th>Code Project</th>
-                            <th>Project Start Date</th>
-                            <th>Name Project Client</th>
-                            <th>Project Item</th>
+                            <th>No. Job Order Project </th>
+                            <th class="text-center">Name Project Client</th>
+                            <th class="text-center">Project Item</th>
                             <th>Category Name Project</th>
-                            <th>NO JO (JOB ORDER) Project</th>
-                            <th>NO PO(PURCHASE ORDER) Project</th>
-                            <th>Action</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,13 +69,10 @@
                             <tr class="text-center">
 
                                 <td class="text-center">{{ $loop->iteration }}</td>
-                                <td>{{ $data->kode_project }}</td>
-                                <td>{{ $data->created_at->format('d-m-Y') }}</td>
+                                <td class="text-center">{{ $data->no_jo_project }}</td>
                                 <td>{{ $data->nama_project }}</td>
                                 <td>{{ $data->sub_nama_project }}</td>
                                 <td>{{ $data->kategori_project }}</td>
-                                <td>{{ $data->no_jo_project }}</td>
-                                <td>{{ $data->no_po_project }}</td>
                                 <td>
                                     <div class="mb-1">
                                         <a href="{{ route('project.edit', $data->id) }}"><span
@@ -230,7 +224,7 @@
 
             $('#projectFilter').on('change', function() {
                 var projectFilter = $(this).val();
-                table.column(5).search(projectFilter).draw();
+                table.column(4).search(projectFilter).draw();
             });
 
         });

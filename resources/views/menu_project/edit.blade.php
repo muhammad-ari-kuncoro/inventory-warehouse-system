@@ -20,6 +20,16 @@
                 @csrf
                 @method('PATCH')
 
+                 <div class="mb-3">
+                    <label for="kode_project" class="form-label fw-semibold">Code Project</label>
+                    <input type="text" class="form-control @error('kode_project') is-invalid @enderror" id="kode_project"
+                    name="kode_project" value="{{ old('nama_project', $find_id->kode_project) }}"
+                        placeholder="Please fill in the Code project name field ..." readonly disabled>
+                    @error('nama_project')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <div class="mb-3">
                     <label for="nama_project" class="form-label fw-semibold">Client Project Name</label>
                     <input type="text" class="form-control @error('nama_project') is-invalid @enderror" id="nama_project"
