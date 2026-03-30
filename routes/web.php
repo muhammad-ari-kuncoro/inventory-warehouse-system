@@ -73,12 +73,15 @@ Route::middleware('auth')->group(function () {
     Route::prefix('material')
         ->name('material.')
         ->group(function () {
-            Route::get('/', [MaterialController::class, 'index'])->name('index');
-            Route::post('create', [MaterialController::class, 'store'])->name('create');
-            Route::get('edit/{id}', [MaterialController::class, 'edit'])->name('edit');
-            Route::patch('update{id}', [MaterialController::class, 'update'])->name('update');
-            Route::get('/search', [MaterialController::class, 'index'])->name('search');
-            Route::post('/import', [MaterialController::class, 'import'])->name('import');
+            Route::get('/',                         [MaterialController::class, 'index'])->name('index');
+            Route::post('create',                   [MaterialController::class, 'store'])->name('create');
+            Route::get('edit/{id}',                 [MaterialController::class, 'edit'])->name('edit');
+            Route::patch('update{id}',              [MaterialController::class, 'update'])->name('update');
+            Route::get('/search',                   [MaterialController::class, 'index'])->name('search');
+            Route::get('/export-filter',            [MaterialController::class, 'exportPage'])->name('export');
+            Route::get('/material/export/download', [MaterialController::class, 'exportDownload'])->name('material.export.download');
+            Route::post('/import',                  [MaterialController::class, 'import'])->name('import');
+            Route::get('/show/{id}',                 [MaterialController::class, 'show'])->name('show');
         });
 
     Route::prefix('consumable')

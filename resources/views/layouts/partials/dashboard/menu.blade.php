@@ -1,5 +1,3 @@
-  <!-- Menu -->
-
   <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
 
       <div class="app-brand demo justify-content-center mt-4">
@@ -17,7 +15,6 @@
       <div class="menu-inner-shadow"></div>
 
       <ul class="menu-inner py-1">
-          <!-- Dashboard -->
           <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Dashboard Page</span>
           </li>
@@ -36,14 +33,12 @@
 
 
 
-          <!-- Layouts project -->
           <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Menu Project</span>
           </li>
 
 
 
-            <!-- Layouts -->
             <li class="menu-item {{ $sub_title  === "Main Project" ? 'active' : '' }}">
                 <a href="" class="menu-link menu-toggle">
                   <i class="menu-icon tf-icons bx bx-receipt"></i>
@@ -67,16 +62,12 @@
               </li>
 
 
-
-
-          <!-- Layouts Stuff -->
           <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Stock</span>
           </li>
 
-          <!-- Layouts -->
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <li class="menu-item {{ $sub_title === "Materials" || $sub_title === "Consumables" ? 'active' : '' }}">
+            <a href="" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-data"></i>
               <div data-i18n="Layouts">Data Stok</div>
             </a>
