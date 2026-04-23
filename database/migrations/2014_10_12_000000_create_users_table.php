@@ -19,9 +19,10 @@ return new class extends Migration
             $table->string('password');
             $table->string('posisi');
             $table->string('image')->default('1.png');
-            $table->enum('role', ['admin', 'produksi', 'warehouse_staff'])->default('produksi');
+            $table->enum('role', ['Administrator', 'Production', 'Warehouse Staff'])->default('Production');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

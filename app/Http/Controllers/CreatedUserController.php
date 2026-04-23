@@ -16,9 +16,9 @@ class CreatedUserController extends Controller
     {
         //
 
-        $data['title'] = 'Menu Halaman User Halaman';
+        $data['title'] = 'User Page';
         $data['sub_title'] = 'Created Users';
-        $data['data_user'] = User::whereIn('role', ['produksi','warehouse_staff'])->get();
+        $data['data_user'] = User::whereIn('role', ['Production', 'Warehouse Staff'])->get();
         return view('user_data.index', $data);
     }
 
@@ -45,29 +45,30 @@ class CreatedUserController extends Controller
 
         try {
             User::create([
-                'username'  => $request->username,
-                'email'     => $request->email,
-                'password'  => Hash::make($request->password),
-                'posisi'    => $request->posisi,
-                'role'      => $request->role,
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'posisi' => $request->posisi,
+                'role' => $request->role,
             ]);
 
-            return redirect()->route('userData.index')->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('userData.index')->with('success', 'Data added successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data!');
+            return redirect()->back()->with('error', 'An error occurred while saving data!');
         }
     }
 
     public function show($id)
     {
-        $data_user = User::whereIn('role',['produksi','warehouse_staff'])->where('id', $id)->first();
+        $data_user = User::whereIn('role', ['produksi', 'warehouse_staff'])
+            ->where('id', $id)
+            ->first();
 
         if (!$data_user) {
-            // Redirect ke halaman lain atau tampilkan error
             return redirect()->route('dashboard')->with('error', 'User tidak ditemukan.');
         }
 
-        $data['title'] = 'Menu Halaman User Halaman';
+        $data['title'] = 'Show / Detail User Page';
         $data['sub_title'] = 'Created Users';
         $data['data_user'] = $data_user;
 
@@ -113,10 +114,10 @@ class CreatedUserController extends Controller
             }
 
             // ✅ update data ke $user yang sudah di-find, bukan findOrFail ulang
-            $user->username     = $request->username;
-            $user->email        = $request->email;
-            $user->role         = $request->role;
-            $user->posisi       = $request->posisi;
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->role = $request->role;
+            $user->posisi = $request->posisi;
             $user->save();
 
             return redirect()->route('userData.index')->with('editSuccess', 'Data user berhasil diperbarui!');
@@ -125,11 +126,10 @@ class CreatedUserController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->back()->with('delete', 'Data user berhasil dihapus.');
     }
 }

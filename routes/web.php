@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
             Route::get('read-user/{id}', [CreatedUserController::class, 'show'])->name('read-user');
             Route::get('/edit-data/{id}', [CreatedUserController::class, 'edit'])->name('edit-user');
             Route::put('/update/{id}', [CreatedUserController::class, 'update'])->name('update-user');
+            Route::delete('/delete/{id}',[CreatedUserController::class, 'destroy'])->name('delete-user');
         });
 
     Route::prefix('material')

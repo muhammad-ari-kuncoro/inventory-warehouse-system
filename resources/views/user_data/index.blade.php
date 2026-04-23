@@ -21,7 +21,7 @@
             </div>
         @elseif (session('delete'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong class="text-dark">Data Telah Dihapus</strong>
+                <strong class="text-dark">Data has been deleted</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @elseif (session('editSuccess'))
@@ -37,26 +37,26 @@
 
             <div class="row align-items-center">
                 <div class="col-md-9 col-lg-6 mb-3">
-                    <label for="projectFilter" class="form-label">Filter Kategori Project:</label>
+                    <label for="projectFilter" class="form-label">Filter Category Project</label>
                     <select id="projectFilter" class="form-select w-auto" style="max-width: 300px;">
-                        <option value="">Semua Kategori</option>
+                        <option value="">All Categories</option>
 
                         <optgroup label="🔧 Production Position">
-                            <option value="Fitter (Produksi)">Fitter (Produksi)</option>
-                            <option value="Helper (Produksi)">Helper (Produksi)</option>
-                            <option value="Welder (Produksi)">Welder (Produksi)</option>
-                            <option value="Supervisor (Produksi)">Supervisor (Produksi)</option>
+                            <option value="Fitter (Production)">Fitter (Production)</option>
+                            <option value="Helper (Production)">Helper (Production)</option>
+                            <option value="Welder (Production)">Welder (Production)</option>
+                            <option value="Supervisor (production)">Supervisor (Production)</option>
                         </optgroup>
 
                         <optgroup label="🏭 Warehouse Position">
-                            <option value="Helper Warehouse">Helper Warehouse</option>
-                            <option value="Supervisor Warehouse">Supervisor Warehouse</option>
+                            <option value="Helper Warehouse">Helper Warehouse (Staff)</option>
+                            <option value="Supervisor Warehouse">Supervisor Warehouse (Staff)</option>
                         </optgroup>
                     </select>
                 </div>
                 <div class="col-md-3 col-lg-6 mb-3 d-flex justify-content-end">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Tambah Data
+                        Add Data
                     </button>
                 </div>
             </div>
@@ -68,22 +68,20 @@
             <div class="table-responsive">
 
 
-                <table class="table table-bordered table-hover display" id="myTable7">
+                <table class="table table-bordered table-hover display" id="myTable5">
                     <thead>
                         <tr class="table-info text-center">
                             <th class="text-center">No</th>
                             <th class="text-center">Usename</th>
-                            <th class="text-center">Email</th>
                             <th class="text-center">User Role</th>
-                            <th class="text-center">Posisi</th>
-                            <th class="text-center">Edit</th>
+                            <th class="text-center">Position</th>
+                            <th class="text-center">Action</th>
                     </thead>
                     <tbody>
                         @foreach ($data_user as $data)
                             <tr class="text-center">
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td class="text-center">{{ $data->username }}</td>
-                                <td class="text-center">{{ $data->email }}</td>
                                 <td class="text-center">{{ $data->role }}</td>
                                 <td class="text-center">{{ $data->posisi }}</td>
                                 <td>
@@ -94,6 +92,16 @@
                                         <a href="{{ route('userData.edit-user', $data->id) }}"><span
                                                 class="btn btn-warning btn-sm mb-2"><i
                                                     class='bx bx-edit'></i></a></span></a>
+                                    </div>
+                                    <div class="mb-1">
+                                        <form action="{{ route('userData.delete-user', $data->id) }}" method="POST"
+                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class='bx bx-trash'></i>
+                                            </button>
+                                        </form>
                                     </div>
 
 
@@ -117,7 +125,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Menu User</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Data User</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -126,55 +134,46 @@
                         @csrf
                         <!-- Username -->
                         <div class="mb-3">
-                            <label for="username" class="form-label">Nama Anda</label>
-                            <input class="form-control rounded-top @error('username') is-invalid @enderror" type="text"
-                                name="username" placeholder="Harap Di Isi Nama Anda" required>
+                            <label class="form-label">Username</label>
+                            <input class="form-control @error('username') is-invalid @enderror" type="text"
+                                name="username" placeholder="Please enter your name..." required>
                             @error('username')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <!-- Email -->
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email Anda</label>
-                            <input class="form-control rounded-top @error('email') is-invalid @enderror" type="email"
-                                name="email" placeholder="Harap Di Isi Email" required>
+                            <label class="form-label">Email</label>
+                            <input class="form-control @error('email') is-invalid @enderror" type="email"
+                                name="email" placeholder="Please enter your email..." required>
                             @error('email')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <!-- Password -->
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password Anda</label>
-                            <input class="form-control rounded-top @error('password') is-invalid @enderror"
-                                type="password" name="password" placeholder="Masukkan Password" required>
+                            <label class="form-label">Password</label>
+                            <input class="form-control @error('password') is-invalid @enderror" type="password"
+                                name="password" placeholder="Please enter your password..." required>
                             @error('password')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
+                        <!-- Posisi -->
                         <div class="mb-3">
-                            <label for="posisi" class="form-label">Posisi Pekerjaan</label>
+                            <label class="form-label">Job Position</label>
                             <select class="form-select @error('posisi') is-invalid @enderror" name="posisi"
                                 id="posisi" required>
-                                <option value="" disabled>
-                                    -- Pilih Posisi --
-                                </option>
-
+                                <option value="" disabled selected>-- Choose Position --</option>
                                 <optgroup label="🔧 Production Position">
-                                    <option value="Fitter (Produksi)">Fitter(Produksi)</option>
-                                    <option value="Helper (Produksi)">Helper(Produksi)</option>
-                                    <option value="Welder (Produksi)">Welder(Produksi)</option>
-                                    <option value="Supervisor (Produksi)">Supervisor(Produksi)</option>
+                                    <option value="Fitter (Production)">Fitter (Production)</option>
+                                    <option value="Helper (Production)">Helper (Production)</option>
+                                    <option value="Welder (Production)">Welder (Production)</option>
+                                    <option value="Supervisor (Production)">Supervisor (Production)</option>
                                 </optgroup>
-
                                 <optgroup label="🏭 Warehouse Position">
                                     <option value="Helper Warehouse">Helper Warehouse</option>
                                     <option value="Supervisor Warehouse">Supervisor Warehouse</option>
@@ -185,29 +184,27 @@
                             @enderror
                         </div>
 
-                        {{-- Role: readonly, otomatis berubah --}}
+                        <!-- Role -->
                         <div class="mb-3">
-                            <label for="role" class="form-label">Role</label>
+                            <label class="form-label">Roles</label>
                             <select class="form-select @error('role') is-invalid @enderror" name="role" id="role"
                                 required>
-                                <option value="produksi">Produksi</option>
-                                <option value="warehouse_staff">Warehouse Staff</option>
+                                <option value="Production">Production</option>
+                                <option value="Warehouse Staff">Warehouse Staff</option>
                             </select>
-
                             @error('role')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        <!-- Footer -->
+                        <!-- Footer + Submit MASIH DI DALAM FORM -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
 
-                    </form>
+                    </form> <!-- ✅ Tutup form SETELAH tombol submit -->
                 </div>
-
             </div>
         </div>
     </div>
@@ -247,7 +244,7 @@
                 var projectFilter = $(this).val(); // Ambil nilai dropdown
 
                 // Terapkan filter pada kolom Kategori Project (index 3)
-                table.column(4).search(projectFilter).draw();
+                table.column(3).search(projectFilter).draw();
             });
 
         });
@@ -279,10 +276,10 @@
         function syncRole() {
             const posisi = posisiSelect.value;
 
-            if (posisi.includes('(Produksi)')) {
-                roleSelect.value = 'produksi';
+            if (posisi.includes('(Production)')) {
+                roleSelect.value = 'Production';
             } else if (posisi.includes('Warehouse')) {
-                roleSelect.value = 'warehouse_staff';
+                roleSelect.value = 'Warehouse Staff';
             }
             // Kalau admin, biarkan — admin tidak punya posisi khusus
         }
