@@ -21,7 +21,7 @@ class userSeederDefault extends Seeder
     User::create(
         [
             'username' => 'Administrator',
-            'email' => 'administrator@gmail.com',
+            'email' => 'administrator@armindojaya.co.id',
             'password' => bcrypt('admin123'),
             'role' => 'Administrator',
             'posisi' => 'Administrator User',
