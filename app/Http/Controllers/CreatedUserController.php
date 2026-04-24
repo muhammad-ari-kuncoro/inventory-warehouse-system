@@ -60,7 +60,7 @@ class CreatedUserController extends Controller
 
     public function show($id)
     {
-        $data_user = User::whereIn('role', ['produksi', 'warehouse_staff'])
+        $data_user = User::whereIn('role', ['Production', 'Warehouse Staff'])
             ->where('id', $id)
             ->first();
 
