@@ -19,7 +19,7 @@
             </div>
         @elseif (session('delete'))
             <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
-                <strong>Data Telah Dihapus</strong>
+                <strong>Data Has Been Deleted</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @elseif (session('editSuccess'))
@@ -62,7 +62,6 @@
                     </form>
                 </div>
 
-                {{-- Export + Tambah --}}
                 <div class="col-md-4 d-flex justify-content-end gap-2">
                     <a href="{{ route('material.export') }}" class="btn btn-outline-danger btn-sm">
                         <i class='bx bxs-file-pdf'></i> Export PDF
@@ -75,7 +74,6 @@
 
             </div>
 
-            {{-- Tabel --}}
             <div class="table-responsive">
                 <table class="table table-bordered table-hover display" id="myTable7">
                     <thead class="table-info text-center">
@@ -184,8 +182,7 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Type Material</label>
-                            <select class="form-select"
-                                name="jenis_material" required>
+                            <select class="form-select" name="jenis_material" required>
                                 <option value="" disabled selected>Pilih Jenis Material</option>
                                 <option value="New">New</option>
                                 <option value="Temporary">Temporary</option>
@@ -195,7 +192,6 @@
                             @enderror
                         </div>
 
-                        {{-- Harga --}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Material Price</label>
                             <div class="input-group">
@@ -205,7 +201,6 @@
                             </div>
                         </div>
 
-                        {{-- Project --}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Project</label>
                             <select class="form-select @error('project_id') is-invalid @enderror" name="project_id"
@@ -242,9 +237,7 @@
         }
     </style>
 @endpush
-
 @push('scripts')
-    {{-- Wajib urutan ini --}}
     <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
     <script src="//cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
     <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>

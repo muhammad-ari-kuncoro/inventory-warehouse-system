@@ -56,9 +56,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('/delete/{id}',           [CreatedUserController::class, 'destroy'])->name('delete-user');
         });
 
-    Route::prefix('material')
-        ->name('material.')
-        ->group(function () {
+    Route::prefix('material')->name('material.')->group(function () {
             Route::get('/',                         [MaterialController::class, 'index'])->name('index');
             Route::post('create',                   [MaterialController::class, 'store'])->name('create');
             Route::get('edit/{id}',                 [MaterialController::class, 'edit'])->name('edit');

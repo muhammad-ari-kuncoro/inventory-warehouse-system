@@ -45,12 +45,12 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Tanggal Mulai</label>
+                    <label class="form-label fw-semibold">Project Start Date</label>
                     <input type="date" class="form-control" name="start_date">
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Tanggal Selesai</label>
+                    <label class="form-label fw-semibold">Projectt End Date</label>
                     <input type="date" class="form-control" name="end_date">
                 </div>
 
@@ -58,12 +58,12 @@
 
             <div class="alert alert-info mt-4 mb-0 d-flex align-items-center gap-2">
                 <i class='bx bx-info-circle fs-5'></i>
-                <span>Kosongkan filter untuk export semua data material.</span>
+                <span>Clear the filter to export all data material.</span>
             </div>
 
             <div class="d-flex gap-2 mt-4">
                 <a href="{{ route('material.index') }}" class="btn btn-secondary">
-                    <i class='bx bx-arrow-back'></i> Kembali
+                    <i class='bx bx-arrow-back'></i> Back
                 </a>
                 <button type="submit" class="btn btn-danger">
                     <i class='bx bxs-file-pdf'></i> Export PDF
