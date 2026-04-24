@@ -26,49 +26,34 @@ use App\Models\MaterialTemporary;
 use Faker\Guesser\Name;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login_page', [LoginController::class, 'authentication'])->name('login_page_dasboard');
+Route::get('/login',                              [LoginController::class, 'index'])->name('login');
+Route::post('/login_page',                        [LoginController::class, 'authentication'])->name('login_page_dasboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/viewProfile', [DashboardController::class, 'viewProfil'])->name('viewProfile');
+    Route::get('/dashboard',                      [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/viewProfile',                    [DashboardController::class, 'viewProfil'])->name('viewProfile');
 
-    Route::prefix('project')
-        ->name('project.')
-        ->group(function () {
-            Route::get('/', [MenuProjectController::class, 'index'])->name('index');
-            Route::post('create', [MenuProjectController::class, 'store'])->name('create');
-            Route::get('edit/{id}', [MenuProjectController::class, 'edit'])->name('edit');
-            Route::patch('update/{id}', [MenuProjectController::class, 'update'])->name('update');
-            Route::get('/search', [MenuProjectController::class, 'index'])->name('search');
-            Route::get('/detail/{id}', [MenuProjectController::class, 'show'])->name('detail');
+    Route::prefix('project')->name('project.')->group(function () {
+            Route::get('/',                       [MenuProjectController::class, 'index'])->name('index');
+            Route::post('create',                 [MenuProjectController::class, 'store'])->name('create');
+            Route::get('edit/{id}',               [MenuProjectController::class, 'edit'])->name('edit');
+            Route::patch('update/{id}',           [MenuProjectController::class, 'update'])->name('update');
+            Route::get('/search',                 [MenuProjectController::class, 'index'])->name('search');
+            Route::get('/detail/{id}',            [MenuProjectController::class, 'show'])->name('detail');
             Route::delete('/delete/project/{id}', [MenuProjectController::class, 'destroy'])->name('destroy');
         });
 
-    Route::prefix('userData')
-        ->name('userData.')
-        ->group(function () {
-            Route::get('/', [CreatedUserController::class, 'index'])->name('index');
-            Route::post('/create', [CreatedUserController::class, 'store'])->name('create');
-            Route::get('read-user/{id}', [CreatedUserController::class, 'show'])->name('read-user');
-            Route::get('/edit-data/{id}', [CreatedUserController::class, 'edit'])->name('edit-user');
-            Route::put('/update/{id}', [CreatedUserController::class, 'update'])->name('update-user');
-            Route::delete('/delete/{id}',[CreatedUserController::class, 'destroy'])->name('delete-user');
+    Route::prefix('userData')->name('userData.')->group(function () {
+            Route::get('/',                         [CreatedUserController::class, 'index'])->name('index');
+            Route::post('/create',                  [CreatedUserController::class, 'store'])->name('create');
+            Route::get('read-user/{id}',            [CreatedUserController::class, 'show'])->name('read-user');
+            Route::get('/edit-data/{id}',           [CreatedUserController::class, 'edit'])->name('edit-user');
+            Route::put('/update/{id}',              [CreatedUserController::class, 'update'])->name('update-user');
+            Route::delete('/delete/{id}',           [CreatedUserController::class, 'destroy'])->name('delete-user');
         });
 
     Route::prefix('material')
@@ -82,7 +67,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/export-filter',            [MaterialController::class, 'exportPage'])->name('export');
             Route::get('/material/export/download', [MaterialController::class, 'exportDownload'])->name('material.export.download');
             Route::post('/import',                  [MaterialController::class, 'import'])->name('import');
-            Route::get('/show/{id}',                 [MaterialController::class, 'show'])->name('show');
+            Route::get('/show/{id}',                [MaterialController::class, 'show'])->name('show');
         });
 
     Route::prefix('consumable')

@@ -21,7 +21,7 @@
             </div>
         @elseif (session('delete'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong class="text-dark">Data Telah Dihapus</strong>
+                <strong class="text-dark">Data Has Been Deleted</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @elseif (session('editSuccess'))
@@ -38,7 +38,7 @@
                 <div class="col-md-9 col-lg-6 mb-3">
                     <label for="projectFilter" class="form-label">Filter Category Project:</label>
                     <select id="projectFilter" class="form-select w-auto" style="max-width: 300px;">
-                        <option value="">All Category</option>
+                        <option value="">All Categories</option>
                         <option value="General Industry">General Industry</option>
                         <option value="Migas">Migas</option>
                         <option value="Geothermal">Geothermal</option>

@@ -20,10 +20,10 @@
                 @csrf
                 @method('PATCH')
 
-                 <div class="mb-3">
+                <div class="mb-3">
                     <label for="kode_project" class="form-label fw-semibold">Code Project</label>
                     <input type="text" class="form-control @error('kode_project') is-invalid @enderror" id="kode_project"
-                    name="kode_project" value="{{ old('nama_project', $find_id->kode_project) }}"
+                        name="kode_project" value="{{ old('nama_project', $find_id->kode_project) }}"
                         placeholder="Please fill in the Code project name field ..." readonly disabled>
                     @error('nama_project')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -54,7 +54,7 @@
                 <div class="mb-3">
                     <label for="kategori_project" class="form-label fw-semibold">Category Name Project</label>
                     <div class="mb-2">
-                        <span class="text-muted small">Kategori saat ini: </span>
+                        <span class="text-muted small">Current Category</span>
                         <span class="badge bg-secondary">{{ $find_id->kategori_project ?? '-' }}</span>
                     </div>
 
@@ -62,7 +62,7 @@
                         id="kategori_project" required>
                         <option value="" disabled
                             {{ old('kategori_project', $find_id->kategori_project) == '' ? 'selected' : '' }}>
-                            -- Pilih Kategori --
+                            -- Choosee Categories --
                         </option>
                         @foreach (['General Industry', 'Migas', 'Geothermal'] as $kategori)
                             <option value="{{ $kategori }}"
@@ -101,8 +101,8 @@
                 </div>
 
                 <div class="d-flex gap-2">
-                    <a href="{{ route('project.index') }}" class="btn btn-secondary">Batal</a>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    <a href="{{ route('project.index') }}" class="btn btn-secondary">Back</a>
+                    <button type="submit" class="btn btn-primary">Save Data</button>
                 </div>
 
             </form>
