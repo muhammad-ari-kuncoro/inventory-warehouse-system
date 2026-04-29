@@ -31,10 +31,8 @@
 
     <meta name="description" content="" />
 
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('asset/img/favicon/favicon.ico') }}" />
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -42,9 +40,10 @@
       rel="stylesheet"/>
 
 
-     {{-- Data Tables JS --}}
      <link rel="stylesheet" href="//cdn.datatables.net/2.1.8/js/dataTables.min.js">
      <link rel="stylesheet" href="//cdn.datatables.net/buttons/3.2.0/css/buttons.dataTables.css">
+
+     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
 

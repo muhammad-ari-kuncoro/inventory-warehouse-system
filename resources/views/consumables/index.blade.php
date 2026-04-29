@@ -1,134 +1,106 @@
 @extends('layouts.dashboard-layout')
 @section('container')
-
-<div class="card">
-     <div class="card-header bg-light">
-        <!-- Breadcrumb Navigation -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('dashboard') }}" class="text-primary text-decoration-none">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Consumables</li>
-            </ol>
-        </nav>
-    </div>
-    <h5 class="card-header text-center">
-        Dashboard Menu Consumable Realtime
-        <br>
-        <span id="currentDateTime" class="ms-2 text-muted"></span>
-    </h5>
-
-    {{-- Session Notifikasi --}}
-    @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong class="text-dark">{!! session()->get('success') !!}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @elseif (session('delete'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong class="text-dark">Data Telah Dihapus</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @elseif (session('editSuccess'))
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong class="text-dark">{!! session()->get('editSuccess') !!}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-
-
-    <div class="card-body">
-
-        <div class="row align-items-center">
-            <!-- Dropdown Filter -->
-            <div class="col-md-9 col-lg-6 mb-3">
-                <label for="projectFilter" class="form-label">Filter Jenis Quantity:</label>
-                <select id="projectFilter" class="form-select w-auto" style="max-width: 300px;">
-                    <option value="">Semua Jenis</option>
-                    <option value="Besar">Besar</option>
-                    <option value="Kecil">Kecil</option>
-                </select>
-            </div>
-
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-light">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('dashboard') }}" class="text-primary text-decoration-none">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Consumables</li>
+                </ol>
+            </nav>
         </div>
-            <!-- Form Import Data -->
-            <div class="row">
-                <div class="col-xs-9 justify-content-start">
-                    <form action="{{ route('consumable.import') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
+
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+                <strong class="text-dark">{!! session()->get('success') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @elseif (session('delete'))
+            <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+                <strong class="text-dark">Data Telah Dihapus</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @elseif (session('editSuccess'))
+            <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+                <strong class="text-dark">{!! session()->get('editSuccess') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <div class="card-body">
+
+            <div class="row align-items-end mb-3 g-2">
+
+                <div class="col-md-3">
+                    <label for="projectFilter" class="form-label fw-semibold">Filter Type Quantity</label>
+                    <select id="projectFilter" class="form-select">
+                        <option value="">All Type</option>
+                        <option value="Large">Large</option>
+                        <option value="Small">Small</option>
+                    </select>
+                </div>
+
+                <div class="col-md-5">
+                    <label class="form-label fw-semibold">Import Data Excel</label>
+                    <form action="{{ route('consumable.import') }}" method="POST" enctype="multipart/form-data"
+                        class="d-flex gap-2 align-items-center">
                         @csrf
-                        <div class="mb-4">
-                            <label for="importFile" class="form-label">Import Data Excel:</label>
-                            <input type="file" class="form-control form-control-sm @error('file') is-invalid @enderror" id="importFile" name="file" required>
-                            @error('file')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                        <button type="submit" class="btn btn-success btn-sm">Import Data</button>
+                        <input type="file" class="form-control form-control-sm @error('file') is-invalid @enderror"
+                            id="importFile" name="file" required>
+                        @error('file')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <button type="submit" class="btn btn-success btn-sm text-nowrap">
+                            <i class='bx bx-upload'></i> Import
+                        </button>
                     </form>
                 </div>
-                <div class="col-xs-9 mt-3 d-flex">
-                    <a href="" class="btn btn-success">Export Data</a>
+
+                <div class="col-md-4 d-flex justify-content-end gap-2">
+                    <a href="{{ route('consumable.export') }}" class="btn btn-outline-danger btn-sm">
+                        <i class='bx bxs-file-pdf'></i> Export Data
+                    </a>
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                        <i class='bx bx-plus'></i> Add Data
+                    </button>
                 </div>
-                <!-- Button Tambah Data -->
-            <div class="col-xs-6 mb-3 d-flex justify-content-end">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Tambah Data
-                </button>
+
             </div>
-            </div>
-
-            <!-- Add Button -->
-
-
-
-
 
             <div class="table-responsive">
-
-
                 <table class="table table-bordered table-hover display" id="myTable7">
                     <thead>
                         <tr class="table-info text-center">
-                            <th>No</th>
-                            <th>Kode Consumable</th>
-                            <th>Nama Consumables</th>
-                            <th>Spesifikasi Consumables</th>
-                            <th>Quantity</th>
-                            <th>Jenis Quantity</th>
-                            <th>Jenis Consumables</th>
-                            <th>Harga Consumable</th>
-                            <th>Nama Project</th>
-                            <th>Sub nama Project</th>
-                            <th>Aksi</th>
+                            <th class="text-center">No</th>
+                            <th class="text-center">Consumables Codes</th>
+                            <th class="text-center">Consumables Names</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data_consumables as $data )
-                        <tr>
-                            <td class="text-center">{{$loop->iteration}}</td>
-                            <td>{{$data->kode_consumable}}</td>
-                            <td>{{$data->nama_consumable}}</td>
-                            <td>{{$data->spesifikasi_consumable}}</td>
-                            @if (0)
-                            <td class="text-center bg-danger">{{$data->quantity}}</td>
-                            @else
-                            <td class="text-center">{{$data->quantity}}</td>
-                            @endif
-                            <td class="text-center">{{$data->jenis_quantity}}</td>
-                            <td>{{$data->jenis_consumable}}</td>
-                            <td class="text-center">Rp.{{$data->harga_consumable}}</td>
-                            <td>{{$data->project->nama_project ?? '-' }}</td>
-                            <td class="text-center">{{$data->project->sub_nama_project ?? '-' }} </td>
-                            <td>
-                                <div class="mb-auto">
-                                    <a href="{{route('consumable.edit',$data->id)}}" class="btn btn-warning btn-sm">Edit</a>
-                                </div>
-
-                            </td>
-                        </tr>
+                        @foreach ($data_consumables as $data)
+                            <tr>
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td class="text-center">{{ $data->kode_consumable }}</td>
+                                <td class="text-center">{{ $data->nama_consumable }}</td>
+                                @if (0)
+                                    <td class="text-center bg-danger">{{ $data->quantity }} {{ $data->jenis_quantity }}</td>
+                                @else
+                                    <td class="text-center">{{ $data->quantity }}</td>
+                                @endif
+                                <td class="text-center">
+                                    <a href="{{ route('consumable.edit', $data->id) }}" class="btn btn-warning btn-sm">
+                                        <i class='bx bx-edit-alt'></i>
+                                    </a>
+                                    <a href="{{ route('consumable.show', $data->id) }}" class="btn btn-success btn-sm">
+                                        <i class='bx bx-show-alt'></i>
+                                    </a>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -136,117 +108,98 @@
         </div>
     </div>
 
-
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" data-bs-focus="false" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Form Tambah Consumable</h1>
+                <div class="modal-header text-center">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Data Consumable</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('consumable.create')}}" method="post">
+                    <form action="{{ route('consumable.create') }}" method="post">
                         @csrf
                         <div class="mb-3">
-                            <label for="nama_consumable" class="form-label">Nama Consumable</label>
-                            <input class="form-control rounded-top  @error('nama_consumable') is-invalid @enderror"
-                                type="text" name="nama_consumable" placeholder="Harap Di Isi Nama Consumable" required>
+                            <label for="nama_consumable" class="form-label">Consumable Name</label>
+                            <input class="form-control rounded-top @error('nama_consumable') is-invalid @enderror"
+                                type="text" name="nama_consumable"
+                                placeholder="Please fill in the consumable name field ..." required>
                             @error('nama_consumable')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="mb-3">
-                            <label for="spesifikasi_consumable" class="form-label">Spesifikasi Consumable</label>
+                            <label for="spesifikasi_consumable" class="form-label">Spesification Consumable</label>
                             <input class="form-control rounded-top @error('spesifikasi_consumable') is-invalid @enderror"
-                                type="text" name="spesifikasi_consumable" placeholder="Harap Di Isi Spesifikasi Consumable"
-                                required>
+                                type="text" name="spesifikasi_consumable"
+                                placeholder="Please fill in the spesification consumable field ..." required>
                             @error('spesifikasi_consumable')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number"
+                            name="quantity" placeholder="Please fill in the quantity consumable field ..." required
+                            min="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
 
-                        <div class="mb-3">
-                            <label for="quantity" class="form-label">Quantity Consumable</label>
-                            <input class="form-control rounded-top @error('quantity') is-invalid @enderror" type="number"
-                                name="quantity" placeholder="Harap Di Isi Quantity Material" required min="1">
-                            @error('quantity')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-
-                        <div class="mb-3">
-                            <label for="jenis_quantity" class="form-label" name="jenis_quantity">Jenis Quantity </label>
-                            <select class="form-select rounded-top @error('jenis_quantity') is-invalid @enderror" name="jenis_quantity" required>
-                                <option selected disabled>Pilih Jenis Quantity</option>
+                        <div class="mb-3 mt-3">
+                            <label for="jenis_quantity" class="form-label">Type Quantity</label>
+                            <select
+                                class="js-example-basic-single rounded-top @error('jenis_quantity') is-invalid @enderror"
+                                name="jenis_quantity" required>
+                                <option selected disabled>Choose Jenis Quantity</option>
                                 <option value="Pcs">Pcs</option>
-                                <option value="Batang">Batang</option>
+                                <option value="Length">Length</option>
                                 <option value="Set">Set</option>
-                                <option value="Karung">Karung</option>
+                                <option value="Sack">Sack</option>
                                 <option value="Box">Box</option>
-                                <option value="Pasang">Pasang</option>
-                                <option value="Kilo Gram">KG</option>
-                                <option value="Lusin">Lusin</option>
-                                @error('jenis_quantity')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
+                                <option value="Kg">Kilogram (Kg)</option>
+                                <option value="G">Gram (G)</option>
+                                <option value="Dozen">Dozen</option>
                             </select>
+                            @error('jenis_quantity')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
-
                         <div class="mb-3">
-                            <label for="jenis_consumable" class="form-label" name="jenis_consumable">Jenis Consumable </label>
+                            <label for="jenis_consumable" class="form-label">Type Consumable</label>
                             <select class="form-select rounded-top @error('jenis_consumable') is-invalid @enderror"
                                 name="jenis_consumable" required>
-                                <option selected disabled>Pilih Jenis Consumable</option>
+                                <option selected disabled>Choosee Type Consumable</option>
                                 <option value="General Consumable">General Consumable</option>
                                 <option value="Welding Consumable">Welding Consumable</option>
                                 <option value="Safety Consumable">Safety Consumable</option>
-
-                                @error('jenis_consumable')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
                             </select>
+                            @error('jenis_consumable')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
-                        <label for="harga_consumable" class="form-label" name="harga_consumable">Harga Consumable </label>
+                        <label for="harga_consumable" class="form-label">Price Consumable</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Rp</span>
-                            <input type="text" class="form-control" name="harga_consumable" id="hargaConsumable" aria-label="Amount (to the nearest Rupiah)" oninput="formatCurrency(this)" min="1">
+                            <input type="text" class="form-control" name="harga_consumable" id="hargaConsumable"
+                                aria-label="Amount (to the nearest Rupiah)" oninput="formatCurrency(this)"
+                                min="1">
                             <span class="input-group-text">.00</span>
                         </div>
 
-
                         <div class="mb-3">
-                            <label for="project_id" class="form-label" name="project_id">Nama Kategori Project</label>
+                            <label for="project_id" class="form-label">For The Project</label>
                             <select class="form-select rounded-top @error('project_id') is-invalid @enderror"
                                 name="project_id" required>
-                                <option selected disabled>Pilih Kategori Project</option>
-                                @foreach ($data_project as $data )
-                                <option value="{{ $data->id }}">{{ $data->nama_project }} | {{ $data->sub_nama_project }} | NO JO : {{ $data->no_jo_project }} </option>
-                                @error('project_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
+                                <option selected disabled>Choose The Project</option>
+                                @foreach ($data_project as $data)
+                                    <option value="{{ $data->id }}">{{ $data->nama_project }} |
+                                        {{ $data->sub_nama_project }} | NO JO : {{ $data->no_jo_project }}</option>
                                 @endforeach
-
                             </select>
+                            @error('project_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-
-
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -256,15 +209,20 @@
                 </div>
             </div>
         </div>
-    </div>
-
     @endsection
+</div>
+
+@push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
-        .bg-danger {
-            background-color: #f8d7da !important; /* Latar belakang merah muda */
+        tr.bg-danger td {
+            background-color: #f8d7da !important;
+            color: #842029 !important;
         }
     </style>
-    @push('scripts')
+@endpush
+
+@push('scripts')
     <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
     <script src="//cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
     <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
@@ -273,37 +231,16 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
     <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                console.log('Preloader found. It will hide after 3 seconds...');
-                setTimeout(function () {
-                    preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
-                    console.log('Preloader hidden.');
-                }, 1500); // Durasi 3000 ms = 3 detik
-            } else {
-                console.error('Preloader element not found!');
-            }
-        });
-
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            // Inisialisasi DataTable
+        $(document).ready(function() {
             var table = $('#myTable7').DataTable({
-
-                drawCallback: function () {
-                    // Loop melalui semua baris tabel setelah DataTable digambar ulang
-                    $('#myTable7 tbody tr').each(function () {
-                        // Ambil nilai quantity dari kolom ke-4 (index 4)
+                drawCallback: function() {
+                    $('#myTable7 tbody tr').each(function() {
                         var quantity = $(this).find('td').eq(4).text().trim();
-
-                        // Jika quantity == 0, tambahkan kelas 'bg-danger' untuk merubah warna latar belakang
                         if (quantity == '0') {
-                            $(this).addClass('bg-danger text-white'); // Menambahkan teks putih untuk kontras
+                            $(this).addClass('bg-danger text-white');
                         } else {
                             $(this).removeClass('bg-danger text-white');
                         }
@@ -311,43 +248,28 @@
                 }
             });
 
-            $('#projectFilter').on('change', function () {
-                var projectFilter = $(this).val(); // Ambil nilai dropdown
-
-                // Terapkan filter pada kolom Kategori Project (index 6)
-                table.column(6).search(projectFilter).draw();
+            $('#projectFilter').on('change', function() {
+                table.column(6).search($(this).val()).draw();
             });
-
         });
 
         function formatCurrency(input) {
-        // Ambil nilai input, hapus semua karakter selain angka
-        let value = input.value.replace(/[^,\d]/g, '');
-
-        // Ubah ke format angka dengan pemisah ribuan
-        input.value = new Intl.NumberFormat('id-ID').format(value);
+            let value = input.value.replace(/[^,\d]/g, '');
+            input.value = new Intl.NumberFormat('id-ID').format(value);
         }
 
-        function updateDateTime() {
-            const now = new Date();
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            };
-            document.getElementById('currentDateTime').textContent = now.toLocaleDateString('id-ID', options);
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            if (preloader) setTimeout(() => preloader.style.display = 'none', 1500);
+        });
 
-        // Jalankan fungsi pertama kali
-        updateDateTime();
-
-        // Perbarui waktu setiap detik
-        setInterval(updateDateTime, 1000);
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2({
+                theme: "bootstrap-5", // Jika Anda menggunakan tema bootstrap-5-select2
+                dropdownParent: $('#exampleModal'),
+                width: '100%',
+                placeholder: "Select an option"
+            });
+        });
     </script>
-
-
-    @endpush
+@endpush

@@ -30,21 +30,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login',                              [LoginController::class, 'index'])->name('login');
-Route::post('/login_page',                        [LoginController::class, 'authentication'])->name('login_page_dasboard');
+Route::get('/login',                                [LoginController::class, 'index'])->name('login');
+Route::post('/login_page',                          [LoginController::class, 'authentication'])->name('login_page_dasboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard',                      [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/viewProfile',                    [DashboardController::class, 'viewProfil'])->name('viewProfile');
+    Route::get('/dashboard',                        [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/viewProfile',                      [DashboardController::class, 'viewProfil'])->name('viewProfile');
 
     Route::prefix('project')->name('project.')->group(function () {
-            Route::get('/',                       [MenuProjectController::class, 'index'])->name('index');
-            Route::post('create',                 [MenuProjectController::class, 'store'])->name('create');
-            Route::get('edit/{id}',               [MenuProjectController::class, 'edit'])->name('edit');
-            Route::patch('update/{id}',           [MenuProjectController::class, 'update'])->name('update');
-            Route::get('/search',                 [MenuProjectController::class, 'index'])->name('search');
-            Route::get('/detail/{id}',            [MenuProjectController::class, 'show'])->name('detail');
-            Route::delete('/delete/project/{id}', [MenuProjectController::class, 'destroy'])->name('destroy');
+            Route::get('/',                         [MenuProjectController::class, 'index'])->name('index');
+            Route::post('create',                   [MenuProjectController::class, 'store'])->name('create');
+            Route::get('edit/{id}',                 [MenuProjectController::class, 'edit'])->name('edit');
+            Route::patch('update/{id}',             [MenuProjectController::class, 'update'])->name('update');
+            Route::get('/search',                   [MenuProjectController::class, 'index'])->name('search');
+            Route::get('/detail/{id}',              [MenuProjectController::class, 'show'])->name('detail');
+            Route::delete('/delete/project/{id}',   [MenuProjectController::class, 'destroy'])->name('destroy');
         });
 
     Route::prefix('userData')->name('userData.')->group(function () {
@@ -68,14 +68,15 @@ Route::middleware('auth')->group(function () {
             Route::get('/show/{id}',                [MaterialController::class, 'show'])->name('show');
         });
 
-    Route::prefix('consumable')
-        ->name('consumable.')
-        ->group(function () {
-            Route::get('/', [ConsumableController::class, 'index'])->name('index');
-            Route::post('create', [ConsumableController::class, 'store'])->name('create');
-            Route::get('edit/{id}', [ConsumableController::class, 'edit'])->name('edit');
-            Route::patch('update{id}', [ConsumableController::class, 'update'])->name('update');
-            Route::post('/import', [ConsumableController::class, 'import'])->name('import');
+    Route::prefix('consumable')->name('consumable.')->group(function () {
+            Route::get('/',                         [ConsumableController::class, 'index'])->name('index');
+            Route::post('create',                   [ConsumableController::class, 'store'])->name('create');
+            Route::get('edit/{id}',                 [ConsumableController::class, 'edit'])->name('edit');
+            Route::patch('update{id}',              [ConsumableController::class, 'update'])->name('update');
+            Route::get('/show/{id}',                [ConsumableController::class, 'show'])->name('show');
+            Route::post('/import',                  [ConsumableController::class, 'import'])->name('import');
+            Route::get('/export-filter',            [ConsumableController::class, 'exportPage'])->name('export');
+            Route::get('/material/export/download', [ConsumableController::class, 'exportDownload'])->name('consumable.export.download');
         });
 
     Route::prefix('tools')
