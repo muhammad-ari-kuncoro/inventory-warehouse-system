@@ -20,7 +20,9 @@ class Project extends Model
         'kategori_project',
         'no_jo_project',
         'no_po_project',
-        'kode_project'
+        'kode_project',
+        'start_date',
+        'end_date',
     ];
 
     protected static function boot()

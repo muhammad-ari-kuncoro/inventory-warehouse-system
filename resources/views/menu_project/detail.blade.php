@@ -63,10 +63,42 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="p-3 bg-light rounded">
-                        <small class="text-muted">Project Start Date</small>
-                        <p class="fw-semibold mb-0 mt-1">{{ $find_id->created_at->format('d M Y') }}</p>
+                <div class="row g-3"> <!-- g-3 untuk jarak antar kolom -->
+                    <!-- Project Start Date -->
+                    <div class="col-md-6">
+                        <div class="p-3 border-start border-4 border-primary bg-light rounded shadow-sm">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box me-3 text-primary">
+                                    <i class='bx bx-calendar-check fs-3'></i>
+                                    <!-- Menggunakan Boxicons (sesuai kodingan Bapak sebelumnya) -->
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block text-uppercase fw-bold"
+                                        style="font-size: 0.7rem; letter-spacing: 1px;">Project Start Date</small>
+                                    <p class="fw-bold mb-0 mt-1 text-dark">
+                                        {{ \Carbon\Carbon::parse($find_id->start_date)->format('d M Y') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project End Date -->
+                    <div class="col-md-6">
+                        <div class="p-3 border-start border-4 border-danger bg-light rounded shadow-sm">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box me-3 text-danger">
+                                    <i class='bx bx-calendar-x fs-3'></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block text-uppercase fw-bold"
+                                        style="font-size: 0.7rem; letter-spacing: 1px;">Project End Date</small>
+                                    <p class="fw-bold mb-0 mt-1 text-dark">
+                                        {{ \Carbon\Carbon::parse($find_id->end_date)->format('d M Y') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

@@ -60,7 +60,6 @@
                             <th>No. Job Order Project </th>
                             <th class="text-center">Name Project Client</th>
                             <th class="text-center">Project Item</th>
-                            <th>Category Name Project</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -72,7 +71,6 @@
                                 <td class="text-center">{{ $data->no_jo_project }}</td>
                                 <td>{{ $data->nama_project }}</td>
                                 <td>{{ $data->sub_nama_project }}</td>
-                                <td>{{ $data->kategori_project }}</td>
                                 <td>
                                     <div class="mb-1">
                                         <a href="{{ route('project.edit', $data->id) }}"><span
@@ -88,7 +86,8 @@
                                             onsubmit="return confirm('Yakin ingin menghapus project ini?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
+                                            <button type="submit" class="btn btn-danger btn-sm"><i
+                                                    class="bx bx-trash"></i></button>
                                         </form>
                                     </div>
                                 </td>
@@ -114,7 +113,7 @@
                     <form action="{{ route('project.create') }}" method="post">
                         @csrf
                         <div class="mb-3">
-                            <label for="nama_project" class="form-label">Client Project Name*</label>
+                            <label for="nama_project" class="form-label">Client Project Name <span class="text-danger">*</span></label>
                             <input class="form-control rounded-top  @error('nama_project') is-invalid @enderror"
                                 type="text" name="nama_project"
                                 placeholder="Please fill in the client project name field ..." required>
@@ -126,7 +125,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="formFile" class="form-label">Item Project*</label>
+                            <label for="formFile" class="form-label">Item Project <span class="text-danger">*</span></label>
                             <input class="form-control rounded-top @error('sub_nama_project') is-invalid @enderror"
                                 type="text" name="sub_nama_project"
                                 placeholder="Please fill in the item project name field ..." required>
@@ -138,7 +137,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="formFile" class="form-label" name="kategori_project">Category Name Project*
+                            <label for="kategori_project" class="form-label" name="kategori_project">Category Name
+                                Project <span class="text-danger">*</span>
                             </label>
                             <select class="form-select rounded-top @error('kategori_project') is-invalid @enderror"
                                 name="kategori_project" required>
@@ -153,10 +153,32 @@
                                 @enderror
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label for="start_date" class="form-label">Project Start Date <span class="text-danger">*</span></label>
+                            <input class="form-control rounded-top @error('start_date') is-invalid @enderror"
+                                type="date" name="start_date" id="start_date" required>
+
+                            @error('start_date')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="end_date" class="form-label">Project End Date <span class="text-danger">*</span></label>
+                            <input class="form-control rounded-top @error('end_date') is-invalid @enderror"
+                                type="date" name="end_date" id="end_date" required>
+
+                            @error('tanggal_project')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
 
                         <div class="mb-3">
                             <label for="formFile" name="no_jo_project" class="form-label">No Jo (JOB Order)
-                                Project*</label>
+                                Project <span class="text-danger">*</span></label>
                             <input class="form-control rounded-top @error('no_jo_project') is-invalid @enderror"
                                 type="text" name="no_jo_project"
                                 placeholder="Please fill in the no jo (Job Order) project field ... " required>
@@ -169,7 +191,7 @@
 
                         <div class="mb-3">
                             <label for="formFile" name="no_po_project" class="form-label">No PO(Purchase Order)
-                                Project*</label>
+                                Project <span class="text-danger">*</span></label>
                             <input class="form-control rounded-top @error('no_po_project') is-invalid @enderror"
                                 type="text" name="no_po_project"
                                 placeholder="Please fill in the no PO (Purchase Order) project field ... " required>

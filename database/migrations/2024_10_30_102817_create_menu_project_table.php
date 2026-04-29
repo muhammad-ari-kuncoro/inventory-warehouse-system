@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('no_jo_project');
             $table->string('kode_project');
             $table->string('no_po_project');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
             $table->softDeletes();
         });

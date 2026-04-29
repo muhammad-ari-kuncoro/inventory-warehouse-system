@@ -28,6 +28,8 @@ class MenuProjectController extends Controller
             'kategori_project'      => 'required|min:5|max:255',
             'no_jo_project'         => 'required|min:5|max:255',
             'no_po_project'         => 'required|min:3|max:255',
+            'start_date'            => 'required',
+            'end_date'              => 'required',
         ]);
 
         try {
@@ -37,6 +39,8 @@ class MenuProjectController extends Controller
                 'kategori_project'      => $request->kategori_project,
                 'no_jo_project'         => $request->no_jo_project,
                 'no_po_project'         => $request->no_po_project,
+                'start_date'            => $request->start_date,
+                'end_date'              => $request->end_date,
             ]);
             return redirect()->route('project.index')->with('success', 'Data berhasil ditambahkan!');
         } catch (\Exception $e) {
@@ -67,6 +71,8 @@ class MenuProjectController extends Controller
             'kategori_project'      => 'required|min:5|max:255',
             'no_jo_project'         => 'required|min:5|max:255',
             'no_po_project'         => 'required|min:5|max:255',
+            'start_date'            => 'required',
+            'end_date'              => 'required',
         ]);
         $updateProject                      = Project::findOrFail($id);
         $updateProject->nama_project        = $request->nama_project;
@@ -74,6 +80,8 @@ class MenuProjectController extends Controller
         $updateProject->kategori_project    = $request->kategori_project;
         $updateProject->no_jo_project       = $request->no_jo_project;
         $updateProject->no_po_project       = $request->no_po_project;
+        $updateProject->start_date          = $request->start_date;
+        $updateProject->end_date            = $request->end_date;
         $updateProject->save();
         return redirect()->route('project.index')->with('editSuccess', 'Data berhasil Di Edit!');
     }

@@ -98,6 +98,31 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+
+                    <div class="mb-3">
+                        <label for="start_date" class="form-label">Project Start Date <span
+                                class="text-danger">*</span></label>
+                        <input class="form-control rounded-top @error('start_date') is-invalid @enderror" type="date"
+                            name="start_date" id="start_date" value="{{ old('start_date', $find_id->start_date ?? '') }}"
+                            required>
+
+                        @error('start_date')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="end_date" class="form-label">Project End Date <span class="text-danger">*</span></label>
+                        <input class="form-control rounded-top @error('end_date') is-invalid @enderror" type="date"
+                            name="end_date" id="end_date" value="{{ old('end_date', $find_id->end_date ?? '') }}"
+                            required>
+                        @error('end_date')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="d-flex gap-2">
