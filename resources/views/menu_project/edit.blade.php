@@ -100,8 +100,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="start_date" class="form-label">Project Start Date <span
-                                class="text-danger">*</span></label>
+                        <label for="start_date" class="form-label">Project Start Date</label>
                         <input class="form-control rounded-top @error('start_date') is-invalid @enderror" type="date"
                             name="start_date" id="start_date" value="{{ old('start_date', $find_id->start_date ?? '') }}"
                             required>
@@ -113,7 +112,7 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="end_date" class="form-label">Project End Date <span class="text-danger">*</span></label>
+                        <label for="end_date" class="form-label">Project End Date</label>
                         <input class="form-control rounded-top @error('end_date') is-invalid @enderror" type="date"
                             name="end_date" id="end_date" value="{{ old('end_date', $find_id->end_date ?? '') }}"
                             required>
