@@ -14,12 +14,6 @@ class MenuProjectController extends Controller
         $data['menu_project']   = Project::all();
         return view('menu_project.index', $data);
     }
-
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
         $request->validate([

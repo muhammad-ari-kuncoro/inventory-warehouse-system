@@ -11,8 +11,7 @@ class Project extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $table = 'menu_project';  // Sesuaikan dengan nama tabel di database
-    // protected $guarded = ['id'];
+    protected $table = 'menu_project';
     protected $fillable = [
 
         'nama_project',
@@ -24,12 +23,9 @@ class Project extends Model
         'start_date',
         'end_date',
     ];
-
     protected static function boot()
     {
         parent::boot();
-
-        // KDPAJM = Kode Project AJM
         static::creating(function ($model) {
             $model->kode_project = 'AJM-' . date('Ymd') . '-KDPAJM-' . strtoupper(Str::random(3));
         });

@@ -63,14 +63,12 @@
                     </div>
                 </div>
 
-                <div class="row g-3"> <!-- g-3 untuk jarak antar kolom -->
-                    <!-- Project Start Date -->
+                <div class="row g-3">
                     <div class="col-md-6">
                         <div class="p-3 border-start border-4 border-primary bg-light rounded shadow-sm">
                             <div class="d-flex align-items-center">
                                 <div class="icon-box me-3 text-primary">
                                     <i class='bx bx-calendar-check fs-3'></i>
-                                    <!-- Menggunakan Boxicons (sesuai kodingan Bapak sebelumnya) -->
                                 </div>
                                 <div>
                                     <small class="text-muted d-block text-uppercase fw-bold"
@@ -83,7 +81,6 @@
                         </div>
                     </div>
 
-                    <!-- Project End Date -->
                     <div class="col-md-6">
                         <div class="p-3 border-start border-4 border-danger bg-light rounded shadow-sm">
                             <div class="d-flex align-items-center">
@@ -104,7 +101,6 @@
 
             </div>
 
-            {{-- Tombol --}}
             <div class="d-flex gap-2 mt-4">
                 <a href="{{ route('project.index') }}" class="btn btn-secondary">Go Back</a>
                 <a href="{{ route('project.edit', $find_id->id) }}" class="btn btn-warning">Edit</a>
