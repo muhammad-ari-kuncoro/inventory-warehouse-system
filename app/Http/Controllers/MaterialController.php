@@ -14,15 +14,15 @@ class MaterialController extends Controller
 {
     public function index()
     {
-        $data['data_material']      = Materials::all();
-        $data['sub_title']          = 'Materials';
         $data['title']              = 'Material Page';
+        $data['sub_title']          = 'Materials';
+        $data['data_material']      = Materials::all();
         $data['data_project']       = Project::all();
         return view('materials.index', $data);
     }
     public function multipe_create()
     {
-        $data['title'] = 'Data Master Items';
+        $data['title'] = 'Material Multiple Page';
         $data['sub_title'] = 'Materials';
         $data['data_material'] = Materials::all();
         $data['data_project'] = Project::all();

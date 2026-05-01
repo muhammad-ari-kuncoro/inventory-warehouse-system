@@ -21,7 +21,6 @@
     @csrf
     @method('PATCH')
 
-    {{-- Card 1: Information Item --}}
     <div class="card border shadow-sm mb-3">
         <div class="card-header bg-transparent border-bottom py-3 px-4">
             <p class="mb-0 text-uppercase text-secondary" style="font-size: 13px; letter-spacing: 0.06em; font-weight: 500;">
@@ -42,12 +41,12 @@
                     @enderror
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label text-secondary" style="font-size: 11px;">Specification</label>
+                    <label class="form-label text-secondary" style="font-size: 11px;">Specification Material</label>
                     <input type="text"
                         class="form-control @error('spesifikasi_material') is-invalid @enderror"
                         name="spesifikasi_material"
                         value="{{ old('spesifikasi_material', $find_id->spesifikasi_material) }}"
-                        placeholder="Enter specification..." required>
+                        placeholder="Enter specification material..." required>
                     @error('spesifikasi_material')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -56,7 +55,6 @@
         </div>
     </div>
 
-    {{-- Card 2: Kuantitas --}}
     <div class="card border shadow-sm mb-3">
         <div class="card-header bg-transparent border-bottom py-3 px-4">
             <p class="mb-0 text-uppercase text-secondary" style="font-size: 13px; letter-spacing: 0.06em; font-weight: 500;">
@@ -84,7 +82,7 @@
                             {{ $find_id->jenis_quantity ?? '-' }}
                         </span>
                     </label>
-                    <select class="form-select @error('jenis_quantity') is-invalid @enderror"
+                    <select class="select-type-quantity @error('jenis_quantity') is-invalid @enderror"
                         name="jenis_quantity" required>
                         <option value="" disabled>-- Choose Type --</option>
                         @foreach (['Pcs', 'Rod', 'Set', 'Sack', 'Box', 'Ea'] as $jenis)
@@ -102,7 +100,6 @@
         </div>
     </div>
 
-    {{-- Card 3: Tipe & Harga --}}
     <div class="card border shadow-sm mb-3">
         <div class="card-header bg-transparent border-bottom py-3 px-4">
             <p class="mb-0 text-uppercase text-secondary" style="font-size: 13px; letter-spacing: 0.06em; font-weight: 500;">
@@ -150,11 +147,10 @@
         </div>
     </div>
 
-    {{-- Card 4: Project --}}
     <div class="card border shadow-sm mb-4">
         <div class="card-header bg-transparent border-bottom py-3 px-4">
             <p class="mb-0 text-uppercase text-secondary" style="font-size: 13px; letter-spacing: 0.06em; font-weight: 500;">
-                Project Requirements
+                PROJECT REQUIREMENTS
             </p>
         </div>
         <div class="card-body px-4 py-3">
@@ -165,7 +161,7 @@
                     {{ $find_id->project->nama_project ?? '-' }}
                 </span>
             </label>
-            <select class="form-select @error('project_id') is-invalid @enderror"
+            <select class="select-project @error('project_id') is-invalid @enderror"
                 name="project_id" required>
                 <option value="" disabled>-- Choose Project --</option>
                 @foreach ($data_project as $project)
@@ -181,17 +177,19 @@
         </div>
     </div>
 
-    {{-- Tombol --}}
     <div class="d-flex gap-2">
         <a href="{{ route('material.index') }}" class="btn btn-light border px-4" style="font-size: 14px;">Cancel</a>
         <button type="submit" class="btn btn-primary px-4" style="font-size: 14px;">Save Changes</button>
     </div>
 
 </form>
-
 @endsection
+@push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endpush
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     function formatCurrency(input) {
         let value = input.value.replace(/[^,\d]/g, '');
@@ -201,6 +199,16 @@
     document.addEventListener('DOMContentLoaded', function () {
         const preloader = document.getElementById('preloader');
         if (preloader) setTimeout(() => preloader.style.display = 'none', 1500);
+    });
+    $(document).ready(function () {
+        $('.select-type-quantity').select2({
+            width: '100%',
+            placeholder: "Choose Type Quantity"
+        });
+        $('.select-project').select2({
+            width: '100%',
+            placeholder: "Choose Project"
+        });
     });
 </script>
 @endpush

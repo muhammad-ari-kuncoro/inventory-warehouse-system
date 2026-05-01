@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/',                         [MaterialController::class, 'index'])->name('index');
             Route::post('create',                   [MaterialController::class, 'store'])->name('create');
             Route::get('/create-multiple',          [MaterialController::class, 'multipe_create'])->name('create.multiple');
-            Route::post('/store-multiple',          [MaterialController::class, 'multiple_data'])->name('store.multiple_data');
+        Route::post('/store-multiple',          [MaterialController::class, 'multiple_data'])->name('store.multiple_data');
             Route::get('edit/{id}',                 [MaterialController::class, 'edit'])->name('edit');
             Route::patch('update{id}',              [MaterialController::class, 'update'])->name('update');
             Route::get('/search',                   [MaterialController::class, 'index'])->name('search');
@@ -73,6 +73,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('consumable')->name('consumable.')->group(function () {
             Route::get('/',                         [ConsumableController::class, 'index'])->name('index');
             Route::post('create',                   [ConsumableController::class, 'store'])->name('create');
+            Route::get('/create-multiple',          [ConsumableController::class, 'multiple_create'])->name('create.multiple');
+            Route::post('/store-multiple',          [ConsumableController::class, 'multiple_data'])->name('store.multiple_data');
             Route::get('edit/{id}',                 [ConsumableController::class, 'edit'])->name('edit');
             Route::patch('update{id}',              [ConsumableController::class, 'update'])->name('update');
             Route::get('/show/{id}',                [ConsumableController::class, 'show'])->name('show');

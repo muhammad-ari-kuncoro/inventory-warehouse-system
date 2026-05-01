@@ -66,6 +66,7 @@
                         data-bs-target="#exampleModal">
                         <i class='bx bx-plus'></i> Add Data
                     </button>
+                    <a href="{{ route('consumable.create.multiple') }}" class="btn btn-success btn-sm"><i class='bx bx-plus'></i> Add Data Multiple</a>
                 </div>
 
             </div>
