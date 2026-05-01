@@ -70,6 +70,7 @@
                         data-bs-target="#modalTambah">
                         <i class='bx bx-plus'></i> Add Data
                     </button>
+                    <a href="{{ route('material.create.multiple') }}" class="btn btn-success btn-sm"><i class='bx bx-plus'></i> Add Data Multiple</a>
                 </div>
 
             </div>
@@ -183,7 +184,7 @@
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Type Material</label>
                             <select class="form-select" name="jenis_material" required>
-                                <option value="" disabled selected>Pilih Jenis Material</option>
+                                <option value="" disabled selected>Choose Type Material</option>
                                 <option value="New">New</option>
                                 <option value="Temporary">Temporary</option>
                             </select>
@@ -205,7 +206,7 @@
                             <label class="form-label fw-semibold">Project</label>
                             <select class="form-select @error('project_id') is-invalid @enderror" name="project_id"
                                 required>
-                                <option value="" disabled selected>Pilih Project</option>
+                                <option value="" disabled selected>Choose Project</option>
                                 @foreach ($data_project as $project)
                                     <option value="{{ $project->id }}">
                                         {{ $project->nama_project }} | {{ $project->sub_nama_project }} | JO:

@@ -59,6 +59,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('material')->name('material.')->group(function () {
             Route::get('/',                         [MaterialController::class, 'index'])->name('index');
             Route::post('create',                   [MaterialController::class, 'store'])->name('create');
+            Route::get('/create-multiple',          [MaterialController::class, 'multipe_create'])->name('create.multiple');
+            Route::post('/store-multiple',          [MaterialController::class, 'multiple_data'])->name('store.multiple_data');
             Route::get('edit/{id}',                 [MaterialController::class, 'edit'])->name('edit');
             Route::patch('update{id}',              [MaterialController::class, 'update'])->name('update');
             Route::get('/search',                   [MaterialController::class, 'index'])->name('search');

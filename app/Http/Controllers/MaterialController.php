@@ -14,58 +14,96 @@ class MaterialController extends Controller
 {
     public function index()
     {
-        $data['data_material'] = Materials::all();
-        $data['sub_title'] = 'Materials';
-        $data['title'] = 'Material Page';
-        $data['data_project'] = Project::all();
+        $data['data_material']      = Materials::all();
+        $data['sub_title']          = 'Materials';
+        $data['title']              = 'Material Page';
+        $data['data_project']       = Project::all();
         return view('materials.index', $data);
     }
-
-    public function create()
+    public function multipe_create()
     {
-        //
+        $data['title'] = 'Data Master Items';
+        $data['sub_title'] = 'Materials';
+        $data['data_material'] = Materials::all();
+        $data['data_project'] = Project::all();
+        return view('materials.create-multiple-data', $data);
+    }
+    public function multiple_data(Request $request)
+    {
+        try {
+            $data = $request->input('data');
+
+            if (!$data || !is_array($data) || count($data) === 0) {
+                return response()->json(['message' => 'Empty Data, Nothing to save!'], 422);
+            }
+
+            $created = [];
+            foreach ($data as $idx => $item) {
+                if (empty($item['nama_material']) || empty($item['spesifikasi_material']) || empty($item['jenis_quantity']) || empty($item['quantity']) || empty($item['jenis_material'])) {
+                    return response()->json(
+                        [
+                            'message' => "Item index {$idx} Field Has Empty.",
+                        ],
+                        422,
+                    );
+                }
+
+                $created[] = Materials::create([
+                    'nama_material'                 => $item['nama_material'],
+                    'spesifikasi_material'          => $item['spesifikasi_material'],
+                    'jenis_quantity'                => $item['jenis_quantity'],
+                    'quantity'                      => $item['quantity'],
+                    'jenis_material'                => $item['jenis_material'],
+                    'harga_material'                => $item['harga_material'] ?? null,
+                    'project_id'                    => $item['project_id'] ?? null,
+                ]);
+            }
+
+            return response()->json([
+                'message' => 'All Data Has Been Saved!',
+                'count' => count($created),
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(
+                [
+                    'message' => 'Failed to Save Data: ' . $th->getMessage(),
+                ],
+                500,
+            );
+        }
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //Validasi
         $request->validate([
-            'nama_material' => 'required|min:5|max:255',
-            'spesifikasi_material' => 'required|min:5|max:255',
-            'jenis_quantity' => 'required|min:1|max:255',
-            'quantity' => 'required|min:1|max:100',
-            'jenis_material' => 'required|min:1|max:255',
-            'harga_material' => 'required|min:1|max:255',
+            'nama_material'                     => 'required|min:5|max:255',
+            'spesifikasi_material'              => 'required|min:5|max:255',
+            'jenis_quantity'                    => 'required|min:1|max:255',
+            'quantity'                          => 'required|min:1|max:100',
+            'jenis_material'                    => 'required|min:1|max:255',
+            'harga_material'                    => 'required|min:1|max:255',
             'project_id' => 'nullable',
         ]);
-
         try {
             Materials::create([
-                'nama_material' => $request->nama_material,
-                'spesifikasi_material' => $request->spesifikasi_material,
-                'jenis_quantity' => $request->jenis_quantity,
-                'quantity' => $request->quantity,
-                'jenis_material' => $request->jenis_material,
-                'harga_material' => $request->harga_material,
-                'project_id' => $request->project_id,
+                'nama_material'                 => $request->nama_material,
+                'spesifikasi_material'          => $request->spesifikasi_material,
+                'jenis_quantity'                => $request->jenis_quantity,
+                'quantity'                      => $request->quantity,
+                'jenis_material'                => $request->jenis_material,
+                'harga_material'                => $request->harga_material,
+                'project_id'                    => $request->project_id,
             ]);
-            // dd($tambah);
-            return redirect()->route('materials.index')->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('materials.index')->with('success', 'Data Has Been Saved!');
         } catch (\Exception $th) {
-            //erros jika data tidak sesuai
-            // Simpan pesan error jika terjadi kesalahan
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data!');
+            return redirect()->back()->with('error', 'Failed to save Data!');
         }
     }
 
     public function exportPage()
     {
-        $data['title']      = 'Export PDF Material';
-        $data['sub_title']  = 'Materials';
+        $data['title'] = 'Export PDF Material';
+        $data['sub_title'] = 'Materials';
         $data['projects'] = Project::all();
         return view('materials.filter-export-pdf', $data);
     }
@@ -98,46 +136,35 @@ class MaterialController extends Controller
         try {
             $file = $request->file('file');
             $path = $file->getRealPath();
-
-            // Baca file Excel
             $spreadsheet = IOFactory::load($path);
             $sheet = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-
-            // Proses setiap baris (abaikan header)
             foreach ($sheet as $index => $row) {
-                // Lewati baris header
                 if ($index === 0) {
                     continue;
                 }
-
-                // Validasi setiap baris data
                 if (empty($row['A']) || empty($row['B']) || empty($row['C']) || empty($row['D']) || empty($row['E']) || empty($row['F']) || empty($row['G'])) {
-                    // Skip jika ada kolom yang kosong
                     continue;
                 }
 
                 Materials::create([
-                    'kode_material' => $row['A'],
-                    'nama_material' => $row['B'],
-                    'spesifikasi_material' => $row['C'],
-                    'quantity' => $row['D'],
-                    'jenis_quantity' => $row['E'],
-                    'jenis_material' => $row['F'],
-                    'harga_material' => $row['G'],
+                    'kode_material'             => $row['A'],
+                    'nama_material'             => $row['B'],
+                    'spesifikasi_material'      => $row['C'],
+                    'quantity'                  => $row['D'],
+                    'jenis_quantity'            => $row['E'],
+                    'jenis_material'            => $row['F'],
+                    'harga_material'            => $row['G'],
                 ]);
             }
 
-            return redirect()->back()->with('success', 'Data berhasil diimpor!');
+            return redirect()->back()->with('success', 'Data Has Been Imported!');
         } catch (\Exception $e) {
             return redirect()
                 ->back()
-                ->with('delete', 'Terjadi kesalahan: ' . $e->getMessage());
+                ->with('delete', 'Failed to procced: ' . $e->getMessage());
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         $data['sub_title'] = 'Materials';
@@ -148,9 +175,6 @@ class MaterialController extends Controller
         return view('materials.show', $data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $data['sub_title'] = 'Materials';
@@ -163,37 +187,25 @@ class MaterialController extends Controller
 
     public function update(Request $request, $id)
     {
-        //Validasi
         $request->validate([
-            'nama_material'         => 'required|min:5|max:255',
-            'spesifikasi_material'  => 'required|min:5|max:255',
-            'jenis_quantity'        => 'required|min:1|max:255',
-            'quantity'              => 'required|min:1|max:100',
-            'jenis_material'        => 'required|min:1|max:255',
-            'harga_material'        => 'required|min:1|max:100',
-            'project_id'            => 'nullable',
+            'nama_material'              => 'required|min:5|max:255',
+            'spesifikasi_material'       => 'required|min:5|max:255',
+            'jenis_quantity'             => 'required|min:1|max:255',
+            'quantity'                   => 'required|min:1|max:100',
+            'jenis_material'             => 'required|min:1|max:255',
+            'harga_material'             => 'required|min:1|max:100',
+            'project_id'                 => 'nullable',
         ]);
-
-        // dd($request);
-
-        $updateMaterial                             = Materials::findOrFail($id);
-        $updateMaterial->nama_material              = $request->nama_material;
-        $updateMaterial->spesifikasi_material       = $request->spesifikasi_material;
-        $updateMaterial->jenis_quantity             = $request->jenis_quantity;
-        $updateMaterial->quantity                   = $request->quantity;
-        $updateMaterial->jenis_material             = $request->jenis_material;
-        $updateMaterial->harga_material             = $request->harga_material;
-        $updateMaterial->project_id                 = $request->project_id;
+        $updateMaterial                         = Materials::findOrFail($id);
+        $updateMaterial->nama_material          = $request->nama_material;
+        $updateMaterial->spesifikasi_material   = $request->spesifikasi_material;
+        $updateMaterial->jenis_quantity         = $request->jenis_quantity;
+        $updateMaterial->quantity               = $request->quantity;
+        $updateMaterial->jenis_material         = $request->jenis_material;
+        $updateMaterial->harga_material         = $request->harga_material;
+        $updateMaterial->project_id             = $request->project_id;
         $updateMaterial->save();
-        // Redirect ke halaman yang diinginkan
-        return redirect()->route('material.index')->with('editSuccess', 'Data berhasil Di Edit!');
+        return redirect()->route('material.index')->with('editSuccess', 'Data has been Updated!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Materials $materials)
-    {
-        //
-    }
 }
