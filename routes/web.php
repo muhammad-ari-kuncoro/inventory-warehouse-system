@@ -83,14 +83,17 @@ Route::middleware('auth')->group(function () {
             Route::get('/material/export/download', [ConsumableController::class, 'exportDownload'])->name('consumable.export.download');
         });
 
-    Route::prefix('tools')
-        ->name('tools.')
-        ->group(function () {
-            Route::get('/', [ToolsController::class, 'index'])->name('index');
-            Route::post('create', [ToolsController::class, 'store'])->name('create');
-            Route::get('edit/{id}', [ToolsController::class, 'edit'])->name('edit');
-            Route::patch('update/{id}', [ToolsController::class, 'update'])->name('update');
-            Route::post('/import', [ToolsController::class, 'import'])->name('import');
+    Route::prefix('tools')->name('tools.')->group(function () {
+            Route::get('/',                         [ToolsController::class, 'index'])->name('index');
+            Route::post('create',                   [ToolsController::class, 'store'])->name('create');
+            Route::get('/create-multiple',          [ToolsController::class, 'multiple_create'])->name('create.multiple');
+            Route::post('/store-multiple',          [ToolsController::class, 'multiple_data'])->name('store.multiple_data');
+            Route::get('edit/{id}',                 [ToolsController::class, 'edit'])->name('edit');
+            Route::patch('update/{id}',             [ToolsController::class, 'update'])->name('update');
+            Route::get('show/{id}',                 [ToolsController::class, 'show'])->name('show');
+            Route::post('/import',                  [ToolsController::class, 'import'])->name('import');
+            Route::get('/export-filter',            [ToolsController::class, 'exportPage'])->name('export');
+            Route::get('/tools/export/download',    [ToolsController::class, 'exportDownload'])->name('tools.export.download');
         });
 
     Route::prefix('material-temporary')

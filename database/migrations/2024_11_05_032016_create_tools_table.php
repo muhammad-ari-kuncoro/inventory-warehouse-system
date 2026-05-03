@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('tools', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_alat');
             $table->string('nama_alat');
             $table->string('spesifikasi_alat');
             $table->string('jenis_alat');
             $table->string('tipe_alat');
-            $table->string('kode_alat');
             $table->integer('quantity');
             $table->string('jenis_quantity');
             $table->timestamps();
