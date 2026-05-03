@@ -58,6 +58,7 @@
                         <tr class="table-info text-center">
                             <th>No</th>
                             <th>No. Job Order Project </th>
+                            <th class="text-center">Category</th>
                             <th class="text-center">Name Project Client</th>
                             <th class="text-center">Project Item</th>
                             <th class="text-center">Action</th>
@@ -66,9 +67,19 @@
                     <tbody>
                         @foreach ($menu_project as $data)
                             <tr class="text-center">
-
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td class="text-center">{{ $data->no_jo_project }}</td>
+                                <td data-search="{{ $data->kategori_project }}" class="text-center">
+                                    @if ($data->kategori_project == 'General Industry')
+                                        <span class="badge bg-primary">{{ $data->kategori_project }}</span>
+                                    @elseif($data->kategori_project == 'Migas')
+                                        <span class="badge bg-danger">{{ $data->kategori_project }}</span>
+                                    @elseif($data->kategori_project == 'Geothermal')
+                                        <span class="badge bg-success">{{ $data->kategori_project }}</span>
+                                    @else
+                                        <span class="badge bg-secondary">{{ $data->kategori_project ?? '-' }}</span>
+                                    @endif
+                                </td>
                                 <td>{{ $data->nama_project }}</td>
                                 <td>{{ $data->sub_nama_project }}</td>
                                 <td>
@@ -91,7 +102,6 @@
                                         </form>
                                     </div>
                                 </td>
-
                             </tr>
                         @endforeach
                     </tbody>
@@ -99,8 +109,6 @@
             </div>
         </div>
     </div>
-
-
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -113,7 +121,8 @@
                     <form action="{{ route('project.create') }}" method="post">
                         @csrf
                         <div class="mb-3">
-                            <label for="nama_project" class="form-label">Client Project Name <span class="text-danger">*</span></label>
+                            <label for="nama_project" class="form-label">Client Project Name <span
+                                    class="text-danger">*</span></label>
                             <input class="form-control rounded-top  @error('nama_project') is-invalid @enderror"
                                 type="text" name="nama_project"
                                 placeholder="Please fill in the client project name field ..." required>
@@ -125,7 +134,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="formFile" class="form-label">Item Project <span class="text-danger">*</span></label>
+                            <label for="formFile" class="form-label">Item Project <span
+                                    class="text-danger">*</span></label>
                             <input class="form-control rounded-top @error('sub_nama_project') is-invalid @enderror"
                                 type="text" name="sub_nama_project"
                                 placeholder="Please fill in the item project name field ..." required>
@@ -154,7 +164,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="start_date" class="form-label">Project Start Date <span class="text-danger">*</span></label>
+                            <label for="start_date" class="form-label">Project Start Date <span
+                                    class="text-danger">*</span></label>
                             <input class="form-control rounded-top @error('start_date') is-invalid @enderror"
                                 type="date" name="start_date" id="start_date" required>
 
@@ -165,9 +176,10 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="end_date" class="form-label">Project End Date <span class="text-danger">*</span></label>
-                            <input class="form-control rounded-top @error('end_date') is-invalid @enderror"
-                                type="date" name="end_date" id="end_date" required>
+                            <label for="end_date" class="form-label">Project End Date <span
+                                    class="text-danger">*</span></label>
+                            <input class="form-control rounded-top @error('end_date') is-invalid @enderror" type="date"
+                                name="end_date" id="end_date" required>
 
                             @error('tanggal_project')
                                 <div class="invalid-feedback">
@@ -201,8 +213,6 @@
                                 </div>
                             @enderror
                         </div>
-
-
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -240,16 +250,28 @@
     </script>
     <script>
         $(document).ready(function() {
-            var table = $('#myTable7').DataTable({
-
-            });
+            var table = $('#myTable7').DataTable();
 
             $('#projectFilter').on('change', function() {
                 var projectFilter = $(this).val();
-                table.column(4).search(projectFilter).draw();
-            });
 
+                $.fn.dataTable.ext.search.pop(); // clear filter sebelumnya
+
+                if (projectFilter === '') {
+                    table.draw();
+                    return;
+                }
+
+                $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                    var rowNode = table.row(dataIndex).node();
+                    var cellValue = $(rowNode).find('td').eq(3).attr('data-search');
+                    return cellValue === projectFilter;
+                });
+
+                table.draw();
+            });
         });
+
 
         function updateDateTime() {
             const now = new Date();

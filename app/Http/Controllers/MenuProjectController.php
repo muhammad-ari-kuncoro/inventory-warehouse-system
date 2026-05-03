@@ -9,8 +9,8 @@ class MenuProjectController extends Controller
 {
     public function index()
     {
-        $data['title']          = 'Main Project Halaman';
         $data['sub_title']      = 'Main Project';
+        $data['title']          = 'Project Page';
         $data['menu_project']   = Project::all();
         return view('menu_project.index', $data);
     }
@@ -36,24 +36,24 @@ class MenuProjectController extends Controller
                 'start_date'            => $request->start_date,
                 'end_date'              => $request->end_date,
             ]);
-            return redirect()->route('project.index')->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('project.index')->with('success', 'Data added succesfully');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data!');
+            return redirect()->back()->with('error', 'An error occurred while saving data!');
         }
     }
 
     public function show($id)
     {
-        $data['title']          = 'Edit Menu halaman';
         $data['sub_title']      = 'Main Project';
+        $data['title']          = 'Details Project Page';
         $data['find_id']        = Project::findOrFail($id);
         return view('menu_project.detail', $data);
     }
 
     public function edit($id)
     {
-        $data['title']          = 'Edit Menu halaman';
         $data['sub_title']      = 'Main Project';
+        $data['title']          = 'Edit Project Page';
         $data['find_id']        = Project::findOrFail($id);
         return view('menu_project.edit', $data);
     }
@@ -77,16 +77,16 @@ class MenuProjectController extends Controller
         $updateProject->start_date          = $request->start_date;
         $updateProject->end_date            = $request->end_date;
         $updateProject->save();
-        return redirect()->route('project.index')->with('editSuccess', 'Data berhasil Di Edit!');
+        return redirect()->route('project.index')->with('editSuccess', 'Data updated successfully!!');
     }
 
     public function destroy($id)
     {
         try {
             Project::findOrFail($id)->delete();
-            return redirect()->back()->with('delete', 'Project berhasil dihapus!');
+            return redirect()->back()->with('delete', 'Project deleted successfully!');
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data!');
+            return redirect()->back()->with('error', 'An error occurred while saving data!');
         }
     }
 }
