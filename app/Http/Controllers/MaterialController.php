@@ -22,17 +22,16 @@ class MaterialController extends Controller
     }
     public function multipe_create()
     {
-        $data['title'] = 'Material Multiple Page';
-        $data['sub_title'] = 'Materials';
-        $data['data_material'] = Materials::all();
-        $data['data_project'] = Project::all();
+        $data['title']              = 'Material Multiple Page';
+        $data['sub_title']          = 'Materials';
+        $data['data_material']      = Materials::all();
+        $data['data_project']       = Project::all();
         return view('materials.create-multiple-data', $data);
     }
     public function multiple_data(Request $request)
     {
         try {
             $data = $request->input('data');
-
             if (!$data || !is_array($data) || count($data) === 0) {
                 return response()->json(['message' => 'Empty Data, Nothing to save!'], 422);
             }
@@ -60,8 +59,8 @@ class MaterialController extends Controller
             }
 
             return response()->json([
-                'message' => 'All Data Has Been Saved!',
-                'count' => count($created),
+                'message'   => 'All Data Has Been Saved!',
+                'count'     => count($created),
             ]);
         } catch (\Throwable $th) {
             return response()->json(
@@ -94,7 +93,7 @@ class MaterialController extends Controller
                 'harga_material'                => $request->harga_material,
                 'project_id'                    => $request->project_id,
             ]);
-            return redirect()->route('materials.index')->with('success', 'Data Has Been Saved!');
+            return redirect()->route('materials.index')->with('success', 'Data Successfully Added!');
         } catch (\Exception $th) {
             return redirect()->back()->with('error', 'Failed to save Data!');
         }
@@ -102,9 +101,9 @@ class MaterialController extends Controller
 
     public function exportPage()
     {
-        $data['title'] = 'Export PDF Material';
-        $data['sub_title'] = 'Materials';
-        $data['projects'] = Project::all();
+        $data['title']      = 'Export PDF Material';
+        $data['sub_title']  = 'Materials';
+        $data['projects']   = Project::all();
         return view('materials.filter-export-pdf', $data);
     }
 
@@ -157,7 +156,7 @@ class MaterialController extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('success', 'Data Has Been Imported!');
+            return redirect()->back()->with('success', 'Data Successfully Imported!');
         } catch (\Exception $e) {
             return redirect()
                 ->back()
@@ -167,21 +166,21 @@ class MaterialController extends Controller
 
     public function show($id)
     {
-        $data['sub_title'] = 'Materials';
-        $data['title'] = 'Material Show Page';
-        $data['data_project'] = Project::all();
-        $data['find_id'] = Materials::findOrFail($id);
-        $data['data_all'] = Materials::all();
+        $data['sub_title']      = 'Materials';
+        $data['title']          = 'Material Show Page';
+        $data['data_project']   = Project::all();
+        $data['find_id']        = Materials::findOrFail($id);
+        $data['data_all']       = Materials::all();
         return view('materials.show', $data);
     }
 
     public function edit($id)
     {
-        $data['sub_title'] = 'Materials';
-        $data['title'] = 'Material Edit Page';
-        $data['data_project'] = Project::all();
-        $data['find_id'] = Materials::findOrFail($id);
-        $data['data_all'] = Materials::all();
+        $data['sub_title']      = 'Materials';
+        $data['title']          = 'Material Edit Page';
+        $data['data_project']   = Project::all();
+        $data['find_id']        = Materials::findOrFail($id);
+        $data['data_all']       = Materials::all();
         return view('materials.edit', $data);
     }
 
@@ -205,7 +204,7 @@ class MaterialController extends Controller
         $updateMaterial->harga_material         = $request->harga_material;
         $updateMaterial->project_id             = $request->project_id;
         $updateMaterial->save();
-        return redirect()->route('material.index')->with('editSuccess', 'Data has been Updated!');
+        return redirect()->route('material.index')->with('editSuccess', 'Data Successfully Updated!');
     }
 
 }

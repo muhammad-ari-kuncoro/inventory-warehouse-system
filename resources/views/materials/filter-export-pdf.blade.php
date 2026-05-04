@@ -82,7 +82,6 @@
         const preloader = document.getElementById('preloader');
         if (preloader) setTimeout(() => preloader.style.display = 'none', 1500);
 
-        // Validasi tanggal: end_date tidak boleh kurang dari start_date
         const startDate = document.querySelector('[name="start_date"]');
         const endDate   = document.querySelector('[name="end_date"]');
 

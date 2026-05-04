@@ -10,14 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Materials extends Model
 {
     use HasFactory;
-
-    // public function mahasigmas()
-    // {
-    //     return $this->hasMany(Mahasigma::class);
-    // }
-
-    protected $table = 'materials';  // Sesuaikan dengan nama tabel di database
-    // protected $guarded = ['id'];
+    protected $table = 'materials';
     protected $fillable = [
 
         'nama_material',
@@ -38,8 +31,6 @@ class Materials extends Model
     protected static function boot()
     {
         parent::boot();
-
-        // KDMPAJM = Kode Material Project AJM
         static::creating(function ($model) {
             $model->kode_material = 'AJM-' . date('Ymd') . '-KDMPAJM-' . strtoupper(Str::random(3));
         });

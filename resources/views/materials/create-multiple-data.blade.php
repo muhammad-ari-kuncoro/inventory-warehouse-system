@@ -154,7 +154,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         let daftarMaterial = [];
-
         const addBtn       = document.getElementById('addToTable');
         const submitBtn    = document.getElementById('submitAll');
         const materialForm = document.getElementById('materialForm');
@@ -173,7 +172,7 @@
 
             if (!nama_material || !spesifikasi_material || !quantity ||
                 !jenis_quantity || !jenis_material || !project_id) {
-                alert('Semua field wajib diisi!');
+                alert('All Fields Are Required!');
                 return;
             }
 
@@ -227,18 +226,18 @@
 
         submitBtn.addEventListener('click', async function () {
             if (daftarMaterial.length === 0) {
-                alert('Tabel masih kosong! Tambahkan data terlebih dahulu.');
+                alert('The table is still empty! Please add data first.');
                 return;
             }
 
             const csrfToken = document.querySelector('input[name="_token"]')?.value ?? null;
             if (!csrfToken) {
-                alert('CSRF token tidak ditemukan. Silakan refresh halaman.');
+                alert('CSRF token not found. Please refresh the page.');
                 return;
             }
 
             submitBtn.disabled  = true;
-            submitBtn.innerText = 'Menyimpan...';
+            submitBtn.innerText = 'Saving...';
 
             try {
                 const res = await fetch("{{ route('material.store.multiple_data') }}", {
@@ -253,20 +252,20 @@
 
                 if (!res.ok) {
                     const text = await res.text();
-                    let msg = 'Terjadi kesalahan. Cek console untuk detail.';
+                    let msg = 'An Error Occurred. Check The Console For Details.';
                     try { const json = JSON.parse(text); if (json.message) msg = json.message; } catch {}
                     alert(msg);
                     return;
                 }
 
                 const result = await res.json();
-                alert(result.message ?? 'Data berhasil disimpan!');
+                alert(result.message ?? 'Data saved successfully!');
                 daftarMaterial = [];
                 renderTable();
 
             } catch (err) {
                 console.error(err);
-                alert('Kesalahan jaringan. Cek console.');
+                alert('Network Error. Check The Console.');
             } finally {
                 submitBtn.disabled  = false;
                 submitBtn.innerText = 'Save Data';

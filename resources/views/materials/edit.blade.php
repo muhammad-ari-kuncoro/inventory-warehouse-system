@@ -76,7 +76,7 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label text-secondary" style="font-size: 11px;">
-                        Type Quantity
+                        Quantity Type
                         <span class="ms-1 text-muted">— current:</span>
                         <span class="badge bg-secondary fw-normal ms-1" style="font-size: 10px;">
                             {{ $find_id->jenis_quantity ?? '-' }}
@@ -110,7 +110,7 @@
             <div class="row g-3 align-items-end">
                 <div class="col-md-6">
                     <label class="form-label text-secondary" style="font-size: 11px;">
-                        Type Material
+                        Material Type
                         <span class="ms-1 text-muted">— current:</span>
                         <span class="badge bg-secondary fw-normal ms-1" style="font-size: 10px;">
                             {{ $find_id->jenis_material ?? '-' }}
@@ -203,7 +203,7 @@
     $(document).ready(function () {
         $('.select-type-quantity').select2({
             width: '100%',
-            placeholder: "Choose Type Quantity"
+            placeholder: "Choose Quantity Type"
         });
         $('.select-project').select2({
             width: '100%',

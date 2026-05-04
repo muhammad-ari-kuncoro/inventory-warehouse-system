@@ -16,7 +16,7 @@
 </head>
 <body>
 
-    <h4>Report Data Material</h4>
+    <h4>Report Data Materials</h4>
     <p>Printed On: {{ now()->format('d M Y, H:i') }}</p>
     <p>Print layout can sometimes vary according to needs/requests.</p>
 
@@ -24,13 +24,13 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Kode Material</th>
-                <th>Nama Material</th>
-                <th>Spesifikasi</th>
+                <th>Materials Code</th>
+                <th>Materials Name</th>
+                <th>Spesification</th>
                 <th>Quantity</th>
-                <th>Jenis Quantity</th>
-                <th>Jenis Material</th>
-                <th>Harga</th>
+                <th>Quantity Type</th>
+                <th>Materials Name</th>
+                <th>Prices</th>
                 <th>Project</th>
             </tr>
         </thead>
@@ -51,7 +51,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="9" class="text-center">Tidak ada data</td>
+                <td colspan="9" class="text-center">There Is No Data</td>
             </tr>
             @endforelse
         </tbody>

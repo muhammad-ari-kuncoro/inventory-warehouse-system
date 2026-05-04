@@ -32,17 +32,12 @@
         <div class="card-body">
 
             <div class="row align-items-end mb-3 g-2">
-
                 <div class="col-md-3">
-                    <label for="projectFilter" class="form-label fw-semibold">Filter Type Quantity</label>
+                    <label for="projectFilter" class="form-label fw-semibold">Filter Type Materials</label>
                     <select id="projectFilter" class="form-select">
                         <option value="">All Type</option>
-                        <option value="Pcs">Pcs</option>
-                        <option value="Rod">Rod</option>
-                        <option value="Set">Set</option>
-                        <option value="Sack">Sack</option>
-                        <option value="Box">Box</option>
-                        <option value="Ea">Ea</option>
+                        <option value="New">New</option>
+                        <option value="Temporary">Temporary</option>
                     </select>
                 </div>
 
@@ -70,7 +65,7 @@
                         data-bs-target="#modalTambah">
                         <i class='bx bx-plus'></i> Add Data
                     </button>
-                    <a href="{{ route('material.create.multiple') }}" class="btn btn-success btn-sm"><i class='bx bx-plus'></i> Add Data Multiple</a>
+                    <a href="{{ route('material.create.multiple') }}" class="btn btn-outline-success btn-sm"><i class='bx bx-plus'></i> Add Data Multiple</a>
                 </div>
 
             </div>
@@ -80,11 +75,11 @@
                     <thead class="table-info text-center">
                         <tr>
                             <th class="text-center">No</th>
-                            <th class="text-center">Material Name</th>
+                            <th class="text-center">Materials Names</th>
                             <th class="text-center">Quantity</th>
-                            <th class="text-center">Quantity Type</th>
-                            <th class="text-center">Project Item</th>
-                            <th class="text-center">Action</th>
+                            <th class="text-center">Type Materials</th>
+                            <th class="text-center">Projects Items</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,9 +88,9 @@
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td>{{ $data->nama_material ?? '-' }}</td>
                                 <td class="text-center {{ $data->quantity == 0 ? 'bg-danger text-white' : '' }}">
-                                    {{ $data->quantity }}
+                                    {{ $data->quantity }} {{ $data->jenis_quantity ?? '-' }}
                                 </td>
-                                <td>{{ $data->jenis_quantity ?? '-' }}</td>
+                                <td class="text-center">{{ $data->jenis_material }}</td>
                                 <td>
                                     <span class="fw-semibold">{{ $data->project->nama_project ?? '-' }}</span>
                                     <br>
@@ -159,10 +154,10 @@
                             </div>
 
                             <div class="col-6">
-                                <label class="form-label fw-semibold">Type Quantity</label>
+                                <label class="form-label fw-semibold">Quantity Type</label>
                                 <select class="form-select rounded-top @error('jenis_quantity') is-invalid @enderror"
                                     name="jenis_quantity" required>
-                                    <option selected disabled>Choose Type Quantity ...</option>
+                                    <option selected disabled>Choose Quantity Type ...</option>
                                     <option value="Pcs">Pcs</option>
                                     <option value="Rod">Rod</option>
                                     <option value="Set">Set</option>
@@ -263,7 +258,7 @@
             });
 
             $('#projectFilter').on('change', function() {
-                table.column(3).search($(this).val(), true, false).draw(); // ✅ exact match
+                table.column(3).search($(this).val(), true, false).draw();
             });
         });
 

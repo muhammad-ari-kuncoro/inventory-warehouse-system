@@ -109,13 +109,8 @@
 
 
     let el = document.getElementById("materialPrice");
-
-    // ambil text & bersihin selain angka
     let raw = el.innerText.replace(/[^\d]/g, '');
-
-    // handle kalau kosong
     let number = raw ? parseInt(raw) : 0;
-
     let formatted = new Intl.NumberFormat('id-ID').format(number);
 
     el.innerText = "Rp " + formatted;
