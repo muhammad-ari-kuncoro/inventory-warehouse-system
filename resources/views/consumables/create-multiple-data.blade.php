@@ -58,7 +58,7 @@
                         <select id="jenis_quantity"
                             class="select-type-quantity form-select @error('jenis_quantity') is-invalid @enderror"
                             name="jenis_quantity" required>
-                            <option selected disabled>Choose Unit</option>
+                            <option disabled>Choose Unit</option>
                             <option value="Pcs">Pcs</option>
                             <option value="Length">Length</option>
                             <option value="Set">Set</option>

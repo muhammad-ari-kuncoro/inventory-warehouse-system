@@ -16,8 +16,8 @@ class MaterialController extends Controller
     {
         $data['title']              = 'Material Page';
         $data['sub_title']          = 'Materials';
-        $data['data_material']      = Materials::all();
         $data['data_project']       = Project::all();
+        $data['data_material']      = Materials::paginate(5);
         return view('materials.index', $data);
     }
     public function multipe_create()

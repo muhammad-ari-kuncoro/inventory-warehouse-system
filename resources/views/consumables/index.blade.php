@@ -34,11 +34,13 @@
             <div class="row align-items-end mb-3 g-2">
 
                 <div class="col-md-3">
-                    <label for="projectFilter" class="form-label fw-semibold">Filter Type Quantity</label>
+                    <label for="projectFilter" class="form-label fw-semibold">Filter Type Consumable</label>
                     <select id="projectFilter" class="form-select">
+                        <option disabled>Choose Type</option>
                         <option value="">All Type</option>
-                        <option value="Large">Large</option>
-                        <option value="Small">Small</option>
+                        <option value="General Consumable">General Consumable</option>
+                        <option value="Welding Consumable">Welding Consumable</option>
+                        <option value="Safety Consumable">Safety Consumable</option>
                     </select>
                 </div>
 
@@ -62,11 +64,12 @@
                     <a href="{{ route('consumable.export') }}" class="btn btn-outline-danger btn-sm">
                         <i class='bx bxs-file-pdf'></i> Export Data
                     </a>
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
                         <i class='bx bx-plus'></i> Add Data
                     </button>
-                    <a href="{{ route('consumable.create.multiple') }}" class="btn btn-success btn-sm"><i class='bx bx-plus'></i> Add Data Multiple</a>
+                    <a href="{{ route('consumable.create.multiple') }}" class="btn btn-outline-success btn-sm"><i
+                            class='bx bx-plus'></i> Add Data Multiple</a>
                 </div>
 
             </div>
@@ -79,6 +82,7 @@
                             <th class="text-center">Consumables Codes</th>
                             <th class="text-center">Consumables Names</th>
                             <th class="text-center">Quantity</th>
+                            <th class="text-center">Type Consumables</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -91,8 +95,9 @@
                                 @if (0)
                                     <td class="text-center bg-danger">{{ $data->quantity }} {{ $data->jenis_quantity }}</td>
                                 @else
-                                    <td class="text-center">{{ $data->quantity }}</td>
+                                    <td class="text-center">{{ $data->quantity }} {{ $data->jenis_quantity }}</td>
                                 @endif
+                                <td class="text-center">{{ $data->jenis_consumable }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('consumable.edit', $data->id) }}" class="btn btn-warning btn-sm">
                                         <i class='bx bx-edit-alt'></i>
@@ -147,11 +152,11 @@
                         <div class="mb-3 mt-3">
                             <label for="jenis_quantity" class="form-label">Type Quantity</label>
                             <select
-                                class="js-example-basic-single rounded-top @error('jenis_quantity') is-invalid @enderror"
-                                name="jenis_quantity" required>
+                                class="select-type-quantity rounded-top @error('jenis_quantity') is-invalid @enderror"
+                                name="select-type-quantity" required>
                                 <option selected disabled>Choose Jenis Quantity</option>
                                 <option value="Pcs">Pcs</option>
-                                <option value="Length">Length</option>
+                                <option value="LengthSelect an Choose Projectoption>
                                 <option value="Set">Set</option>
                                 <option value="Sack">Sack</option>
                                 <option value="Box">Box</option>
@@ -189,7 +194,7 @@
 
                         <div class="mb-3">
                             <label for="project_id" class="form-label">For The Project</label>
-                            <select class="form-select rounded-top @error('project_id') is-invalid @enderror"
+                            <select class="select-project rounded-top @error('project_id') is-invalid @enderror"
                                 name="project_id" required>
                                 <option selected disabled>Choose The Project</option>
                                 @foreach ($data_project as $data)
@@ -210,8 +215,8 @@
                 </div>
             </div>
         </div>
+    </div>
     @endsection
-</div>
 
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -233,7 +238,6 @@
     <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
     <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
     <script>
         $(document).ready(function() {
             var table = $('#myTable7').DataTable({
@@ -265,12 +269,22 @@
         });
 
         $(document).ready(function() {
-            $('.js-example-basic-single').select2({
+            $('.select-type-quantity').select2({
                 theme: "bootstrap-5", // Jika Anda menggunakan tema bootstrap-5-select2
                 dropdownParent: $('#exampleModal'),
                 width: '100%',
-                placeholder: "Select an option"
+                placeholder: "Select an Choose Project"
             });
         });
+
+        $(document).ready(function() {
+            $('.select-project').select2({
+                theme: "bootstrap-5", // Jika Anda menggunakan tema bootstrap-5-select2
+                dropdownParent: $('#exampleModal'),
+                width: '100%',
+                placeholder: "Select an Choose Project"
+            });
+        });
+
     </script>
 @endpush
