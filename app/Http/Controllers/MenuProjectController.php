@@ -9,9 +9,9 @@ class MenuProjectController extends Controller
 {
     public function index()
     {
-        $data['sub_title']      = 'Main Project';
         $data['title']          = 'Project Page';
-        $data['menu_project']   = Project::all();
+        $data['sub_title']      = 'Main Project';
+        $data['menu_project']   = Project::paginate(5);
         return view('menu_project.index', $data);
     }
     public function store(Request $request)

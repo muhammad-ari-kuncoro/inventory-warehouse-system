@@ -1,292 +1,275 @@
 @extends('layouts.dashboard-layout')
 @section('container')
-    <div class="card">
-        <div class="card-header bg-light">
+<div class="card">
+    <div class="card-header bg-light">
 
 
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="{{ route('dashboard') }}" class="text-primary text-decoration-none">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Menu Project</li>
-                </ol>
-            </nav>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ route('dashboard') }}" class="text-primary text-decoration-none">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Menu Project</li>
+            </ol>
+        </nav>
+    </div>
+
+    @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong class="text-dark">{!! session()->get('success') !!}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @elseif (session('delete'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong class="text-dark">Data Has Been Deleted</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @elseif (session('editSuccess'))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong class="text-dark">{!! session()->get('editSuccess') !!}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
+    <div class="card-body">
+
+
+        <div class="row align-items-center">
+            <div class="col-md-9 col-lg-6 mb-3">
+                <label for="projectFilterData" class="form-label">Filter Category Project:</label>
+                <select id="projectFilterData" class="form-select w-auto" style="max-width: 300px;">
+                    <option disabled>Choose Type</option>
+                    <option value="">All Categories</option>
+                    <option value="General Industry">General Industry</option>
+                    <option value="Migas">Migas</option>
+                    <option value="Geothermal">Geothermal</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-6 mb-3 d-flex justify-content-end">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Add Data
+                </button>
+            </div>
         </div>
+        <div class="table-responsive">
 
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong class="text-dark">{!! session()->get('success') !!}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+            <table class="table table-bordered table-hover display" id="myTable7">
+                <thead>
+                    <tr class="table-info text-center">
+                        <th>No</th>
+                        <th>No. Job Order Project </th>
+                        <th class="text-center">Category</th>
+                        <th class="text-center">Name Project Client</th>
+                        <th class="text-center">Project Item</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($menu_project as $data)
+                    <tr class="text-center">
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td class="text-center">{{ $data->no_jo_project }}</td>
+                        <td data-search="{{ $data->kategori_project }}" class="text-center">
+                            @if ($data->kategori_project == 'General Industry')
+                            <span class="badge bg-primary">{{ $data->kategori_project }}</span>
+                            @elseif($data->kategori_project == 'Migas')
+                            <span class="badge bg-danger">{{ $data->kategori_project }}</span>
+                            @elseif($data->kategori_project == 'Geothermal')
+                            <span class="badge bg-success">{{ $data->kategori_project }}</span>
+                            @else
+                            <span class="badge bg-secondary">{{ $data->kategori_project ?? '-' }}</span>
+                            @endif
+                        </td>
+                        <td>{{ $data->nama_project }}</td>
+                        <td>{{ $data->sub_nama_project }}</td>
+                        <td>
+                            <div class="mb-1">
+                                <a href="{{ route('project.edit', $data->id) }}"><span
+                                        class="btn btn-warning btn-sm mb-2"><i
+                                            class='bx bx-edit-alt'></i></a></span></a></span>
+                                <a href="{{ route('project.detail', $data->id) }}"><span
+                                        class="btn btn-success btn-sm mb-2"><i class='bx bx-show'></i></a></span></a>
+                            </div>
+                            <div class="mb-1">
+                                <form action="{{ route('project.destroy', $data->id) }}" method="POST" class="d-inline"
+                                    onsubmit="return confirm('Yakin ingin menghapus project ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm"><i
+                                            class="bx bx-trash"></i></button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Data Project</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        @elseif (session('delete'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong class="text-dark">Data Has Been Deleted</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @elseif (session('editSuccess'))
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong class="text-dark">{!! session()->get('editSuccess') !!}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+            <div class="modal-body">
+                <form action="{{ route('project.create') }}" method="post">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="nama_project" class="form-label">Client Project Name <span
+                                class="text-danger">*</span></label>
+                        <input class="form-control rounded-top  @error('nama_project') is-invalid @enderror" type="text"
+                            name="nama_project" placeholder="Please fill in the client project name field ..." required>
+                        @error('nama_project')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
 
-        <div class="card-body">
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Item Project <span class="text-danger">*</span></label>
+                        <input class="form-control rounded-top @error('sub_nama_project') is-invalid @enderror"
+                            type="text" name="sub_nama_project"
+                            placeholder="Please fill in the item project name field ..." required>
+                        @error('sub_nama_project')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
 
+                    <div class="mb-3">
+                        <label for="kategori_project" class="form-label" name="kategori_project">Category Name
+                            Project <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select rounded-top @error('kategori_project') is-invalid @enderror"
+                            name="kategori_project" required>
+                            <option selected disabled>Choose Category Name Project ...</option>
+                            <option value="General Industry">General Industry</option>
+                            <option value="Migas">Migas</option>
+                            <option value="Geothermal">Geothermal</option>
+                            @error('kategori_project')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="start_date" class="form-label">Project Start Date <span
+                                class="text-danger">*</span></label>
+                        <input class="form-control rounded-top @error('start_date') is-invalid @enderror" type="date"
+                            name="start_date" id="start_date" required>
 
-            <div class="row align-items-center">
-                <div class="col-md-9 col-lg-6 mb-3">
-                    <label for="projectFilter" class="form-label">Filter Category Project:</label>
-                    <select id="projectFilter" class="form-select w-auto" style="max-width: 300px;">
-                        <option value="">All Categories</option>
-                        <option value="General Industry">General Industry</option>
-                        <option value="Migas">Migas</option>
-                        <option value="Geothermal">Geothermal</option>
-                    </select>
-                </div>
-                <div class="col-md-3 col-lg-6 mb-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Add Data
-                    </button>
-                </div>
-            </div>
-            <div class="table-responsive">
+                        @error('start_date')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="end_date" class="form-label">Project End Date <span
+                                class="text-danger">*</span></label>
+                        <input class="form-control rounded-top @error('end_date') is-invalid @enderror" type="date"
+                            name="end_date" id="end_date" required>
 
+                        @error('tanggal_project')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
 
-                <table class="table table-bordered table-hover display" id="myTable7">
-                    <thead>
-                        <tr class="table-info text-center">
-                            <th>No</th>
-                            <th>No. Job Order Project </th>
-                            <th class="text-center">Category</th>
-                            <th class="text-center">Name Project Client</th>
-                            <th class="text-center">Project Item</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($menu_project as $data)
-                            <tr class="text-center">
-                                <td class="text-center">{{ $loop->iteration }}</td>
-                                <td class="text-center">{{ $data->no_jo_project }}</td>
-                                <td data-search="{{ $data->kategori_project }}" class="text-center">
-                                    @if ($data->kategori_project == 'General Industry')
-                                        <span class="badge bg-primary">{{ $data->kategori_project }}</span>
-                                    @elseif($data->kategori_project == 'Migas')
-                                        <span class="badge bg-danger">{{ $data->kategori_project }}</span>
-                                    @elseif($data->kategori_project == 'Geothermal')
-                                        <span class="badge bg-success">{{ $data->kategori_project }}</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{ $data->kategori_project ?? '-' }}</span>
-                                    @endif
-                                </td>
-                                <td>{{ $data->nama_project }}</td>
-                                <td>{{ $data->sub_nama_project }}</td>
-                                <td>
-                                    <div class="mb-1">
-                                        <a href="{{ route('project.edit', $data->id) }}"><span
-                                                class="btn btn-warning btn-sm mb-2"><i
-                                                    class='bx bx-edit-alt'></i></a></span></a></span>
-                                        <a href="{{ route('project.detail', $data->id) }}"><span
-                                                class="btn btn-success btn-sm mb-2"><i
-                                                    class='bx bx-show'></i></a></span></a>
-                                    </div>
-                                    <div class="mb-1">
-                                        <form action="{{ route('project.destroy', $data->id) }}" method="POST"
-                                            class="d-inline"
-                                            onsubmit="return confirm('Yakin ingin menghapus project ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"><i
-                                                    class="bx bx-trash"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    <div class="mb-3">
+                        <label for="formFile" name="no_jo_project" class="form-label">No Jo (JOB Order)
+                            Project <span class="text-danger">*</span></label>
+                        <input class="form-control rounded-top @error('no_jo_project') is-invalid @enderror" type="text"
+                            name="no_jo_project" placeholder="Please fill in the no jo (Job Order) project field ... "
+                            required>
+                        @error('no_jo_project')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="formFile" name="no_po_project" class="form-label">No PO(Purchase Order)
+                            Project <span class="text-danger">*</span></label>
+                        <input class="form-control rounded-top @error('no_po_project') is-invalid @enderror" type="text"
+                            name="no_po_project"
+                            placeholder="Please fill in the no PO (Purchase Order) project field ... " required>
+                        @error('no_po_project')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Data Project</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('project.create') }}" method="post">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="nama_project" class="form-label">Client Project Name <span
-                                    class="text-danger">*</span></label>
-                            <input class="form-control rounded-top  @error('nama_project') is-invalid @enderror"
-                                type="text" name="nama_project"
-                                placeholder="Please fill in the client project name field ..." required>
-                            @error('nama_project')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="formFile" class="form-label">Item Project <span
-                                    class="text-danger">*</span></label>
-                            <input class="form-control rounded-top @error('sub_nama_project') is-invalid @enderror"
-                                type="text" name="sub_nama_project"
-                                placeholder="Please fill in the item project name field ..." required>
-                            @error('sub_nama_project')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="kategori_project" class="form-label" name="kategori_project">Category Name
-                                Project <span class="text-danger">*</span>
-                            </label>
-                            <select class="form-select rounded-top @error('kategori_project') is-invalid @enderror"
-                                name="kategori_project" required>
-                                <option selected disabled>Choose Category Name Project ...</option>
-                                <option value="General Industry">General Industry</option>
-                                <option value="Migas">Migas</option>
-                                <option value="Geothermal">Geothermal</option>
-                                @error('kategori_project')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="start_date" class="form-label">Project Start Date <span
-                                    class="text-danger">*</span></label>
-                            <input class="form-control rounded-top @error('start_date') is-invalid @enderror"
-                                type="date" name="start_date" id="start_date" required>
-
-                            @error('start_date')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label for="end_date" class="form-label">Project End Date <span
-                                    class="text-danger">*</span></label>
-                            <input class="form-control rounded-top @error('end_date') is-invalid @enderror" type="date"
-                                name="end_date" id="end_date" required>
-
-                            @error('tanggal_project')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="formFile" name="no_jo_project" class="form-label">No Jo (JOB Order)
-                                Project <span class="text-danger">*</span></label>
-                            <input class="form-control rounded-top @error('no_jo_project') is-invalid @enderror"
-                                type="text" name="no_jo_project"
-                                placeholder="Please fill in the no jo (Job Order) project field ... " required>
-                            @error('no_jo_project')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="formFile" name="no_po_project" class="form-label">No PO(Purchase Order)
-                                Project <span class="text-danger">*</span></label>
-                            <input class="form-control rounded-top @error('no_po_project') is-invalid @enderror"
-                                type="text" name="no_po_project"
-                                placeholder="Please fill in the no PO (Purchase Order) project field ... " required>
-                            @error('no_po_project')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 @endsection
 
 @push('scripts')
-    <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
-    <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
-    <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+<script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script src="//cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+<script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
             const preloader = document.getElementById('preloader');
-            if (preloader) {
-                console.log('Preloader found. It will hide after 3 seconds...');
-                setTimeout(function() {
-                    preloader.style.display = 'none';
-                    console.log('Preloader hidden.');
-                }, 1500);
-            } else {
-                console.error('Preloader element not found!');
-            }
+            if (preloader) setTimeout(() => preloader.style.display = 'none', 1500);
         });
-    </script>
-    <script>
         $(document).ready(function() {
-            var table = $('#myTable7').DataTable();
-
-            $('#projectFilter').on('change', function() {
-                var projectFilter = $(this).val();
-
-                $.fn.dataTable.ext.search.pop(); // clear filter sebelumnya
-
-                if (projectFilter === '') {
-                    table.draw();
-                    return;
+            var table = $('#myTable7').DataTable({
+                drawCallback: function() {
+                    $('#myTable7 tbody tr').each(function() {
+                        var jo = $(this).find('td').eq(6).text().trim();
+                        if (jo.startsWith('0')) {
+                            $(this).addClass('bg-danger text-white');
+                        } else {
+                            $(this).removeClass('bg-danger text-white');
+                        }
+                    });
                 }
-
-                $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                    var rowNode = table.row(dataIndex).node();
-                    var cellValue = $(rowNode).find('td').eq(3).attr('data-search');
-                    return cellValue === projectFilter;
-                });
-
-                table.draw();
             });
+
+            $('#projectFilterData').on('change', function() {
+                table.column(2).search($(this).val()).draw();
+            });
+
         });
 
-
-        function updateDateTime() {
-            const now = new Date();
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            };
-            document.getElementById('currentDateTime').textContent = now.toLocaleDateString('id-ID', options);
-        }
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-    </script>
+    function updateDateTime() {
+        const now = new Date();
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        };
+        document.getElementById('currentDateTime').textContent = now.toLocaleDateString('id-ID', options);
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+</script>
 @endpush
