@@ -33,9 +33,10 @@
 
         <div class="row align-items-end mb-3 g-2">
             <div class="col-md-3">
-                <label for="projectFilter" class="form-label fw-semibold">Filter Category Type Tools</label>
-                <select id="projectFilter" class="form-select">
-                    <option value="">Select Type Tools</option>
+                <label for="toolsFilterData" class="form-label fw-semibold">Filter Category Type Tools</label>
+                <select id="toolsFilterData" class="form-select">
+                    <option disabled>Select Type Tools</option>
+                    <option value="">All Type</option>
                     <option value="Cutting Tools">Cutting Tools</option>
                     <option value="Lifting Tools">Lifting Tools</option>
                     <option value="Forming Tools">Forming Tools</option>
@@ -67,9 +68,10 @@
                     <i class='bx bx-plus'></i> Add Data
                 </button>
                 <a href="{{ route('tools.export') }}" class="btn btn-outline-danger btn-sm">
-                        <i class='bx bxs-file-pdf'></i> Export PDF
+                    <i class='bx bxs-file-pdf'></i> Export PDF
                 </a>
-                <a href="{{ route('tools.create.multiple') }}" class="btn btn-outline-success btn-sm"><i class='bx bx-plus'></i> Add Data Multiple</a>
+                <a href="{{ route('tools.create.multiple') }}" class="btn btn-outline-success btn-sm"><i
+                        class='bx bx-plus'></i> Add Data Multiple</a>
             </div>
 
         </div>
@@ -101,8 +103,8 @@
                                 <i class='bx bx-edit-alt'></i>
                             </a>
                             <a href="{{ route('tools.show', $data->id) }}" class="btn btn-success btn-sm">
-                                        <i class='bx bx-show-alt'></i>
-                                    </a>
+                                <i class='bx bx-show-alt'></i>
+                            </a>
                         </td>
                     </tr>
                     @endforeach
@@ -250,11 +252,12 @@
             }
         });
 
-$('#projectFilter').on('change', function () {
-    var val = $(this).val().trim();console.log("Mencari: '" + val + "'");
+        $('#toolsFilterData').on('change', function () {
+            var val = $(this).val().trim();
+            console.log("Mencari: '" + val + "'");
 
-    table.column(3).search(val).draw();
-});
+            table.column(3).search(val).draw();
+        });
 
         $('#modalTambah').on('shown.bs.modal', function () {
             $('.select2-type-tools').select2({
