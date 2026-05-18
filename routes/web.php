@@ -96,6 +96,19 @@ Route::middleware('auth')->group(function () {
             Route::get('/tools/export/download',    [ToolsController::class, 'exportDownload'])->name('tools.export.download');
         });
 
+        Route::prefix('machine')->name('machine.')->group(function () {
+                Route::get('/',                       [MachinesController::class, 'index'])->name('index');
+                Route::post('/create',                [MachinesController::class, 'store'])->name('create');
+                Route::get('/create-multiple',        [MachinesController::class, 'create_multiple'])->name('create.multiple');
+                Route::post('/store-multiple',        [MachinesController::class, 'store_multiple'])->name('store.multiple');
+                Route::get('edit/{id}',               [MachinesController::class, 'edit'])->name('edit');
+                Route::get('/show/{id}',              [MachinesController::class, 'show'])->name('show');
+                Route::patch('update/{id}',           [MachinesController::class, 'update'])->name('update');
+                Route::get('/export-filter',          [MachinesController::class, 'exportPage'])->name('export');
+                Route::get('/machine/export/download',[MachinesController::class, 'exportDownload'])->name('machine.export.download');
+            });
+
+
     Route::prefix('material-temporary')
         ->name('material-temporary.')
         ->group(function () {
@@ -105,14 +118,6 @@ Route::middleware('auth')->group(function () {
             Route::patch('update/{id}', [MaterialTemporaryController::class, 'update'])->name('update');
         });
 
-    Route::prefix('machine')
-        ->name('machine.')
-        ->group(function () {
-            Route::get('/', [MachinesController::class, 'index'])->name('index');
-            Route::post('/create', [MachinesController::class, 'store'])->name('create');
-            Route::get('edit/{id}', [MachinesController::class, 'edit'])->name('edit');
-            Route::patch('update/{id}', [MachinesController::class, 'update'])->name('update');
-        });
 
     Route::prefix('good-received')
         ->name('good-received.')

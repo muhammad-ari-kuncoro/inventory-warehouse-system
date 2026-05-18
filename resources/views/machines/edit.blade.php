@@ -1,162 +1,201 @@
 @extends('layouts.dashboard-layout')
 @section('container')
 
-<div class="card">
-    <h5 class="card-header text-center text-bold">
-        Halaman Edit Data  Permesinan
-    </h5>
-    <div class="card-body">
-        <form action="{{ route('machine.update',$find_id->id) }}" method="post">
-            @csrf
-            @method('patch')
-            <div class="mb-3">
-                <label for="nama_mesin" class="form-label">Nama Mesin </label>
-                <input class="form-control rounded-top @error('nama_mesin') is-invalid @enderror" type="text"
-                    name="nama_mesin" placeholder="Harap Di Isi Nama Mesin"
-                    value="{{ old('nama_mesin', $find_id->nama_mesin)}}">
-
-                @error('nama_mesin')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label for="spesifikasi_mesin" class="form-label">Spesifikasi Mesin </label>
-                <input class="form-control rounded-top @error('spesifikasi_mesinp') is-invalid @enderror " type="text"
-                    name="spesifikasi_mesin" placeholder="Harap Di Isi Spesifikasi Alat Atau Mesin"
-                    value="{{ old('spesifikasi_mesin', $find_id->spesifikasi_mesin)}}">
-                @error('spesifikasi_mesinp')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label for="jenis_mesin" class="form-label">Jenis Mesin Lama </label>
-                <input class="form-control rounded-top @error('jenis_mesin') is-invalid @enderror " type="text"
-                    name="jenis_mesin" placeholder="{{ old('jenis_mesin', $find_id->jenis_mesin)}}" disabled>
-                @error('jenis_alat')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-
-
-            <div class="mb-3">
-                <label for="jenis_mesin" class="form-label" name="jenis_mesin">Jenis Mesin </label>
-                <select class="form-select basic-usage" name="jenis_mesin">
-                    <option value="" disabled {{ old('jenis_mesin'), $find_id->jenis_mesin === null ? 'selected' : '' }}>Pilih salah satu</option>
-                    <option value="Cutting Machines"{{ old('jenis_mesin') == $find_id->jenis_mesin ? 'selected' : '' }}>Cutting Machines</option>
-                    <option value="Forming Machines"{{ old('jenis_mesin') == $find_id->jenis_mesin ? 'selected' : '' }}>Forming Machines</option>
-                    <option value="Welding Machines" {{ old('jenis_mesin') == $find_id->jenis_mesin ? 'selected' : '' }}>Welding Machines</option>
-                    <option value="Machining Machines" {{ old('jenis_mesin') == $find_id->jenis_mesin ? 'selected' : '' }}>Machining Machines</option>
-                    <option value="Surface Treatment Machines" {{ old('jenis_mesin') == $find_id->jenis_mesin ? 'selected' : '' }}>Surface Treatment Machines</option>
-                    <option value="Special Machines"{{ old('jenis_mesin') == $find_id->jenis_mesin ? 'selected' : '' }}>Special Machines</option>
-                    <option value="Pipe Bending Machines"{{ old('jenis_mesin') == $find_id->jenis_mesin ? 'selected' : '' }}>Pipe Bending Machines</option>
-
-
-                    @error('jenis_mesin')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                </select>
-            </div>
-
-
-
-            <div class="mb-3">
-                <label for="quantity" class="form-label">Quantity </label>
-                <input class="form-control rounded-top @error('quantity') is-invalid @enderror " type="number"
-                    name="quantity" placeholder="Harap Di Isi Quantity Alat Atau Mesin "
-                    value="{{ old('quantity', $find_id->quantity)}}">
-                @error('quantity')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label for="" class="form-label">Jenis Quantity Data Lama </label>
-                <input class="form-control rounded-top" type="text"
-                    placeholder="{{ old('jenis_quantity', $find_id->jenis_quantity)}}" disabled>
-            </div>
-
-            <div class="mb-3">
-                <label for="jenis_quantity" class="form-label" name="jenis_quantity">Jenis Quantity  </label>
-                <select class="form-select basic-usage" name="jenis_quantity" data-placeholder="Choose one thing">
-                    <option value="" disabled {{ old('jenis_quantity'), $find_id->jenis_quantity === null ? 'selected' : '' }}>Pilih salah satu</option>
-                    <option value="Unit"{{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Unit</option>
-                    <option value="Pcs"{{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Pcs</option>
-                    <option value="Set"{{ old('jenis_quantity') == $find_id->jenis_quantity ? 'selected' : '' }}>Set</option>
-                </select>
-            </div>
-
-            <label for="harga_mesin" class="form-label">Harga Mesin</label>
-            <div class="input-group mb-3">
-                <span class="input-group-text">Rp</span>
-                <input
-                    type="text"
-                    class="form-control"
-                    name="harga_mesin"
-                    id="hargaConsumable"
-                    aria-label="Amount (to the nearest Rupiah)"
-                    oninput="formatCurrency(this)" value="{{ old('harga_mesin', $find_id->harga_mesin)}}"
-                >
-                @error('harga_mesin')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                <span class="input-group-text">.00</span>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col sm-4">
-                    <a href="{{ route('tools.index') }}" class="btn btn-secondary">Go Back</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-
-
-            </div>
-        </form>
-
-    </div>
+<div class="mb-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0" style="font-size: 13px;">
+            <li class="breadcrumb-item">
+                <a href="{{ route('dashboard') }}" class="text-decoration-none text-primary">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('tools.index') }}" class="text-decoration-none text-primary">Machines</a>
+            </li>
+            <li class="breadcrumb-item active text-secondary">Edit Machine</li>
+        </ol>
+    </nav>
 </div>
+
+<h5 class="fw-medium mb-4" style="font-size: 18px;">Edit Machine</h5>
+
+<form action="{{ route('machine.update', $find_id->id) }}" method="POST">
+    @csrf
+    @method('PATCH')
+
+    {{-- INFORMATION DESCRIPTION --}}
+    <div class="card border shadow-sm mb-3">
+        <div class="card-header bg-transparent border-bottom py-3 px-4">
+            <p class="mb-0 text-uppercase text-secondary" style="font-size: 13px; letter-spacing: 0.06em; font-weight: 500;">
+                Information Description Machine
+            </p>
+        </div>
+        <div class="card-body px-4 py-3">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-6">
+                    <label class="form-label text-secondary" style="font-size: 11px;">Machine Name</label>
+                    <input type="text"
+                        class="form-control @error('nama_mesin') is-invalid @enderror"
+                        name="nama_mesin"
+                        value="{{ old('nama_mesin', $find_id->nama_mesin) }}"
+                        placeholder="Enter machine name..." required>
+                    @error('nama_mesin')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-secondary" style="font-size: 11px;">Machine Specification</label>
+                    <input type="text"
+                        class="form-control @error('spesifikasi_mesin') is-invalid @enderror"
+                        name="spesifikasi_mesin"
+                        value="{{ old('spesifikasi_mesin', $find_id->spesifikasi_mesin) }}"
+                        placeholder="Enter machine specification..." required>
+                    @error('spesifikasi_mesin')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- QUANTITY --}}
+    <div class="card border shadow-sm mb-3">
+        <div class="card-header bg-transparent border-bottom py-3 px-4">
+            <p class="mb-0 text-uppercase text-secondary" style="font-size: 13px; letter-spacing: 0.06em; font-weight: 500;">
+                Information Quantity Machine
+            </p>
+        </div>
+        <div class="card-body px-4 py-3">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-6">
+                    <label class="form-label text-secondary" style="font-size: 11px;">Quantity</label>
+                    <input type="number"
+                        class="form-control @error('quantity') is-invalid @enderror"
+                        name="quantity"
+                        value="{{ old('quantity', $find_id->quantity) }}"
+                        placeholder="0" min="1" required>
+                    @error('quantity')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-secondary" style="font-size: 11px;">
+                        Quantity Type
+                        <span class="ms-1 text-muted">— current:</span>
+                        <span class="badge bg-secondary fw-normal ms-1" style="font-size: 10px;">
+                            {{ $find_id->jenis_quantity ?? '-' }}
+                        </span>
+                    </label>
+                    <select class="select-jenis-quantity @error('jenis_quantity') is-invalid @enderror"
+                        name="jenis_quantity" required>
+                        <option value="" disabled>-- Choose Type --</option>
+                        @foreach (['Unit', 'Pcs', 'Set'] as $jenis)
+                            <option value="{{ $jenis }}"
+                                {{ old('jenis_quantity', $find_id->jenis_quantity) == $jenis ? 'selected' : '' }}>
+                                {{ $jenis }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('jenis_quantity')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- TYPE & PRICE --}}
+    <div class="card border shadow-sm mb-3">
+        <div class="card-header bg-transparent border-bottom py-3 px-4">
+            <p class="mb-0 text-uppercase text-secondary" style="font-size: 13px; letter-spacing: 0.06em; font-weight: 500;">
+                Type & Price
+            </p>
+        </div>
+        <div class="card-body px-4 py-3">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-6">
+                    <label class="form-label text-secondary" style="font-size: 11px;">
+                        Machine Type
+                        <span class="ms-1 text-muted">— current:</span>
+                        <span class="badge bg-secondary fw-normal ms-1" style="font-size: 10px;">
+                            {{ $find_id->jenis_mesin ?? '-' }}
+                        </span>
+                    </label>
+                    <select class="select-jenis-mesin @error('jenis_mesin') is-invalid @enderror"
+                        name="jenis_mesin" required>
+                        <option value="" disabled>-- Choose Type --</option>
+                        @foreach ([
+                            'Cutting Machines',
+                            'Forming Machines',
+                            'Welding Machines',
+                            'Machining Machines',
+                            'Surface Treatment Machines',
+                            'Special Machines',
+                            'Pipe Bending Machines',
+                        ] as $jenis)
+                            <option value="{{ $jenis }}"
+                                {{ old('jenis_mesin', $find_id->jenis_mesin) == $jenis ? 'selected' : '' }}>
+                                {{ $jenis }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('jenis_mesin')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-secondary" style="font-size: 11px;">Machine Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text text-secondary" style="font-size: 13px;">Rp</span>
+                        <input type="text"
+                            class="form-control"
+                            name="harga_mesin"
+                            id="hargaMesin"
+                            placeholder="0"
+                            value="{{ old('harga_mesin', $find_id->harga_mesin) }}"
+                            oninput="formatCurrency(this)">
+                    </div>
+                    @error('harga_mesin')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <a href="{{ route('tools.index') }}" class="btn btn-light border px-4" style="font-size: 14px;">Cancel</a>
+        <button type="submit" class="btn btn-primary px-4" style="font-size: 14px;">Save Changes</button>
+    </div>
+
+</form>
 
 @endsection
 
+@push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endpush
+
 @push('scripts')
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-
-
-    $( '.basic-usage' ).select2( {
-    theme: "bootstrap-5",
-    width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
-    placeholder: $( this ).data( 'placeholder' ),
-} );
-
-
-function formatCurrency(input) {
-        // Ambil nilai input, hapus semua karakter selain angka
+    function formatCurrency(input) {
         let value = input.value.replace(/[^,\d]/g, '');
-
-        // Ubah ke format angka dengan pemisah ribuan
         input.value = new Intl.NumberFormat('id-ID').format(value);
     }
 
+    document.addEventListener('DOMContentLoaded', function () {
+        const preloader = document.getElementById('preloader');
+        if (preloader) setTimeout(() => preloader.style.display = 'none', 1500);
+    });
 
-
+    $(document).ready(function () {
+        $('.select-jenis-quantity').select2({
+            width: '100%',
+            placeholder: "Choose Quantity Type"
+        });
+        $('.select-jenis-mesin').select2({
+            width: '100%',
+            placeholder: "Choose Machine Type"
+        });
+    });
 </script>
-
 @endpush
