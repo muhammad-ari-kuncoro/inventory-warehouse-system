@@ -124,14 +124,14 @@
 
 
 
-        <li class="menu-item">
+        <li class="menu-item {{ $sub_title === 'Good Received' || $sub_title === 'Delivery Order' || $sub_title === 'Shipping Fabricated' ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons bx bx-file'></i>
-                <div data-i18n="Layouts">Document Gudang</div>
+                <div data-i18n="Layouts">Document Warehouse</div>
             </a>
 
             <ul class="menu-sub">
-                <li class="menu-item {{ $sub_title === 'Barang Masuk' ? 'active' : '' }}">
+                <li class="menu-item {{ $sub_title === 'Good Received' ? 'active' : '' }}">
                     <a href="{{ route('good-received.index') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-file-blank"></i>
                         <div data-i18n="Layouts">Good Received</div>

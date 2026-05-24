@@ -1,261 +1,290 @@
 @extends('layouts.dashboard-layout')
+
 @push('styles')
 <style>
-    #div_tool {
-        display: none;
-    }
-
-    #div_consumable {
-        display: none;
-    }
-
+    #div_machine,
+    #div_consumable,
     #div_material {
         display: none;
     }
 </style>
 @endpush
-@section('container')
 
+@section('container')
 <div class="row">
     <div class="col-lg-12">
-        {{-- Session Notifikasi --}}
+
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong class="text-dark">{!! session()->get('success') !!}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>{!! session()->get('success') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
         @if (session('failed'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong class="text-dark">{!! session()->get('failed') !!}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>{!! session()->get('failed') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
-        <div class="card">
+
+        <div class="card shadow-sm border-0">
+
             @if ($do_draft)
-                <div class="card-header text-end">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold text-muted small">Draft saved — not submitted yet</span>
                     <form action="{{ route('good-received.delete-draft') }}" method="post">
                         @csrf
-                        <button type="submit" class="btn btn-danger btn-sm">Hapus Draft</button>
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class='bx bx-trash me-1'></i> Delete Draft
+                        </button>
                     </form>
                 </div>
             @endif
-            <div class="card-body row">
-                <div class="col-lg-6">
-                    <form action="{{ route('good-received.store') }}" method="post" id="formSubmit">
-                        @csrf
-                        <h4>Form Data Alamat</h4>
-                       <div class="mb-3">
-                            <label for="tanggal_masuk" class="form-label">Tanggal Masuk Barang</label>
-                            <input class="form-control rounded-top @error('tanggal_masuk') is-invalid @enderror" type="date" name="tanggal_masuk" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
-                            @error('tanggal_masuk')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
+
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="border rounded p-4 h-100">
+                            <h6 class="fw-bold mb-3 text-secondary text-uppercase" style="letter-spacing:.05em">
+                                <i class='bx bx-file me-1'></i> Data Good Received
+                            </h6>
+
+                            <form action="{{ route('good-received.store') }}" method="post" id="formSubmit">
+                                @csrf
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Date Of Entry</label>
+                                    <input type="date"
+                                        class="form-control @error('tanggal_masuk') is-invalid @enderror"
+                                        name="tanggal_masuk" placeholder="Please insert this field after you add the item ...">
+                                    @error('tanggal_masuk')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                            @enderror
-                        </div>
 
-
-                        <div class="mb-3">
-                            <label for="kode_surat_jalan" class="form-label">No Surat Jalan</label>
-                            <input class="form-control rounded-top @error('kode_surat_jalan') is-invalid @enderror" type="text" name="kode_surat_jalan" placeholder="Harap Di Isi No Surat Jalan Barang">
-                            @error('kode_surat_jalan')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">No Document Good Received</label>
+                                    <input type="text"
+                                        class="form-control @error('kode_surat_jalan') is-invalid @enderror"
+                                        name="kode_surat_jalan" placeholder="Please insert this field after you add the item ...">
+                                    @error('kode_surat_jalan')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                            @enderror
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="nama_supplier" class="form-label">Nama Supplier</label>
-                            <input class="form-control rounded-top @error('nama_supplier') is-invalid @enderror" type="text" name="nama_supplier" placeholder="Harap Di Isi Nama Supplier">
-                            @error('nama_supplier')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Name Supplier</label>
+                                    <input type="text"
+                                        class="form-control @error('nama_supplier') is-invalid @enderror"
+                                        name="nama_supplier" placeholder="Please insert this field after you add the item ...">
+                                    @error('nama_supplier')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                            @enderror
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Name Project</label>
+                                    <select class="form-select select-2 @error('project_id') is-invalid @enderror"
+                                        name="project_id" data-placeholder="Please insert this field after you add the item ...">
+                                        <option></option>
+                                        @foreach ($data_project as $data)
+                                            <option value="{{ $data->id }}">
+                                                {{ $data->nama_project }} | {{ $data->sub_nama_project }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('project_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                            </form>
                         </div>
+                    </div>
 
+                    <div class="col-lg-6">
+                        <div class="border rounded p-4 h-100">
+                            <h6 class="fw-bold mb-3 text-secondary text-uppercase" style="letter-spacing:.05em">
+                                <i class='bx bx-package me-1'></i> Data Item
+                            </h6>
 
-                        <div class="mb-3">
-                            <label for="project_id" class="form-label">Nama Project</label>
-                            <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu">
-                                <option></option>
-                                @foreach ($data_project as $data )
-                                    <option value="{{$data->id}}">{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
-                                @endforeach
-                            </select>
-                            @error('project_id')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
+                            <form action="{{ route('good-received.store.item') }}" method="post">
+                                @csrf
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Type Good Received</label>
+                                    <select name="jenis_barang" id="jenis_barang"
+                                        class="form-select @error('jenis_barang') is-invalid @enderror">
+                                        <option value="" selected disabled>-- Choosse The Type --</option>
+                                        <option value="Materials">Materials</option>
+                                        <option value="Consumables">Consumables</option>
+                                        <option value="Machine">Machine</option>
+                                    </select>
+                                    @error('jenis_barang')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3" id="div_material">
+                                    <label class="form-label fw-semibold">Name Material</label>
+                                    <select name="material_id" class="form-select select-2" data-placeholder="Choose The One">
+                                        <option></option>
+                                        @foreach ($materials as $material)
+                                            <option value="{{ $material->id }}">
+                                                {{ $material->nama_material }} | {{ $material->spesifikasi_material }} |
+                                                Stock: ({{ $material->quantity }}) {{ $material->jenis_quantity }} |
+                                                {{ $material->project->nama_project }} | {{ $material->project->sub_nama_project }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="mb-3" id="div_consumable">
+                                    <label class="form-label fw-semibold">Name Consumable</label>
+                                    <select name="consumable_id" class="form-select select-2" data-placeholder="Choose The One">
+                                        <option></option>
+                                        @foreach ($consumables as $consumable)
+                                            <option value="{{ $consumable->id }}">
+                                                {{ $consumable->nama_consumable }} | {{ $consumable->spesifikasi_consumable }} |
+                                                Stok: ({{ $consumable->quantity }}) {{ $consumable->jenis_quantity }} |
+                                                {{ $consumable->project->nama_project }} | {{ $consumable->project->sub_nama_project }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="mb-3" id="div_machine">
+                                    <label class="form-label fw-semibold">Name Machine</label>
+                                    <select name="machine_id" class="form-select select-2" data-placeholder="Choose The Machine">
+                                        <option></option>
+                                        @foreach ($machines as $machine)
+                                            <option value="{{ $machine->id }}">
+                                                {{ $machine->nama_mesin }} | {{ $machine->spesifikasi_mesin }} |
+                                                Stok: ({{ $machine->quantity }}) {{ $machine->jenis_quantity }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="row g-2 mb-3">
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold">Quantity</label>
+                                        <input type="number" min="1"
+                                            class="form-control @error('quantity') is-invalid @enderror"
+                                            name="quantity" placeholder="0">
+                                        @error('quantity')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold">Type Quantity</label>
+                                        <select class="form-select select-2 @error('quantity_jenis') is-invalid @enderror"
+                                            name="quantity_jenis" data-placeholder="Pilih Satuan">
+                                            <option></option>
+                                            <option value="Pcs">Pcs</option>
+                                            <option value="Unit">Unit</option>
+                                            <option value="Set">Set</option>
+                                            <option value="Kg">Kg</option>
+                                            <option value="Sheet">Sheet</option>
+                                            <option value="EA">EA</option>
+                                            <option value="Liter">Liter</option>
+                                            <option value="Drum">Drum</option>
+                                        </select>
+                                        @error('quantity_jenis')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Description Item</label>
+                                    <textarea class="form-control" name="keterangan_barang" rows="3"
+                                        placeholder="Opsional..."></textarea>
+                                    @error('keterangan_barang')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="{{ route('good-received.index') }}" class="btn btn-secondary btn-sm">
+                                        <i class='bx bx-arrow-back me-1'></i> Back
+                                    </a>
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class='bx bx-plus me-1'></i> Add The Item
+                                    </button>
+                                </div>
+
+                            </form>
                         </div>
+                    </div>
 
-
-                    </form>
                 </div>
 
-                <div class="col-lg-6">
-                    <form action="{{ route('good-received.store.item') }}" method="post">
-                        @csrf
-                        <h4>Form Barang</h4>
-                        <div class="mb-3">
-                            <label for="jenis_barang" class="form-label">Jenis Barang Masuk</label>
-                            <select name="jenis_barang" id="jenis_barang"
-                                class="form-select @error('jenis_barang') is-invalid @enderror">
-                                <option value="" selected disabled>-- Pilih Jenis Barang Masuk --</option>
-                                <option value="Materials">Materials</option>
-                                <option value="Consumables">Consumables</option>
-                                <option value="Tools">Tools</option>
-                            </select>
-                            @error('jenis_barang')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3" id="div_material">
-                            <label class="form-label">Nama Material</label>
-                            <select name="material_id" class="form-select select-2" data-placeholder="Pilih Salah Satu">
-                                <option></option>
-                                @foreach ($materials as $material)
-                                <option value="{{ $material->id }}">{{ $material->nama_material }} |
-                                    {{$material->spesifikasi_material}} | Stok Saat Ini : ({{$material->quantity}})
-                                    {{$material->jenis_quantity}} | Kebutuhan Proyek: {{ $material->project->nama_project }} | {{ $material->project->sub_nama_project }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="mb-3" id="div_consumable">
-                            <label for="consumable_id" class="form-label">Nama Consumable</label>
-                            <select name="consumable_id" class="form-select select-2"
-                                data-placeholder="Pilih Salah Satu">
-                                <option></option>
-                                @foreach ($consumables as $consumable)
-                                <option value="{{ $consumable->id }}">{{ $consumable->nama_consumable }} |
-                                    {{$consumable->spesifikasi_consumable}} | Stok Saat Ini : ({{$consumable->quantity}})
-                                    {{$consumable->jenis_quantity}} | Kebutuhan Proyek: {{ $consumable->project->nama_project }} | {{ $consumable->project->sub_nama_project }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="mb-3" id="div_tool">
-                            <label class="form-label">Nama Tool</label>
-                            <select name="tools_id" class="form-select select-2" data-placeholder="Pilih Salah Satu">
-                                <option></option>
-                                @foreach ($tools as $tool)
-                                <option value="{{ $tool->id }}">{{ $tool->nama_alat }} | {{$tool->spesifikasi_alat}} | Stok Saat Ini :
-                                    ({{$tool->quantity}}) {{$tool->jenis_quantity}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-
-                        <div class="mb-3">
-                            <label for="quantity" class="form-label">Quantity</label>
-                            <input class="form-control rounded-top @error('quantity') is-invalid @enderror"
-                                type="number" min="1" name="quantity"
-                                placeholder="Harap Di Isi Tanggal Pengiriman Barang">
-                            @error('quantity')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-
-                        <div class="mb-3">
-                            <label for="quantity_jenis" class="form-label">Quantity Jenis</label>
-                            <select class="form-select select-2 @error('quantity_jenis') is-invalid @enderror"
-                                name="quantity_jenis" data-placeholder="Pilih Salah Satu">
-                                <option></option>
-                                <option value="Pcs">Pcs</option>
-                                <option value="Unit">Unit</option>
-                                <option value="Set">Set</option>
-                                <option value="Kg">Kg</option>
-                                <option value="Lembar">Lembar</option>
-                                <option value="EA">EA</option>
-                                <option value="Liter">Liter</option>
-                                <option value="Drum">Drum</option>
-                            </select>
-                            @error('quantity_jenis')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" name="keterangan_barang" id="floatingTextarea2Disabled"
-                                style="height: 100px"></textarea>
-                            <label for="floatingTextarea2Disabled">Keterangan barang </label>
-                            @error('keterangan_barang')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-
-
-                        <div class="mb-3 text-end">
-                            <button type="submit" class="btn btn-success">Tambah Barang</button>
-                            <a href="{{route('good-received.index')}}" class="btn btn-secondary">Go back</a>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-lg-12">
+                <div class="mt-4">
                     <hr>
+                    <h6 class="fw-bold mb-3 text-secondary text-uppercase" style="letter-spacing:.05em">
+                        <i class='bx bx-list-ul me-1'></i> List Item (Draft)
+                    </h6>
                     <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-light text-center">
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama barang</th>
-                                    <th>Jenis Barang</th>
+                                    <th>Name Item</th>
+                                    <th>Type Item</th>
                                     <th>Quantity</th>
-                                    <th>Jenis Quantity</th>
-                                    <th>Keterangan barang</th>
-                                    <th>#</th>
+                                    <th>Type Quantity</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($do_draft)
+                                @if ($do_draft && $do_draft->details->count())
                                     @foreach ($do_draft->details as $detail)
-                                        <tr>
-                                            <td>{{$loop->iteration}}</td>
+                                        <tr class="text-center">
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>
-                                                {{ optional($detail->material)->nama_material ?? optional($detail->consumable)->nama_consumable ?? optional($detail->tool)->nama_alat
-                                                            ?? '-' }}
+                                                {{ optional($detail->material)->nama_material
+                                                    ?? optional($detail->consumable)->nama_consumable
+                                                    ?? optional($detail->machine)->nama_mesin
+                                                    ?? '-' }}
                                             </td>
                                             <td>{{ $detail->jenis_barang }}</td>
                                             <td>{{ $detail->quantity }}</td>
                                             <td>{{ $detail->quantity_jenis }}</td>
-                                            <td>{{ $detail->keterangan_barang }}</td>
+                                            <td>{{ $detail->keterangan_barang ?? '-' }}</td>
                                             <td>
-
                                                 <form action="{{ route('good-received.delete-detail', $detail->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"><i class='bx bx-edit-alt' ></i></button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Hapus item ini?')">
+                                                        <i class='bx bx-trash'></i>
+                                                    </button>
                                                 </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @else
-                                <tr>
-                                    <td colspan="6" class="text-center">No Item Found</td>
-                                </tr>
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted py-3">
+                                            <i class='bx bx-inbox me-1'></i> No Item Added yet
+                                        </td>
+                                    </tr>
                                 @endif
                             </tbody>
                         </table>
                     </div>
-                    <div class="mt-3">
-                        <button class="btn btn-primary" onclick="submitForm()">Submit</button>
 
-                    </div>
+                    @if ($do_draft && $do_draft->details->count())
+                        <div class="d-flex justify-content-end mt-3">
+                            <button class="btn btn-primary" onclick="submitForm()">
+                                <i class='bx bx-check me-1'></i> Submit
+                            </button>
+                        </div>
+                    @endif
                 </div>
+
             </div>
         </div>
     </div>
@@ -263,57 +292,29 @@
 @endsection
 
 @push('scripts')
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const preloader = document.getElementById('preloader');
-        if (preloader) {
-            console.log('Preloader found. It will hide after 3 seconds...');
-            setTimeout(function () {
-                preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
-                console.log('Preloader hidden.');
-            }, 1500); // Durasi 3000 ms = 3 detik
-        } else {
-            console.error('Preloader element not found!');
-        }
+        if (preloader) setTimeout(() => preloader.style.display = 'none', 1500);
     });
 
-</script>
-
-<script>
     $('.select-2').select2({
         theme: "bootstrap-5",
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        width: '100%',
         placeholder: $(this).data('placeholder'),
     });
-</script>
-<script>
+
     function submitForm() {
         $("#formSubmit").submit();
     }
-</script>
 
-<script>
-    $(document).ready(function(){
-        $('#jenis_barang').on('change', function(){
+    $(document).ready(function() {
+        $('#jenis_barang').on('change', function() {
             var value = this.value;
-
-            if (value == 'Materials') {
-                $('#div_material').show();
-                $('#div_consumable').hide();
-                $('#div_tool').hide();
-            } else if (value == 'Consumables') {
-                $('#div_material').hide();
-                $('#div_consumable').show();
-                $('#div_tool').hide();
-            } else if (value == 'Tools') {
-                $('#div_material').hide();
-                $('#div_consumable').hide();
-                $('#div_tool').show();
-            }
+            $('#div_material').toggle(value === 'Materials');
+            $('#div_consumable').toggle(value === 'Consumables');
+            $('#div_machine').toggle(value === 'Machine');
         });
     });
 </script>

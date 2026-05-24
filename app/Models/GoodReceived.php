@@ -10,26 +10,24 @@ class GoodReceived extends Model
 {
     use HasFactory;
 
-    protected $table = 'goods_received';  // Sesuaikan dengan nama tabel di database
+    protected $table = 'goods_received';
 
     protected $fillable = [
         'user_id',
         'tanggal_masuk',
-        'kd_sj',
+        'status',
         'nama_supplier',
         'kode_surat_jalan',
-
-
     ];
 
         public function project()
         {
-            return $this->belongsTo(Project::class);
+            return $this->belongsTo(Project::class, 'project_id', 'id');
         }
 
     public function details()
     {
-        return $this->hasMany(GoodReceivedDetail::class);
+        return $this->hasMany(GoodReceivedDetail::class, 'good_received_id', 'id');
     }
 
 

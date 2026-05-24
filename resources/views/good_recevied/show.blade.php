@@ -1,307 +1,136 @@
 @extends('layouts.dashboard-layout')
-@push('styles')
-<style>
-    #div_tool {
-        display: none;
-    }
 
-    #div_consumable {
-        display: none;
-    }
-
-    #div_material {
-        display: none;
-    }
-</style>
-@endpush
 @section('container')
+    <div class="row">
+        <div class="col-lg-12">
 
-<div class="row">
-    <div class="col-lg-12">
-        {{-- Session Notifikasi --}}
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong class="text-dark">{!! session()->get('success') !!}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-        @if (session('failed'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong class="text-dark">{!! session()->get('failed') !!}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-        <div class="card">
-            <div class="card-body row">
-                <div class="col-lg-6">
-                    <form action="{{ route('good-received.store') }}" method="post" id="formSubmit">
-                        @csrf
-                        <h4>Form Data Alamat</h4>
-                       <div class="mb-3">
-                            <label for="tanggal_masuk" class="form-label">Tanggal Masuk Barang</label>
-                            <input class="form-control rounded-top @error('tanggal_masuk') is-invalid @enderror" type="date" name="tanggal_masuk" placeholder="Harap Di Isi Tanggal Pengiriman Barang">
-                            @error('tanggal_masuk')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-primary"><i class="bx bx-file"></i> Detail Good Received</h5>
 
-
-                        <div class="mb-3">
-                            <label for="kode_surat_jalan" class="form-label">No Surat Jalan</label>
-                            <input class="form-control rounded-top @error('kode_surat_jalan') is-invalid @enderror" type="text" name="kode_surat_jalan" placeholder="Harap Di Isi No Surat Jalan Barang">
-                            @error('kode_surat_jalan')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="nama_supplier" class="form-label">Nama Supplier</label>
-                            <input class="form-control rounded-top @error('nama_supplier') is-invalid @enderror" type="text" name="nama_supplier" placeholder="Harap Di Isi Nama Supplier">
-                            @error('nama_supplier')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-
-                        <div class="mb-3">
-                            <label for="project_id" class="form-label">Nama Project</label>
-                            <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu">
-                                <option></option>
-                                @foreach ($data_project as $data )
-                                    <option value="{{$data->id}}">{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
-                                @endforeach
-                            </select>
-                            @error('project_id')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-
-                    </form>
+                    @if ($gr && $gr->status == 'draft')
+                        <span class="badge bg-warning text-dark"><i class="bx bx-time-five"></i>Draft</span>
+                    @else
+                        <span class="badge bg-success"><i class="bx bx-check-circle"></i> Received</span>
+                    @endif
                 </div>
-
-                <div class="col-lg-6">
-                    <form action="{{ route('good-received.store.item') }}" method="post">
-                        @csrf
-                        <h4>Form Barang</h4>
-                        <div class="mb-3">
-                            <label for="jenis_barang" class="form-label">Jenis Barang Masuk</label>
-                            <select name="jenis_barang" id="jenis_barang"
-                                class="form-select @error('jenis_barang') is-invalid @enderror">
-                                <option value="" selected disabled>-- Pilih Jenis Barang Masuk --</option>
-                                <option value="Materials">Materials</option>
-                                <option value="Consumables">Consumables</option>
-                                <option value="Tools">Tools</option>
-                            </select>
-                            @error('jenis_barang')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
+                <div class="card-body">
+                    <div class="row text-dark">
+                        <div class="col-md-3 border-end">
+                            <small class="text-muted d-block">Date Of Entry</small>
+                            <strong>{{ $gr && $gr->tanggal_masuk ? \Carbon\Carbon::parse($gr->tanggal_masuk)->format('d-m-Y') : '-' }}</strong>
                         </div>
-
-                        <div class="mb-3" id="div_material">
-                            <label class="form-label">Nama Material</label>
-                            <select name="material_id" class="form-select select-2" data-placeholder="Pilih Salah Satu">
-                                <option></option>
-                                @foreach ($materials as $material)
-                                <option value="{{ $material->id }}">{{ $material->nama_material }} |
-                                    {{$material->spesifikasi_material}} | ({{$material->quantity}})
-                                    {{$material->jenis_quantity}}</option>
-                                @endforeach
-                            </select>
+                        <div class="col-md-3 border-end">
+                            <small class="text-muted d-block">Doc Good Received</small>
+                            <strong class="text-primary">{{ $gr->kode_surat_jalan ?? '-' }}</strong>
                         </div>
-
-                        <div class="mb-3" id="div_consumable">
-                            <label for="consumable_id" class="form-label">Nama Consumable</label>
-                            <select name="consumable_id" class="form-select select-2"
-                                data-placeholder="Pilih Salah Satu">
-                                <option></option>
-                                @foreach ($consumables as $consumable)
-                                <option value="{{ $consumable->id }}">{{ $consumable->nama_consumable }} |
-                                    {{$consumable->spesifikasi_consumable}} | ({{$consumable->quantity}})
-                                    {{$consumable->jenis_quantity}}</option>
-                                @endforeach
-                            </select>
+                        <div class="col-md-3 border-end">
+                            <small class="text-muted d-block">Name Supplier</small>
+                            <strong>{{ $gr->nama_supplier ?? '-' }}</strong>
                         </div>
-
-                        <div class="mb-3" id="div_tool">
-                            <label class="form-label">Nama Tool</label>
-                            <select name="tools_id" class="form-select select-2" data-placeholder="Pilih Salah Satu">
-                                <option></option>
-                                @foreach ($tools as $tool)
-                                <option value="{{ $tool->id }}">{{ $tool->nama_alat }} | {{$tool->spesifikasi_alat}} |
-                                    ({{$tool->quantity}}) {{$tool->jenis_quantity}}</option>
-                                @endforeach
-                            </select>
+                        <div class="col-md-3">
+                            <small class="text-muted d-block">Name Project</small>
+                            <strong>{{ optional($gr->project)->nama_project ?? 'No Project' }}</strong>
+                            @if ($gr && $gr->project)
+                                <span
+                                    class="d-block text-muted"><small>{{ $gr->project->sub_nama_project ?? '' }}</small></span>
+                            @endif
                         </div>
-
-
-                        <div class="mb-3">
-                            <label for="quantity" class="form-label">Quantity</label>
-                            <input class="form-control rounded-top @error('quantity') is-invalid @enderror"
-                                type="number" min="1" name="quantity"
-                                placeholder="Harap Di Isi Tanggal Pengiriman Barang">
-                            @error('quantity')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-
-                        <div class="mb-3">
-                            <label for="quantity_jenis" class="form-label">Quantity Jenis</label>
-                            <select class="form-select select-2 @error('quantity_jenis') is-invalid @enderror"
-                                name="quantity_jenis" data-placeholder="Pilih Salah Satu">
-                                <option></option>
-                                <option value="Pcs">Pcs</option>
-                                <option value="Unit">Unit</option>
-                                <option value="Set">Set</option>
-                                <option value="Kg">Kg</option>
-                                <option value="Lembar">Lembar</option>
-                                <option value="EA">EA</option>
-                                <option value="Liter">Liter</option>
-                                <option value="Drum">Drum</option>
-                            </select>
-                            @error('quantity_jenis')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" name="keterangan_barang" id="floatingTextarea2Disabled"
-                                style="height: 100px"></textarea>
-                            <label for="floatingTextarea2Disabled">Keterangan barang </label>
-                            @error('keterangan_barang')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-
-
-                        <div class="mb-3 text-end">
-                            <button type="submit" class="btn btn-success">Tambah Barang</button>
-                            <a href="{{route('good-received.index')}}" class="btn btn-secondary">Go back</a>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-                <div class="col-lg-12">
-                    <hr>
+            </div>
+            <div class="card shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-secondary"><i class="bx bx-list-ul"></i> List of Items Received</h5>
+                    <span class="badge bg-secondary">{{ $gr && $gr->details ? $gr->details->count() : 0 }} Items</span>
+                </div>
+                <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
+                        <table class="table table-bordered table-striped table-hover align-middle mb-0">
+                            <thead class="table-dark text-center">
                                 <tr>
-                                    <th>No</th>
-                                    <th>Nama barang</th>
-                                    <th>Jenis Barang</th>
-                                    <th>Quantity</th>
-                                    <th>Jenis Quantity</th>
-                                    <th>Keterangan barang</th>
-                                    <th>#</th>
+                                    <th style="width: 5%">No</th>
+                                    <th class="text-start">Name Item / Spesification</th>
+                                    <th style="width: 15%">type Item</th>
+                                    <th style="width: 15%">Quantity</th>
+                                    <th class="text-start">Description</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($do)
-                                    @foreach ($do->details as $detail)
+                                @if ($gr && $gr->details && $gr->details->count() > 0)
+                                    @foreach ($gr->details as $detail)
                                         <tr>
-                                            <td>{{$loop->iteration}}</td>
-                                            <td>
-                                                {{ optional($detail->material)->nama_material ?? optional($detail->consumable)->nama_consumable ?? optional($detail->tool)->nama_alat
-                                                            ?? '-' }}
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+
+                                            <td class="text-start">
+                                                <strong>
+                                                    {{ optional($detail->material)->nama_material ??
+                                                        (optional($detail->consumable)->nama_consumable ?? (optional($detail->machine)->nama_mesin ?? '-')) }}
+                                                </strong>
+                                                <span class="d-block text-muted" style="font-size: 0.85rem">
+                                                    {{ optional($detail->material)->spesifikasi_material ??
+                                                        (optional($detail->consumable)->spesifikasi_consumable ?? (optional($detail->machine)->spesifikasi_mesin ?? '')) }}
+                                                </span>
                                             </td>
-                                            <td>{{ $detail->jenis_barang }}</td>
-                                            <td>{{ $detail->quantity }}</td>
-                                            <td>{{ $detail->quantity_jenis }}</td>
-                                            <td>{{ $detail->keterangan_barang }}</td>
-                                            <td></td>
+                                            <td class="text-center">
+                                                @if ($detail->jenis_barang == 'Materials')
+                                                    <span
+                                                        class="badge bg-primary px-3 py-2 d-inline-flex align-items-center gap-1">
+                                                        <i class="bx bx-cube-alt fs-6"></i> {{ $detail->jenis_barang }}
+                                                    </span>
+                                                @elseif($detail->jenis_barang == 'Consumables')
+                                                    <span
+                                                        class="badge bg-warning text-dark px-3 py-2 d-inline-flex align-items-center gap-1">
+                                                        <i class="bx bx-test-tube fs-6"></i> {{ $detail->jenis_barang }}
+                                                    </span>
+                                                @elseif($detail->jenis_barang == 'Machines' || $detail->jenis_barang == 'Tools')
+                                                    <span
+                                                        class="badge bg-danger px-3 py-2 d-inline-flex align-items-center gap-1">
+                                                        <i class="bx bx-cog fs-6"></i> {{ $detail->jenis_barang }}
+                                                    </span>
+                                                @else
+                                                    <span
+                                                        class="badge bg-secondary px-3 py-2 d-inline-flex align-items-center gap-1">
+                                                        <i class="bx bx-package fs-6"></i> {{ $detail->jenis_barang }}
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center fw-bold text-success">
+                                                {{ $detail->quantity }} {{ $detail->quantity_jenis }}
+                                            </td>
+                                            <td class="text-start text-muted">
+                                                <small>{{ $detail->keterangan_barang ?? '-' }}</small>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @else
-                                <tr>
-                                    <td colspan="6" class="text-center">No Item Found</td>
-                                </tr>
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4 text-muted">There are no items in this
+                                            document.</td>
+                                    </tr>
                                 @endif
                             </tbody>
                         </table>
                     </div>
-                    <div class="mt-3">
-                        <button class="btn btn-primary" onclick="submitForm()">Submit</button>
-
-                    </div>
+                </div>
+                <div class="card-footer bg-light text-end">
+                    <a href="{{ route('good-received.index') }}" class="btn btn-secondary px-4">
+                        <i class="bx bx-arrow-back"></i> Back To List
+                    </a>
                 </div>
             </div>
+
         </div>
     </div>
-</div>
 @endsection
-
 @push('scripts')
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const preloader = document.getElementById('preloader');
-        if (preloader) {
-            console.log('Preloader found. It will hide after 3 seconds...');
-            setTimeout(function () {
-                preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
-                console.log('Preloader hidden.');
-            }, 1500); // Durasi 3000 ms = 3 detik
-        } else {
-            console.error('Preloader element not found!');
-        }
-    });
-
-</script>
-
-<script>
-    $('.select-2').select2({
-        theme: "bootstrap-5",
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        placeholder: $(this).data('placeholder'),
-    });
-</script>
-<script>
-    function submitForm() {
-        $("#formSubmit").submit();
-    }
-</script>
-
-<script>
-    $(document).ready(function(){
-        $('#jenis_barang').on('change', function(){
-            var value = this.value;
-
-            if (value == 'Materials') {
-                $('#div_material').show();
-                $('#div_consumable').hide();
-                $('#div_tool').hide();
-            } else if (value == 'Consumables') {
-                $('#div_material').hide();
-                $('#div_consumable').show();
-                $('#div_tool').hide();
-            } else if (value == 'Tools') {
-                $('#div_material').hide();
-                $('#div_consumable').hide();
-                $('#div_tool').show();
-            }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            if (preloader) setTimeout(() => preloader.style.display = 'none', 1500);
         });
-    });
-</script>
+    </script>
 @endpush

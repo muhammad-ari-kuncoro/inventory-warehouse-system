@@ -119,20 +119,21 @@ Route::middleware('auth')->group(function () {
         });
 
 
-    Route::prefix('good-received')
-        ->name('good-received.')
-        ->group(function () {
-            Route::get('/', [GoodsReceivedController::class, 'index'])->name('index');
-            Route::get('create', [GoodsReceivedController::class, 'create'])->name('create');
-            Route::post('store', [GoodsReceivedController::class, 'store'])->name('store');
-            Route::post('store/item', [GoodsReceivedController::class, 'storeItem'])->name('store.item');
+    Route::prefix('good-received')->name('good-received.')->group(function () {
+            Route::get('/',                       [GoodsReceivedController::class, 'index'])->name('index');
+            Route::get('create',                  [GoodsReceivedController::class, 'create'])->name('create');
+            Route::post('store',                  [GoodsReceivedController::class, 'store'])->name('store');
+            Route::post('store/item',             [GoodsReceivedController::class, 'storeItem'])->name('store.item');
             Route::post('store/item/update/{id}', [GoodsReceivedController::class, 'storeItemUpdate'])->name('store.item.update');
-            Route::post('delete-draft', [GoodsReceivedController::class, 'deleteDraft'])->name('delete-draft');
-            Route::get('edit/{id}', [GoodsReceivedController::class, 'edit'])->name('edit');
-            Route::get('show/{id}', [GoodsReceivedController::class, 'show'])->name('show');
-            Route::patch('update/{id}', [GoodsReceivedController::class, 'update'])->name('update');
-            Route::delete('destroy/{id}', [GoodsReceivedController::class, 'destroy'])->name('destroy');
-            Route::delete('delete/detail/{id}', [GoodsReceivedController::class, 'destroyDetail'])->name('delete-detail');
+            Route::post('delete-draft',           [GoodsReceivedController::class, 'deleteDraft'])->name('delete-draft');
+            Route::get('edit/{id}',               [GoodsReceivedController::class, 'edit'])->name('edit');
+            Route::get('show/{id}',               [GoodsReceivedController::class, 'show'])->name('show');
+            Route::patch('update/{id}',           [GoodsReceivedController::class, 'update'])->name('update');
+            Route::delete('destroy/{id}',         [GoodsReceivedController::class, 'destroy'])->name('destroy');
+            Route::delete('delete/detail/{id}',   [GoodsReceivedController::class, 'destroyDetail'])->name('delete-detail');
+            Route::get('/export-filter',          [GoodsReceivedController::class, 'exportPage'])->name('export-filter');
+            Route::get('/export/download',        [GoodsReceivedController::class, 'exportDownload'])->name('export.download');
+            Route::get('/export-single/download/{id}', [GoodsReceivedController::class, 'printSinglePdfGR'])->name('export.single.download');
         });
 
     Route::prefix('delivery-order')

@@ -19,8 +19,8 @@ class GoodReceivedAPIController extends Controller
     public function dataALL()
     {
         try {
-            $data = GoodReceived::where('kd_sj', '!=', 'drafts')
-                ->with('project') // kalau relasi ada
+            $data = GoodReceived::where('status', '!=', 'draft')
+                ->with('project')
                 ->get();
 
             return response()->json([
@@ -42,7 +42,6 @@ class GoodReceivedAPIController extends Controller
 
     public function storeGoodReceived(Request $request)
     {
-          // Pastikan user terautentikasi dengan JWT
           $user = auth()->user();
           if (!$user) {
               return response()->json([
@@ -66,12 +65,9 @@ class GoodReceivedAPIController extends Controller
 
         DB::beginTransaction();
         try {
-            // Mengambil user yang terautentikasi dari token JWT
             $user = auth()->user();
-
-            // Cek apakah sudah ada draft GoodReceived untuk user ini
             $do_draft = GoodReceived::firstOrCreate(
-                ['user_id' => $user->id, 'kd_sj' => 'draft'],
+                ['user_id' => $user->id, 'status' => 'draft'],
                 ['user_id' => $user->id]
             );
 
@@ -143,7 +139,7 @@ class GoodReceivedAPIController extends Controller
         ]);
 
         try {
-            $doDraft = GoodReceived::where('user_id', Auth::user()->id)->where('kd_sj', 'draft')->first();
+            $doDraft = GoodReceived::where('user_id', Auth::user()->id)->where('status', 'draft')->first();
             if (!$doDraft) {
                 return response()->json([
                     'success' => false,
@@ -151,7 +147,7 @@ class GoodReceivedAPIController extends Controller
                 ], 400);
             }
 
-            $doDraft->kd_sj             = $this->generatekdSJ();
+            $doDraft->status             = $this->generatekdSJ();
             $doDraft->tanggal_masuk     = $request->tanggal_masuk;
             $doDraft->project_id        = $request->project_id;
             $doDraft->nama_supplier     = $request->nama_supplier;

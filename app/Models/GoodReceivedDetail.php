@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Materials;
 use App\Models\Consumables;
-use App\Models\Tools;
+use App\Models\machine;
 class GoodReceivedDetail extends Model
 {
     use HasFactory;
@@ -15,12 +15,11 @@ class GoodReceivedDetail extends Model
         'jenis_barang',
         'material_id',
         'consumable_id',
-        'tools_id',
+        'machine_id',
         'quantity',
         'quantity_jenis',
         'keterangan_barang',
     ];
-
     public function material()
     {
         return $this->belongsTo(Materials::class, 'material_id', 'id');
@@ -29,67 +28,26 @@ class GoodReceivedDetail extends Model
     {
         return $this->belongsTo(Consumables::class, 'consumable_id', 'id');
     }
-    public function tool()
+    public function machine()
     {
-        return $this->belongsTo(Tools::class, 'tools_id', 'id'); // Pastikan 'tools_id' benar
+        return $this->belongsTo(Machines::class, 'machine_id', 'id');
     }
-
-
-
-
-
     protected static function boot()
     {
         parent::boot();
-
-        // Saat membuat data baru
         static::creating(function ($model) {
-            // Ambil objek terkait
-            $material = Materials::find($model->material_id);
-            $consumable = Consumables::find($model->consumable_id);
-            $tools = Tools::find($model->tools_id);
-
-            // Lakukan increment stok
+            $material       = Materials::find($model->material_id);
+            $consumable     = Consumables::find($model->consumable_id);
+            $machine        = Machines::find($model->machine_id);
             if ($material) {
                 $material->increment('quantity', $model->quantity);
             }
             if ($consumable) {
                 $consumable->increment('quantity', $model->quantity);
             }
-            if ($tools) {
-                $tools->increment('quantity', $model->quantity);
+            if ($machine) {
+                $machine->increment('quantity', $model->quantity);
             }
-
-
         });
-
-        // // Saat memperbarui data
-        // static::updating(function ($model) {
-        //     // Ambil nilai quantity lama sebelum di-update
-        //     $originalQuantity = $model->getOriginal('quantity');
-        //     $quantityDifference = $model->quantity - $originalQuantity;
-
-        //     // Ambil objek terkait
-        //     $material = Materials::find($model->material_id);
-        //     $consumable = Consumables::find($model->consumable_id);
-        //     $tools = Tools::find($model->tools_id);
-
-        //     // Perbarui stok berdasarkan perubahan quantity
-        //     if ($material && $quantityDifference != 0) {
-        //         $quantityDifference > 0
-        //             ? $material->increment('quantity', $quantityDifference)
-        //             : $material->decrement('quantity', abs($quantityDifference));
-        //     }
-        //     if ($consumable && $quantityDifference != 0) {
-        //         $quantityDifference > 0
-        //             ? $consumable->increment('quantity', $quantityDifference)
-        //             : $consumable->decrement('quantity', abs($quantityDifference));
-        //     }
-        //     if ($tools && $quantityDifference != 0) {
-        //         $quantityDifference > 0
-        //             ? $tools->increment('quantity', $quantityDifference)
-        //             : $tools->decrement('quantity', abs($quantityDifference));
-        //     }
-        //     });
     }
 }
