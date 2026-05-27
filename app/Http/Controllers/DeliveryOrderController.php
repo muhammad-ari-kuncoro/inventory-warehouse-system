@@ -165,9 +165,6 @@ class DeliveryOrderController extends Controller
         return view('delivery_order.edit',$data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request,$id)
     {
         $request->validate([
@@ -185,12 +182,22 @@ class DeliveryOrderController extends Controller
         return redirect()->route('delivery-order.index')->with('editSuccess', 'Data berhasil Di Edit!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DeliveryOrder $deliveryOrder)
+    public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+                $deliveryOrder = DeliveryOrder::findOrFail($id);
+                DeliveryOrderDetail::where('delivery_order_id', $deliveryOrder->id)->delete();
+                $deliveryOrder->delete();
+                DB::commit();
+
+                return redirect()->route('delivery-order.index')->with('delete', 'Draft Delivery Order and its item details have been successfully deleted..');
+
+        } catch (\Exception $e) {
+                DB::rollBack();
+                return redirect()->route('delivery-order.index')->with('error', 'Gagal menghapus draft: ' . $e->getMessage());
+    }
     }
 
     public function deleteDraft()
@@ -210,7 +217,6 @@ class DeliveryOrderController extends Controller
     public function printPDF($id)
     {
         $deliveryOrder = DeliveryOrder::findOrFail($id);
-        // Hitung total quantity
         $totalQty = $deliveryOrder->details->sum('item_qty');
         $totalWeight = $deliveryOrder->details->sum('item_weight');
 

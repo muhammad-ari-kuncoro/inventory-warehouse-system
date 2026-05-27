@@ -149,6 +149,7 @@ Route::middleware('auth')->group(function () {
             Route::patch('update-detail/{id}',     [DeliveryOrderController::class, 'updateDetail'])->name('update-detail');
             Route::get('detail-updating/{id}',     [DeliveryOrderController::class, 'detailUpdate'])->name('detail-updating');
             Route::delete('delete-per-draft/{id}', [DeliveryOrderController::class, 'deletePerDraft'])->name('delete-per-draft');
+            Route::delete('delete-data/{id}',      [DeliveryOrderController::class, 'destroy'])->name('delete-data');
         });
 
     Route::prefix('shipping-items')

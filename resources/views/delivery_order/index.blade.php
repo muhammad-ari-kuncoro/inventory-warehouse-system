@@ -95,7 +95,7 @@
                                             class="btn btn-info btn-sm text-white" target="_blank" title="Print PDF">
                                             <i class='bx bx-printer'></i>
                                         </a>
-                                        <form action="{{ route('delivery-order.delete-draft', $data->id) }}" method="POST"
+                                        <form action="{{ route('delivery-order.delete-data', $data->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf
                                             @method('DELETE')
