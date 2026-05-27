@@ -14,44 +14,33 @@ use Illuminate\Support\Str;
 
 class DeliveryOrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
-
-        $data['title'] = 'Delivery Order Halaman';
-        $data['sub_title'] = 'Pengiriman Delivery Order';
-        $data['data_delivery_order']  = DeliveryOrder::where('do_no', '!=', 'draft')->get();
-        $data['data_project'] = Project::get();
+        $data['title']                = 'Delivery Order Page';
+        $data['sub_title']            = 'Delivery Order';
+        $data['data_delivery_order']  = DeliveryOrder::paginate(10);
+        $data['data_project']         = Project::get();
         return view('delivery_order.index',$data);
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
-        $data['title'] = 'Delivery Order Form';
-        $data['sub_title'] = 'Pengiriman Delivery Order';
-        $data['data_project'] = Project::get();
-        $data['do_draft'] = DeliveryOrder::where('user_id', Auth::user()->id)->where('do_no', 'draft')->first();
+        $data['title']              = 'Delivery Order Page';
+        $data['sub_title']          = 'Delivery Order';
+        $data['data_project']       = Project::get();
+        $data['do_draft']           = DeliveryOrder::where('user_id', Auth::user()->id)->where('do_no', 'draft')->first();
         return view('delivery_order.create',$data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function storeItem(Request $request)
     {
-         $request->validate([
-            'item_description' => 'required',
-            'item_size' => 'nullable',
-            'item_qty' => 'nullable',
-            'satuan_barang' => 'nullable',
+        $request->validate([
+            'item_description'  => 'required',
+            'item_size'         => 'nullable',
+            'item_qty'          => 'nullable',
+            'satuan_barang'     => 'nullable',
 
         ]);
         DB::beginTransaction();
@@ -75,19 +64,19 @@ class DeliveryOrderController extends Controller
                 $doDraftDetail = new DeliveryOrderDetail();
             }
 
-            $doDraftDetail->delivery_order_id = $doDraft->id;
-            $doDraftDetail->item_description = trim($request->item_description);
-            $doDraftDetail->item_size = $request->item_size;
-            $doDraftDetail->item_weight = $request->item_weight;
-            $doDraftDetail->item_qty = $request->item_qty;
-            $doDraftDetail->item_measurement = $request->satuan_barang;
+            $doDraftDetail->delivery_order_id   = $doDraft->id;
+            $doDraftDetail->item_description    = trim($request->item_description);
+            $doDraftDetail->item_size           = $request->item_size;
+            $doDraftDetail->item_weight         = $request->item_weight;
+            $doDraftDetail->item_qty            = $request->item_qty;
+            $doDraftDetail->item_measurement    = $request->satuan_barang;
             $doDraftDetail->save();
 
             DB::commit();
             if ($request->do_id) {
-                return redirect()->route('delivery-order.edit', $request->do_id)->with('success', 'Item berhasil ditambahkan!');
+                return redirect()->route('delivery-order.edit', $request->do_id)->with('success', 'Item Successfully Added!');
             } else {
-                return redirect()->route('delivery-order.create')->with('success', 'Item berhasil ditambahkan!');
+                return redirect()->route('delivery-order.create')->with('success', 'Data Successfully Created!');
             }
         } catch (\Exception $e) {
             DB::rollback();
@@ -96,35 +85,32 @@ class DeliveryOrderController extends Controller
     }
 
     public function detailUpdate($id){
-        $data['title'] = 'Edit Edit Detail Delivery Order ';
-        $data['sub_title'] = 'Edit Detail Delivery Order Project';
-        $data['find_id'] = DeliveryOrderDetail::findOrFail($id);
+        $data['title']      = 'Edit Edit Detail Delivery Order ';
+        $data['sub_title']  = 'Edit Detail Delivery Order Project';
+        $data['find_id']    = DeliveryOrderDetail::findOrFail($id);
         return view('delivery_order.edit_detail', $data);
     }
 
     public function updateDetail(Request $request, $id)
     {
-        //Validasi Update
         $this->validate($request, [
-            'item_description' => 'required',
-            'item_size' => 'nullable',
-            'item_qty' => 'nullable',
-            'satuan_barang' => 'nullable',
+            'item_description'      => 'required',
+            'item_size'             => 'nullable',
+            'item_qty'              => 'nullable',
+            'satuan_barang'         => 'nullable',
         ]);
         $updatingDeliveryOrder = DeliveryOrderDetail::findOrFail($id);
-        $updatingDeliveryOrder->item_description = trim($request->item_description);
-        $updatingDeliveryOrder->item_size = $request->item_size;
-        $updatingDeliveryOrder->item_weight = $request->item_weight;
-        $updatingDeliveryOrder->item_qty = $request->item_qty;
-        $updatingDeliveryOrder->item_measurement = $request->satuan_barang;
+        $updatingDeliveryOrder->item_description    = trim($request->item_description);
+        $updatingDeliveryOrder->item_size           = $request->item_size;
+        $updatingDeliveryOrder->item_weight         = $request->item_weight;
+        $updatingDeliveryOrder->item_qty            = $request->item_qty;
+        $updatingDeliveryOrder->item_measurement    = $request->satuan_barang;
         $updatingDeliveryOrder->save();
-        // Redirect ke halaman yang diinginkan
         return redirect()->route('delivery-order.create')->with('editSuccess', 'Data berhasil Di Edit!');
     }
 
     public function deletePerDraft($id){
         $detail = DeliveryOrderDetail::find($id);
-
         if ($detail) {
             $detail->delete();
             return redirect()->back()->with('success', 'Item berhasil dihapus.');
@@ -160,25 +146,17 @@ class DeliveryOrderController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
-        //
-        $data['title'] = 'Edit Delivery Order Form';
-        $data['sub_title'] = 'Pengiriman Delivery Order';
+        $data['title']        = 'Detail Delivery Order Page';
+        $data['sub_title']    = 'Delivery Order';
         $data['data_project'] = Project::all();
-        $data['do'] = DeliveryOrder::findOrFail($id);
+        $data['do']           = DeliveryOrder::findOrFail($id);
         return view('delivery_order.show',$data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
-        //
         $data['title'] = 'Edit Delivery Order Form';
         $data['sub_title'] = 'Pengiriman Delivery Order';
         $data['data_project'] = Project::all();

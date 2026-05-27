@@ -1,139 +1,96 @@
 @extends('layouts.dashboard-layout')
-@push('styles')
-<style>
-    #div_tool {
-        display: none;
-    }
 
-    #div_consumable {
-        display: none;
-    }
-
-    #div_material {
-        display: none;
-    }
-</style>
-@endpush
 @section('container')
+    <div class="row">
+        <div class="col-lg-12">
 
-<div class="row">
-    <div class="col-lg-12">
-        {{-- Session Notifikasi --}}
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong class="text-dark">{!! session()->get('success') !!}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-        @if (session('failed'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong class="text-dark">{!! session()->get('failed') !!}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-        <div class="card">
-            <div class="card-body row">
-                <div class="col-lg-12">
-                    <h4>Form Detail Delivery Order</h4>
+            {{-- Header Info Card --}}
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-primary"><i class="bx bx-file"></i> Detail Delivery Order</h5>
+                    <span class="badge bg-success"><i class="bx bx-check-circle"></i> {{ ucfirst($do->status ?? 'Active') }}</span>
                 </div>
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label for="tanggal_pengiriman" class="form-label">Delivery Order Number</label>
-                        <input class="form-control rounded-top" type="text" value="{{ $do->do_no }}" disabled>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tanggal_pengiriman" class="form-label">Tanggal Pengiriman</label>
-                        <input class="form-control rounded-top @error('tanggal_pengiriman') is-invalid @enderror" type="date" value="{{ $do->do_date }}" name="tanggal_pengiriman" placeholder="Harap Di Isi Tanggal Pengiriman Barang" disabled>
-                        @error('tanggal_pengiriman')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="project_id" class="form-label">Nama Project</label>
-                        <select class="form-select select-2 @error('project_id') is-invalid @enderror" name="project_id" data-placeholder="Pilih Salah Satu" disabled>
-                            <option></option>
-                            @foreach ($data_project as $data )
-                                <option value="{{$data->id}}"{{ $do->project_id == $data->id ? 'selected' : '' }}>{{$data->nama_project}} | {{$data->sub_nama_project}}</option>
-                            @endforeach
-                        </select>
-                        @error('project_id')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                <div class="card-body">
+                    <div class="row text-dark">
+                        <div class="col-md-3 border-end">
+                            <small class="text-muted d-block">DO Number</small>
+                            <strong class="text-primary">{{ $do->do_no ?? '-' }}</strong>
                         </div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label class="form-label">Alamat Penerima</label>
-                        <textarea class="form-control" name="penerima"  id="floatingTextarea2Disabled" rows="8" disabled>{{ $do->shipment_address }}</textarea>
-                        @error('penerima')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                        <div class="col-md-3 border-end">
+                            <small class="text-muted d-block">Tanggal Pengiriman</small>
+                            <strong>{{ $do->do_date ? \Carbon\Carbon::parse($do->do_date)->format('d-m-Y') : '-' }}</strong>
                         </div>
-                        @enderror
+                        <div class="col-md-3 border-end">
+                            <small class="text-muted d-block">Nama Project</small>
+                            <strong>{{ optional($do->project)->nama_project ?? 'No Project' }}</strong>
+                            @if ($do->project)
+                                <span class="d-block text-muted"><small>{{ $do->project->sub_nama_project ?? '' }}</small></span>
+                            @endif
+                        </div>
+                        <div class="col-md-3">
+                            <small class="text-muted d-block">Alamat Penerima</small>
+                            <strong>{{ $do->shipment_address ?? '-' }}</strong>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-12">
-                    <hr>
+            </div>
+
+            {{-- List Item Card --}}
+            <div class="card shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-secondary"><i class="bx bx-list-ul"></i> List of Items</h5>
+                    <span class="badge bg-secondary">{{ $do->details ? $do->details->count() : 0 }} Items</span>
+                </div>
+                <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
+                        <table class="table table-bordered table-striped table-hover align-middle mb-0">
+                            <thead class="table-dark text-center">
                                 <tr>
-                                    <th>Deskripsi Item</th>
-                                    <th>Ukuran</th>
-                                    <th>Weight</th>
-                                    <th>Qty</th>
-                                    <th>Satuan</th>
+                                    <th style="width:5%">No</th>
+                                    <th class="text-start">Deskripsi Item</th>
+                                    <th style="width:15%">Ukuran</th>
+                                    <th style="width:10%">Qty</th>
+                                    <th style="width:10%">Berat (Kg)</th>
+                                    <th style="width:10%">Satuan</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($do)
-                                    @foreach ($do->details as $detail)
-                                        <tr>
-                                            <td>{{ $detail->item_description }}</td>
-                                            <td>{{ $detail->item_size }}</td>
-                                            <td>{{ $detail->item_weight }}</td>
-                                            <td>{{ $detail->item_qty }}</td>
-                                            <td>{{ $detail->item_measurement }}</td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                <tr>
-                                    <td colspan="6" class="text-center">No Item Found</td>
-                                </tr>
-                                @endif
+                                @forelse ($do->details as $detail)
+                                    <tr>
+                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                        <td class="text-start">{{ $detail->item_description ?? '-' }}</td>
+                                        <td class="text-center">{{ $detail->item_size ?? '-' }}</td>
+                                        <td class="text-center fw-bold text-success">{{ $detail->item_qty }}</td>
+                                        <td class="text-center">{{ $detail->item_weight }}</td>
+                                        <td class="text-center">{{ $detail->item_measurement }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4 text-muted">
+                                            <i class='bx bx-inbox me-1'></i> There are no items in this document.
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
-                    <div class="mt-3 col-lg-6">
-                      <a href="{{route('delivery-order.index')}}" class="btn btn-secondary">Go back</a>
-                    </div>
+                </div>
+                <div class="card-footer bg-light text-end">
+                    <a href="{{ route('delivery-order.index') }}" class="btn btn-secondary px-4">
+                        <i class="bx bx-arrow-back"></i> Back To List
+                    </a>
                 </div>
             </div>
+
         </div>
     </div>
-</div>
 @endsection
 
 @push('scripts')
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
-
-<script>
-    $('.select-2').select2({
-        theme: "bootstrap-5",
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        placeholder: $(this).data('placeholder'),
-    });
-</script>
-<script>
-    function submitForm() {
-        $("#formSubmit").submit();
-    }
-</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            if (preloader) setTimeout(() => preloader.style.display = 'none', 1500);
+        });
+    </script>
 @endpush

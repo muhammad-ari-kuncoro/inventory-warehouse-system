@@ -138,7 +138,7 @@
                     </a>
                 </li>
 
-                <li class="menu-item {{ $sub_title === 'Pengiriman Delivery Order' ? 'active' : '' }}">
+                <li class="menu-item {{ $sub_title === 'Delivery Order' ? 'active' : '' }}">
                     <a href="{{ route('delivery-order.index') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-car"></i>
                         <div data-i18n="Layouts">Delivery Order</div>

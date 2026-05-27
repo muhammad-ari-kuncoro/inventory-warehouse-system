@@ -120,36 +120,34 @@ Route::middleware('auth')->group(function () {
 
 
     Route::prefix('good-received')->name('good-received.')->group(function () {
-            Route::get('/',                       [GoodsReceivedController::class, 'index'])->name('index');
-            Route::get('create',                  [GoodsReceivedController::class, 'create'])->name('create');
-            Route::post('store',                  [GoodsReceivedController::class, 'store'])->name('store');
-            Route::post('store/item',             [GoodsReceivedController::class, 'storeItem'])->name('store.item');
-            Route::post('store/item/update/{id}', [GoodsReceivedController::class, 'storeItemUpdate'])->name('store.item.update');
-            Route::post('delete-draft',           [GoodsReceivedController::class, 'deleteDraft'])->name('delete-draft');
-            Route::get('edit/{id}',               [GoodsReceivedController::class, 'edit'])->name('edit');
-            Route::get('show/{id}',               [GoodsReceivedController::class, 'show'])->name('show');
-            Route::patch('update/{id}',           [GoodsReceivedController::class, 'update'])->name('update');
-            Route::delete('destroy/{id}',         [GoodsReceivedController::class, 'destroy'])->name('destroy');
-            Route::delete('delete/detail/{id}',   [GoodsReceivedController::class, 'destroyDetail'])->name('delete-detail');
-            Route::get('/export-filter',          [GoodsReceivedController::class, 'exportPage'])->name('export-filter');
-            Route::get('/export/download',        [GoodsReceivedController::class, 'exportDownload'])->name('export.download');
+            Route::get('/',                            [GoodsReceivedController::class, 'index'])->name('index');
+            Route::get('create',                       [GoodsReceivedController::class, 'create'])->name('create');
+            Route::post('store',                       [GoodsReceivedController::class, 'store'])->name('store');
+            Route::post('store/item',                  [GoodsReceivedController::class, 'storeItem'])->name('store.item');
+            Route::post('store/item/update/{id}',      [GoodsReceivedController::class, 'storeItemUpdate'])->name('store.item.update');
+            Route::post('delete-draft',                [GoodsReceivedController::class, 'deleteDraft'])->name('delete-draft');
+            Route::get('edit/{id}',                    [GoodsReceivedController::class, 'edit'])->name('edit');
+            Route::get('show/{id}',                    [GoodsReceivedController::class, 'show'])->name('show');
+            Route::patch('update/{id}',                [GoodsReceivedController::class, 'update'])->name('update');
+            Route::delete('destroy/{id}',              [GoodsReceivedController::class, 'destroy'])->name('destroy');
+            Route::delete('delete/detail/{id}',        [GoodsReceivedController::class, 'destroyDetail'])->name('delete-detail');
+            Route::get('/export-filter',               [GoodsReceivedController::class, 'exportPage'])->name('export-filter');
+            Route::get('/export/download',             [GoodsReceivedController::class, 'exportDownload'])->name('export.download');
             Route::get('/export-single/download/{id}', [GoodsReceivedController::class, 'printSinglePdfGR'])->name('export.single.download');
         });
 
-    Route::prefix('delivery-order')
-        ->name('delivery-order.')
-        ->group(function () {
-            Route::get('/', [DeliveryOrderController::class, 'index'])->name('index');
-            Route::get('create', [DeliveryOrderController::class, 'create'])->name('create');
-            Route::post('store', [DeliveryOrderController::class, 'store'])->name('store');
-            Route::post('store/item', [DeliveryOrderController::class, 'storeItem'])->name('store.item');
-            Route::post('delete-draft', [DeliveryOrderController::class, 'deleteDraft'])->name('delete-draft');
-            Route::get('edit/{id}', [DeliveryOrderController::class, 'edit'])->name('edit');
-            Route::get('print-pdf/{id}', [DeliveryOrderController::class, 'printPDF'])->name('print-pdf');
-            Route::get('show/{id}', [DeliveryOrderController::class, 'show'])->name('show');
-            Route::patch('update/{id}', [DeliveryOrderController::class, 'update'])->name('update');
-            Route::patch('update-detail/{id}', [DeliveryOrderController::class, 'updateDetail'])->name('update-detail');
-            Route::get('detail-updating/{id}', [DeliveryOrderController::class, 'detailUpdate'])->name('detail-updating');
+    Route::prefix('delivery-order')->name('delivery-order.')->group(function () {
+            Route::get('/',                        [DeliveryOrderController::class, 'index'])->name('index');
+            Route::get('create',                   [DeliveryOrderController::class, 'create'])->name('create');
+            Route::post('store',                   [DeliveryOrderController::class, 'store'])->name('store');
+            Route::post('store/item',              [DeliveryOrderController::class, 'storeItem'])->name('store.item');
+            Route::post('delete-draft',            [DeliveryOrderController::class, 'deleteDraft'])->name('delete-draft');
+            Route::get('edit/{id}',                [DeliveryOrderController::class, 'edit'])->name('edit');
+            Route::get('print-pdf/{id}',           [DeliveryOrderController::class, 'printPDF'])->name('print-pdf');
+            Route::get('show/{id}',                [DeliveryOrderController::class, 'show'])->name('show');
+            Route::patch('update/{id}',            [DeliveryOrderController::class, 'update'])->name('update');
+            Route::patch('update-detail/{id}',     [DeliveryOrderController::class, 'updateDetail'])->name('update-detail');
+            Route::get('detail-updating/{id}',     [DeliveryOrderController::class, 'detailUpdate'])->name('detail-updating');
             Route::delete('delete-per-draft/{id}', [DeliveryOrderController::class, 'deletePerDraft'])->name('delete-per-draft');
         });
 
