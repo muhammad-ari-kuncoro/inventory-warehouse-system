@@ -1,173 +1,202 @@
 @extends('layouts.dashboard-layout')
-@push('styles')
-<style>
-    #div_tool {
-        display: none;
-    }
 
-    #div_consumable {
-        display: none;
-    }
-
-    #div_material {
-        display: none;
-    }
-</style>
-@endpush
 @section('container')
-
 <div class="row">
     <div class="col-lg-12">
-        {{-- Session Notifikasi --}}
+
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong class="text-dark">{!! session()->get('success') !!}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>{!! session()->get('success') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
         @if (session('failed'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong class="text-dark">{!! session()->get('failed') !!}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>{!! session()->get('failed') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
-        <div class="card">
-            @if ($do)
-                <div class="card-header text-end">
-                    <form action="" method="post">
+
+        <div class="card shadow-sm border-0">
+            @if ($shipping && $shipping->details?->count() > 0)
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold text-muted small">Draft saved — not submitted yet</span>
+                    <form action="{{ route('shipping-items.destroy', $shipping->id) }}" method="post" onsubmit="return confirm('Hapus draf ini?')">
                         @csrf
-                        <button type="submit" class="btn btn-danger btn-sm">Delete Draft</button>
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class='bx bx-trash me-1'></i> Delete Draft
+                        </button>
                     </form>
                 </div>
             @endif
-            <div class="card-body row">
-                <div class="col-lg-6">
-                    <form action="" method="post" id="formSubmit">
-                        @csrf
-                        <h4>Form Address</h4>
-                        <div class="mb-3">
-                            <label for="date_delivery" class="form-label">Date </label>
-                            <input class="form-control rounded-top @error('date_delivery') is-invalid @enderror" type="date" name="date_delivery" placeholder="Harap Di Isi Tanggal Pengiriman Barang" value="{{old('date_delivery',$find_id->date_delivery)}}">
-                            @error('date_delivery')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
+
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="border rounded p-4 h-100">
+                            <h6 class="fw-bold mb-3 text-secondary text-uppercase" style="letter-spacing:.05em">
+                                <i class='bx bx-map me-1'></i> Data Delivery
+                            </h6>
+                            <form action="{{ route('shipping-items.update', $shipping->id) }}" method="post" id="formSubmit">
+                                @csrf
+                                @method('PUT')
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Date</label>
+                                    <input type="date"
+                                        class="form-control @error('date_delivery') is-invalid @enderror"
+                                        name="date_delivery" value="{{ old('date_delivery', $shipping->date_delivery) }}">
+                                    @error('date_delivery')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                            @enderror
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Address</label>
+                                    <textarea class="form-control @error('to') is-invalid @enderror"
+                                        name="to" rows="3" placeholder="Please insert this field after you add the item unit ...">{{ old('to', $shipping->to) }}</textarea>
+                                    @error('to')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Description</label>
+                                    <textarea class="form-control @error('description_stuff') is-invalid @enderror"
+                                        name="description_stuff" rows="3" placeholder="Please insert this field after you add the item unit ...">{{ old('description_stuff', $shipping->description_stuff) }}</textarea>
+                                    @error('description_stuff')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </form>
                         </div>
+                    </div>
 
-                        <label for="tgl_kirim" class="form-label">Address </label>
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" name="pengirim"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
-                            <label for="floatingTextarea2Disabled">To</label>
-                            @error('pengirim')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
+                    <div class="col-lg-6">
+                        <div class="border rounded p-4 h-100">
+                            <h6 class="fw-bold mb-3 text-secondary text-uppercase" style="letter-spacing:.05em">
+                                <i class='bx bx-package me-1'></i> Data Item
+                            </h6>
+
+                            <form action="{{ route('shipping-items.store.item') }}" method="post">
+                                @csrf
+                                <input type="hidden" name="shipping_items_id" value="{{ $shipping->id }}">
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Item Name</label>
+                                    <input type="text" name="item_names"
+                                        class="form-control @error('item_names') is-invalid @enderror"
+                                        placeholder="Please Insert Item Unit ..." value="{{ old('item_names') }}">
+                                    @error('item_names')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="row g-2 mb-3">
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold">Quantity</label>
+                                        <input type="number" name="quantity" min="1"
+                                            class="form-control @error('quantity') is-invalid @enderror"
+                                            placeholder="0" value="{{ old('quantity') }}">
+                                        @error('quantity')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold">Type</label>
+                                        <select class="form-select select-2 @error('quantity_type') is-invalid @enderror"
+                                            name="quantity_type" data-placeholder="Choose Type Quantity">
+                                            <option></option>
+                                            @foreach(['Pcs', 'Unit', 'Set', 'Kg', 'Lmbr', 'EA', 'Liter', 'Drum'] as $type)
+                                                <option value="{{ $type }}" {{ old('quantity_type') == $type ? 'selected' : '' }}>{{ $type }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('quantity_type')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Description Item</label>
+                                    <textarea class="form-control @error('description_items') is-invalid @enderror"
+                                        name="description_items" rows="3" placeholder="Please Insert Description Item Unit ...">{{ old('description_items') }}</textarea>
+                                    @error('description_items')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="{{ route('shipping-items.index') }}" class="btn btn-secondary btn-sm">
+                                        <i class='bx bx-arrow-back me-1'></i> Back
+                                    </a>
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class='bx bx-plus me-1'></i> Add Item
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-
-
-
-                    </form>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    <form action="{{route('shipping-items.store.item')}}" method="post">
-                        @csrf
-                        <h4>Form Items</h4>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Items Names</label>
-                            <input type="text" name="item_names" class="form-control" id="" placeholder="Harap Masukkan Deskripsi Barang">
-                            @error('item_names')
-                            <div class="invalid-Deskripsi">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
 
-
-                        <div class="form-group mb-3">
-                            <label class="form-label">Quantity</label>
-                            <input class="form-control @error('quantity') is-invalid @enderror" type="number" name="quantity" min="1" placeholder="Masukkan Jumlah Barang">
-                            @error('quantity')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-
-
-                        <div class="mb-3">
-                            <label class="form-label">Type Items</label>
-                            <select class="form-select select-2 @error('quantity_type') is-invalid @enderror" name="quantity_type" data-placeholder="Pilih Salah Satu">
-                                <option></option>
-                                <option value="Pcs">Pcs</option>
-                                <option value="Unit">Unit</option>
-                                <option value="Set">Set</option>
-                                <option value="Kg">Kg</option>
-                                <option value="Lmbr">Lmbr</option>
-                                <option value="EA">EA</option>
-                                <option value="Liter">Liter</option>
-                                <option value="Drum">Drum</option>
-                            </select>
-                            @error('quantity_type')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-                        <label class="form-label">Deskcription Items</label>
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" name="description_items"  id="floatingTextarea2Disabled" style="height: 100px"></textarea>
-                            <label for="floatingTextarea2Disabled">Description</label>
-                            @error('description_items')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3 text-end">
-                            <button type="submit" class="btn btn-success">Submit Items</button>
-                            <a href="{{route('shipping-items.index')}}" class="btn btn-secondary">Go back</a>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-lg-12">
+                <div class="mt-4">
                     <hr>
+                    <h6 class="fw-bold mb-3 text-secondary text-uppercase" style="letter-spacing:.05em">
+                        <i class='bx bx-list-ul me-1'></i> List Item (Draft)
+                    </h6>
                     <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-light text-center">
                                 <tr>
-                                    <th>Description Items</th>
+                                    <th>No</th>
+                                    <th>Item Name</th>
                                     <th>Quantity</th>
                                     <th>Type</th>
-                                    <th>#</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @forelse ($shipping->details as $detail)
+                                    <tr class="text-center">
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $detail->item_names ?? '-' }}</td>
+                                        <td>{{ $detail->quantity ?? 0 }}</td>
+                                        <td>{{ $detail->quantity_type ?? '-' }}</td>
+                                        <td>{{ $detail->description_items ?? '-' }}</td>
+                                        <td>
+                                            <a href="{{ route('shipping-items.item.ship.edit', $detail->id) }}"
+                                                    class="btn btn-warning btn-sm">
+                                                    <i class='bx bx-edit-alt'></i>
+                                                </a>
+                                            <form action="{{ route('shipping-items.item.delete', $detail->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus item ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class='bx bx-trash'></i>
+                                                </button>
+                                            </form>
 
-                                @if ($do)
-                                        <tr>
-
-                                            <td>{{$do->item_names}}</td>
-                                            <td>{{$do->quantity}}</td>
-                                            <td>{{$do->quantity_type}}</td>
-                                            <td><a href="" class="btn btn-primary">Delete</a></td>
-                                        </tr>
-                                @else
-                                <tr>
-                                    <td colspan="6" class="text-center">No Item Found</td>
-                                </tr>
-                                @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted py-3">
+                                            <i class='bx bx-inbox me-1'></i> No Item Added yet
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
-                    <div class="mt-3">
-                        <button class="btn btn-primary" onclick="submitForm()">Submit DO</button>
 
-                    </div>
+                    @if($shipping->details?->count() > 0)
+                        <div class="d-flex justify-content-end mt-3">
+                            <button class="btn btn-primary" onclick="submitForm()">
+                                <i class='bx bx-check me-1'></i> Submit
+                            </button>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -176,19 +205,20 @@
 @endsection
 
 @push('scripts')
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
-
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const preloader = document.getElementById('preloader');
+        if (preloader) setTimeout(() => preloader.style.display = 'none', 1000);
+    });
+
     $('.select-2').select2({
         theme: "bootstrap-5",
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        placeholder: $(this).data('placeholder'),
+        width: '100%',
+        placeholder: function() { return $(this).data('placeholder'); }
     });
-</script>
-<script>
+
     function submitForm() {
         $("#formSubmit").submit();
     }

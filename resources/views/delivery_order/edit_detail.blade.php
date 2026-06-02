@@ -21,7 +21,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="item_size" class="form-label">Ukuran Barang </label>
+                <label for="item_size" class="form-label">Size Item</label>
                 <input class="form-control rounded-top @error('item_size') is-invalid @enderror " type="text" name="item_size"
                     placeholder="Harap Di Isi Sub Nama Project" value="{{ old('item_size', $find_id->item_size)}}">
 
@@ -36,7 +36,7 @@
 
 
             <div class="mb-3">
-                <label for="item_qty" class="form-label">Jumlah Quantity </label>
+                <label for="item_qty" class="form-label">Quantity</label>
                 <input class="form-control rounded-top @error('item_qty') is-invalid @enderror" type="number" min="1" name="item_qty"
                     placeholder="Harap Di Isi No Jo Project" value="{{ old('item_qty', $find_id->item_qty)}}">
 
@@ -49,7 +49,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="item_weight" class="form-label">Berat Barang (KG) </label>
+                <label for="item_weight" class="form-label">Weight Item (KG) </label>
                 <input class="form-control rounded-top @error('item_weight') is-invalid @enderror" type="number" min="1" name="item_weight"
                     placeholder="Harap Di Isi No Jo Project" value="{{ old('item_weight', $find_id->item_weight)}}">
 
@@ -62,7 +62,7 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Satuan Barang</label>
+                <label class="form-label">Type</label>
                 <select class="form-select select-2 @error('satuan_barang') is-invalid @enderror" name="satuan_barang" data-placeholder="Pilih Salah Satu">
                     <option value="" disabled {{ old('satuan_barang'), $find_id->satuan_barang === null ? 'selected' : '' }}>Pilih salah satu</option>
                     <option value="Pcs" {{ old('satuan_barang', $find_id->satuan_barang) == 'Pcs' ? 'selected' : '' }}>Pcs</option>
@@ -106,9 +106,9 @@
         if (preloader) {
             console.log('Preloader found. It will hide after 3 seconds...');
             setTimeout(function () {
-                preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
+                preloader.style.display = 'none';
                 console.log('Preloader hidden.');
-            }, 1500); // Durasi 3000 ms = 3 detik
+            }, 1500);
         } else {
             console.error('Preloader element not found!');
         }

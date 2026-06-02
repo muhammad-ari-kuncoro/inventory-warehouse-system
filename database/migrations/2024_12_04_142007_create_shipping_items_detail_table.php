@@ -6,14 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('shipping_items_detail', function (Blueprint $table) {
             $table->id();
-            $table->integer('shipping_items_id')->nullable();
+            $table->integer('shipping_item_id');
             $table->string('item_names')->nullable();
             $table->integer('quantity')->nullable();
             $table->string('quantity_type')->nullable();
@@ -22,9 +19,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('shipping_items_detail');

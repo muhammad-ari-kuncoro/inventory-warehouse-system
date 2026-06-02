@@ -9,10 +9,8 @@ class ShippingItem extends Model
 {
     use HasFactory;
 
-    protected $table = 'shipping_items';  // Sesuaikan dengan nama tabel di database
-    // protected $guarded = ['id'];
+    protected $table = 'shipping_items';
     protected $fillable = [
-
         'tgl_kirim',
         'pengirim',
         'tujuan',
@@ -20,5 +18,9 @@ class ShippingItem extends Model
         'keterangan_brg',
     ];
 
+    public function details()
+    {
+        return $this->hasMany(ShippingItemsDetail::class, 'shipping_item_id');
+    }
 
 }

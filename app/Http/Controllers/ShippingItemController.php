@@ -14,181 +14,208 @@ use Illuminate\Support\Facades\Log;
 
 class ShippingItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
-
-        $data['title'] = 'Menu Barang Keluar Page';
-        $data['sub_title'] = 'Barang Keluar';
-        $data['data_shipping'] = ShippingItem::all();
+        $data['sub_title']      = 'Subcon Out';
+        $data['title']          = 'Subcon Out Page';
+        $data['data_shipping']  = ShippingItem::all();
         return view('shipping_items.index',$data);
-
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
-        $data['title'] = 'Menu Tambah Barang Keluar Page';
-        $data['sub_title'] = 'Barang Keluar';
-        $data['data_shipping'] = ShippingItemsDetail::all();
-        $data['data_project'] = Project::all();
-        return view('shipping_items.create',$data);
-    }
+        $data['details'] = ShippingItem::where('user_id', Auth::user()->id)->where('status', 'draft')->first();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-
-     public function storeItem(Request $request)
-    {
-    $validated = $request->validate([
-        'item_names' => 'required',
-        'quantity' => 'nullable',
-        'quantity_type' => 'nullable',
-        'description_items' => 'nullable',
-    ]);
-
-    // dd($validated);
-    Log::info('Validation passed:', $validated);
-
-    DB::beginTransaction();
-    try {
-        if ($request->do_id) {
-            $doDraft = ShippingItemsDetail::findOrFail($request->do_id);
-        } else {
-            $doDraft = ShippingItem::where('user_id', Auth::user()->id)->where('kd_sj_brg_keluar', 'draft')->first();
-            if (!$doDraft) {
-                $doDraft = new ShippingItem();
-                $doDraft->kd_sj_brg_keluar = 'draft';
-                $doDraft->user_id = Auth::user()->id;
-                $doDraft->save();
+            if ($data['details']) {
+            return redirect()->route('shipping-items.edit', $data['details']->id)->with('info', 'You have an unsettled draft transaction.');
             }
-        }
+        $data['sub_title'] = 'Subcon Out';
+        $data['title']     = 'Create Data Subcon Out Page';
 
-        $checkDoDetail = ShippingItemsDetail::where('shipping_items_id', $doDraft->id)->where('item_names', trim($request->item_names))->first();
-        if ($checkDoDetail) {
-            $doDraftDetail = $checkDoDetail;
-        } else {
-            $doDraftDetail = new ShippingItemsDetail();
-        }
-        $doDraftDetail->shipping_items_id = $doDraft->id;
-        $doDraftDetail->item_names = trim($request->item_names);
-        $doDraftDetail->quantity = $request->quantity;
-        $doDraftDetail->quantity_type = $request->quantity_type;
-        $doDraftDetail->description_items = $request->description_items;
-        $doDraftDetail->save();
-
-        DB::commit();
-        if ($request->do_id) {
-            return redirect()->route('shipping-items.edit', $request->do_id)->with('success', 'Item berhasil ditambahkan!');
-        } else {
-            return redirect()->route('shipping-items.create')->with('success', 'Item berhasil ditambahkan!');
-        }
-    } catch (\Exception $e) {
-        DB::rollback();
-        return redirect()->back()->with('error', $e->getMessage());
+        return view('shipping_items.create', $data);
     }
-}
-
 
     public function store(Request $request)
     {
         $request->validate([
-            'date_delivery' => 'required',
-            'to' => 'required|min:1|max:255',
+            'date_delivery'     => 'required',
+            'to'                => 'required|min:1|max:255',
             'description_stuff' => 'required',
         ]);
+
         try {
-
-            $doDraft = ShippingItem::where('user_id', Auth::user()->id)->where('kd_sj_brg_keluar', 'draft')->first();
-            if (!$doDraft) {
-                return redirect()->back()->with('error','Harap Masukkan Barang!');
+            $scDraft = ShippingItem::where('user_id', Auth::user()->id)->where('status', 'draft')->first();
+            if (!$scDraft) {
+                return redirect()->back()->with('error', 'Please Insert Item First!');
             }
+            if ($scDraft->kd_sj_brg_keluar == 'SHI-DRAFT-NONE') {
+                $scDraft->kd_sj_brg_keluar = $this->generatKdJsBrngKeluar();
+            }
+            $scDraft->date_delivery     = $request->date_delivery;
+            $scDraft->to                = $request->to;
+            $scDraft->description_stuff = $request->description_stuff;
+            $scDraft->status            = 'shipped';
+            $scDraft->save();
 
-            $doDraft->kd_sj_brg_keluar          = $this->generatKdJsBrngKeluar();
-            $doDraft->date_delivery             = $request->date_delivery;
-            $doDraft->to                        = $request->to;
-            $doDraft->description_stuff         = $request->description_stuff;
-
-            $doDraft->save();
-
-            return redirect()->route('shipping-items.index')->with('success', 'Data berhasil ditambahkan!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('failed', 'Terjadi kesalahan saat menyimpan data!');
+            return redirect()->route('shipping-items.index')->with('success', 'Data Draft Successfully Created!');
+        }catch(\Exception $e) {
+            return redirect()->back()->with('failed', 'An error occurred while saving data: ' . $e->getMessage());
         }
     }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ShippingItem $shippingItem)
+    public function storeItem(Request $request)
     {
-        //
+            $request->validate([
+            'item_names'        => 'required',
+            'quantity'          => 'nullable',
+            'quantity_type'     => 'nullable',
+            'description_items' => 'nullable',
+        ]);
+        DB::beginTransaction();
+            try {
+                if ($request->sc_id) {
+                    $scDraft = ShippingItem::findOrFail($request->sc_id);
+            }else{
+                    $scDraft = ShippingItem::where('user_id', Auth::user()->id)->where('status', 'draft')->first();
+            if (!$scDraft) {
+                $scDraft = new ShippingItem();
+                $scDraft->kd_sj_brg_keluar = 'SHI-DRAFT-NONE';
+                $scDraft->status            = 'draft';
+                $scDraft->user_id           = Auth::user()->id;
+                $scDraft->save();
+            }
+        }
+
+        $scDraftDetail                      = new ShippingItemsDetail();
+        $scDraftDetail->shipping_item_id    = $scDraft->id;
+        $scDraftDetail->item_names          = trim($request->item_names);
+        $scDraftDetail->quantity            = $request->quantity;
+        $scDraftDetail->quantity_type       = $request->quantity_type;
+        $scDraftDetail->description_items   = $request->description_items;
+        $scDraftDetail->save();
+
+        DB::commit();
+
+        return redirect()->route('shipping-items.edit', $scDraft->id)->with('success', 'Item Successfully Added!');
+        }catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function editDetailItemInDraft($id)
     {
-        $data['title'] = 'Menu Edit Barang Keluar Page';
-        $data['sub_title'] = 'Barang Keluar';
-        $data['do'] = ShippingItemsDetail::findOrFail($id);
-        $data['find_id'] = ShippingItem::findOrFail($id);
-        $data['data_project'] = Project::all();
-        return view('shipping_items.edit',$data);
+        $data['title']     = 'Edit Detail Item Page';
+        $data['sub_title'] = 'Subcon Out';
+        $data['find_id']   = ShippingItemsDetail::findOrFail($id);
+
+        return view('shipping_items.edit_detail_item', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request,$id)
+    public function updateDetailItemInDraft(Request $request, $id)
     {
-        //
-        $request->validate([
-            'tgl_kirim'                  => 'required|min:3|max:255',
-            'pengirim'                   => 'required|min:3|max:255',
-            'tujuan'                     => 'required|min:10|max:255',
-            'deskripsi_brg'              => 'required|min:10|max:100',
-            'quantity'                   => 'min:1|max:50',
-            'quantity_type'              => 'min:1|max:50',
-            'project_id'                 => 'required',
-            'keterangan_brg'             => 'required|min:5|max:100',
-
+            $request->validate([
+            'item_names'        => 'required',
+            'quantity'          => 'nullable|numeric',
+            'quantity_type'     => 'nullable',
+            'description_items' => 'nullable',
         ]);
 
-        $updateShippingItems                     = ShippingItem::findOrFail($id);
-        $updateShippingItems->tgl_kirim          = $request->tgl_kirim;
-        $updateShippingItems->pengirim           = $request->pengirim;
-        $updateShippingItems->tujuan             = $request->tujuan;
-        $updateShippingItems->quantity           = $request->quantity;
-        $updateShippingItems->deskripsi_brg      = $request->deskripsi_brg;
-        $updateShippingItems->quantity           = $request->quantity;
-        $updateShippingItems->quantity_type     = $request->quantity_type;
-        $updateShippingItems->keterangan_brg     = $request->keterangan_brg;
-        $updateShippingItems->project_id         = $request->project_id;
-        $updateShippingItems->save();
-        // Redirect ke halaman yang diinginkan
-        return redirect()->route('shipping-items.index')->with('editSuccess', 'Data berhasil Di Edit!');
+        $shippingDetail = ShippingItemsDetail::findOrFail($id);
+        $shippingDetail->item_names        = trim($request->item_names);
+        $shippingDetail->quantity          = $request->quantity;
+        $shippingDetail->quantity_type     = $request->quantity_type;
+        $shippingDetail->description_items = $request->description_items;
+        $shippingDetail->save();
+
+        return redirect()->route('shipping-items.edit', $shippingDetail->shipping_item_id)->with('editSuccess', 'Data Item Successfully Edited!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ShippingItem $shippingItem)
+    public function deleteItemInDraft($id)
     {
-        //
+            $detail = ShippingItemsDetail::find($id);
+        if ($detail) {
+            $detail->delete();
+            return redirect()->back()->with('success', 'Item Has Been Deleted In Draft!');
+        }
+        return redirect()->back()->with('failed', 'Item Not Found.');
     }
-    private function generatKdJsBrngKeluar()
-    {
-        return 'BK/'. 'AJM/O/VII/-'. date('Ymd') . '/' . strtoupper(Str::random(3));
+
+public function show($id)
+{
+    $data['title']     = 'Detail Subcon Out Page';
+    $data['sub_title'] = 'Subcon Out';
+    $data['subcon']    = ShippingItem::with('details')->findOrFail($id);
+    return view('subcon_out.show', $data);
+}
+
+public function edit($id)
+{
+    $data['title']     = 'Edit Subcon Out Page';
+    $data['sub_title'] = 'Subcon Out';
+    $data['shipping']  = ShippingItem::findOrFail($id);
+    return view('shipping_items.edit', $data);
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'date_delivery'     => 'required',
+        'to'                => 'required|min:1|max:255',
+        'description_stuff' => 'nullable',
+    ]);
+
+    $shippingItem = ShippingItem::findOrFail($id);
+
+    if ($shippingItem->status == 'draft') {
+        if ($shippingItem->kd_sj_brg_keluar == 'SHI-DRAFT-NONE') {
+            $shippingItem->kd_sj_brg_keluar = $this->generatKdJsBrngKeluar();
+        }
+        $shippingItem->status = 'shipped';
     }
+
+    $shippingItem->date_delivery     = $request->date_delivery;
+    $shippingItem->to                = $request->to;
+    $shippingItem->description_stuff = $request->description_stuff;
+    $shippingItem->save();
+
+    return redirect()->route('shipping-items.index')->with('editSuccess', 'Data Subcon Has Been Edited!');
+}
+
+public function destroy($id)
+{
+    DB::beginTransaction();
+    try {
+        $shippingItem = ShippingItem::findOrFail($id);
+        ShippingItemsDetail::where('shipping_item_id', $shippingItem->id)->delete();
+        $shippingItem->delete();
+        DB::commit();
+
+        return redirect()->route('shipping-items.index')->with('delete', 'Data Subcon Has Been Deleted!!');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->route('shipping-items.index')->with('error', 'Failed to delete data: ' . $e->getMessage());
+    }
+}
+
+public function deleteDraft()
+{
+    try {
+        $shippingDraft = ShippingItem::where('user_id', Auth::user()->id)->where('status', 'draft')->first();
+        if ($shippingDraft) {
+            ShippingItemsDetail::where('shipping_item_id', $shippingDraft->id)->delete();
+            $shippingDraft->delete();
+        }
+        return redirect()->route('shipping-items.index')->with('success', 'Draft Subcon Has Been Deleted!!.');
+    } catch (\Throwable $th) {
+        return redirect()->back()->with('error', $th->getMessage());
+    }
+}
+
+private function generatKdJsBrngKeluar()
+{
+    return 'BK/' . 'AJM/O/VII/-' . date('Ymd') . '/' . strtoupper(Str::random(3));
+}
 
 }

@@ -141,26 +141,30 @@ Route::middleware('auth')->group(function () {
             Route::get('create',                   [DeliveryOrderController::class, 'create'])->name('create');
             Route::post('store',                   [DeliveryOrderController::class, 'store'])->name('store');
             Route::post('store/item',              [DeliveryOrderController::class, 'storeItem'])->name('store.item');
-            Route::post('delete-draft',            [DeliveryOrderController::class, 'deleteDraft'])->name('delete-draft');
-            Route::get('edit/{id}',                [DeliveryOrderController::class, 'edit'])->name('edit');
-            Route::get('print-pdf/{id}',           [DeliveryOrderController::class, 'printPDF'])->name('print-pdf');
             Route::get('show/{id}',                [DeliveryOrderController::class, 'show'])->name('show');
+            Route::get('edit/{id}',                [DeliveryOrderController::class, 'edit'])->name('edit');
             Route::patch('update/{id}',            [DeliveryOrderController::class, 'update'])->name('update');
-            Route::patch('update-detail/{id}',     [DeliveryOrderController::class, 'updateDetail'])->name('update-detail');
-            Route::get('detail-updating/{id}',     [DeliveryOrderController::class, 'detailUpdate'])->name('detail-updating');
-            Route::delete('delete-per-draft/{id}', [DeliveryOrderController::class, 'deletePerDraft'])->name('delete-per-draft');
+            Route::get('detail-updating/{id}',     [DeliveryOrderController::class, 'editDetailItemInDraft'])->name('edit-detail-item');
+            Route::patch('update-detail/{id}',     [DeliveryOrderController::class, 'updateDetailItemInDraft'])->name('update-detail-item');
+            Route::post('delete-draft',            [DeliveryOrderController::class, 'deleteDraft'])->name('delete-draft');
+            Route::delete('delete-per-draft/{id}', [DeliveryOrderController::class, 'deleteItemInDraft'])->name('delete-per-draft');
             Route::delete('delete-data/{id}',      [DeliveryOrderController::class, 'destroy'])->name('delete-data');
+            Route::get('print-pdf/{id}',           [DeliveryOrderController::class, 'printPDF'])->name('print-pdf');
         });
 
-    Route::prefix('shipping-items')
-        ->name('shipping-items.')
-        ->group(function () {
-            Route::get('/', [ShippingItemController::class, 'index'])->name('index');
-            Route::get('/create', [ShippingItemController::class, 'create'])->name('create');
-            Route::post('store', [ShippingItemController::class, 'store'])->name('store');
-            Route::post('store/item', [ShippingItemController::class, 'storeItem'])->name('store.item');
-            Route::get('edit/{id}', [ShippingItemController::class, 'edit'])->name('edit');
-            Route::patch('update/{id}', [ShippingItemController::class, 'update'])->name('update');
+    Route::prefix('shipping-items')->name('shipping-items.')->group(function () {
+            Route::get('/',                             [ShippingItemController::class, 'index'])->name('index');
+            Route::get('/create',                       [ShippingItemController::class, 'create'])->name('create');
+            Route::post('/store',                       [ShippingItemController::class, 'store'])->name('store');
+            Route::post('/store/item',                  [ShippingItemController::class, 'storeItem'])->name('store.item');
+            Route::get('/show/{id}',                    [ShippingItemController::class, 'show'])->name('show');
+            Route::get('/edit/{id}',                    [ShippingItemController::class, 'edit'])->name('edit');
+            Route::put('/update/{id}',                  [ShippingItemController::class, 'update'])->name('update');
+            Route::delete('/destroy/{id}',              [ShippingItemController::class, 'destroy'])->name('destroy');
+            Route::delete('/delete-draft',              [ShippingItemController::class, 'deleteDraft'])->name('delete-draft');
+            Route::get('/item/edit/{id}',               [ShippingItemController::class, 'editDetailItemInDraft'])->name('item.ship.edit');
+            Route::patch('/item/update/{id}',           [ShippingItemController::class, 'updateDetailItemInDraft'])->name('item.ship.update');
+            Route::delete('/item/delete/{id}',          [ShippingItemController::class, 'deleteItemInDraft'])->name('item.delete');
         });
 
     Route::prefix('consumable-issuance')

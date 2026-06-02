@@ -124,7 +124,8 @@
 
 
 
-        <li class="menu-item {{ $sub_title === 'Good Received' || $sub_title === 'Delivery Order' || $sub_title === 'Shipping Fabricated' ? 'active' : '' }}">
+        <li
+            class="menu-item {{ $sub_title === 'Good Received' || $sub_title === 'Delivery Order' || $sub_title === 'Subcon Out' ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons bx bx-file'></i>
                 <div data-i18n="Layouts">Document Warehouse</div>
@@ -146,10 +147,10 @@
                 </li>
 
 
-                <li class="menu-item {{ $sub_title === 'Barang Keluar' ? 'active' : '' }}">
+                <li class="menu-item {{ $sub_title === 'Subcon Out' ? 'active' : '' }}">
                     <a href="{{ route('shipping-items.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-log-out"></i>
-                        <div data-i18n="Layouts">Shipping Fabricated</div>
+                        <i class="menu-icon tf-icons bx bx-share"></i>
+                        <div data-i18n="Layouts">Subcon Out</div>
                     </a>
                 </li>
 
@@ -246,14 +247,14 @@
     </ul>
 </aside>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         let dropdowns = document.querySelectorAll(".has-dropdown");
-        dropdowns.forEach(function (dropdown) {
+        dropdowns.forEach(function(dropdown) {
             let toggle = dropdown.querySelector(".menu-toggle");
             let submenu = dropdown.querySelector(".menu-sub");
             submenu.style.display = "none";
 
-            toggle.addEventListener("click", function () {
+            toggle.addEventListener("click", function() {
                 let isVisible = submenu.style.display === "block";
                 submenu.style.display = isVisible ? "none" : "block";
             });

@@ -70,10 +70,11 @@
                                     <div class="fw-semibold text-dark">{{ $data->project->nama_project ?? 'N/A' }}</div>
                                     <small class="text-muted">{{ $data->project->sub_nama_project ?? 'N/A' }}</small>
                                 </td>
+                            @if (isset($data->project) && $data->project->kategori_project)
                                 <td data-search="{{ $data->project->kategori_project }}" class="text-center">
                                     @if ($data->project->kategori_project == 'General Industry')
                                         <span class="badge bg-primary">{{ $data->project->kategori_project }}</span>
-                                    @elseif($data->project->kategori_project == 'Migas') {{-- Perbaikan: Tambah ->project --}}
+                                    @elseif($data->project->kategori_project == 'Migas')
                                         <span class="badge bg-danger">{{ $data->project->kategori_project }}</span>
                                     @elseif($data->project->kategori_project == 'Geothermal')
                                         <span class="badge bg-success">{{ $data->project->kategori_project }}</span>
@@ -81,6 +82,9 @@
                                         <span class="badge bg-secondary">{{ $data->project->kategori_project ?? '-' }}</span>
                                     @endif
                                 </td>
+                                @else
+                                <td class="text-center">No Category Project</td>
+                                @endif
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-1">
                                         <a href="{{ route('delivery-order.edit', $data->id) }}"
@@ -100,7 +104,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" title="Hapus"
-                                                onclick="return confirm('Yakin ingin menghapus DO ini?')">
+                                                onclick="return confirm('Are you sure you want to delete this DO?')">
                                                 <i class='bx bx-trash'></i>
                                             </button>
                                         </form>

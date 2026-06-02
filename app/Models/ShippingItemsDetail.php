@@ -9,10 +9,8 @@ class ShippingItemsDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'shipping_items_detail';  // Sesuaikan dengan nama tabel di database
-    // protected $guarded = ['id'];
+    protected $table = 'shipping_items_detail';
     protected $fillable = [
-
         'shipping_items_id',
         'item_names',
         'quantity',

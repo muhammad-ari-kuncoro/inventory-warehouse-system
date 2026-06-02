@@ -13,6 +13,9 @@ return new class extends Migration
             $table->id();
             $table->integer('project_id')->nullable();
             $table->string('do_no');
+            $table->string('packing_list')->nullable();
+            $table->string('delivery_order_no_doc')->nullable();
+            $table->enum('status',['draft','shipped']);
             $table->string('do_date')->nullable();
             $table->longText('shipment_address')->nullable();
             $table->integer('user_id');

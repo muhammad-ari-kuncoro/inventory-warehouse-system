@@ -21,7 +21,6 @@
             <div class="card-body">
                 <div class="row g-4">
 
-                    {{-- LEFT: Data DO --}}
                     <div class="col-lg-6">
                         <div class="border rounded p-4 h-100">
                             <h6 class="fw-bold mb-3 text-secondary text-uppercase" style="letter-spacing:.05em">
@@ -33,33 +32,57 @@
                                 @method('PATCH')
 
                                 <div class="mb-3">
-                                    <label class="form-label fw-semibold">Delivery Order Number</label>
+                                    <label class="form-label fw-semibold">Delivery Order Code</label>
                                     <input type="text" class="form-control" value="{{ $do->do_no }}" disabled>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label fw-semibold">Tanggal Pengiriman</label>
+                                    <label class="form-label fw-semibold">Delivery Date</label>
                                     <input type="date"
                                         class="form-control @error('tanggal_pengiriman') is-invalid @enderror"
-                                        name="tanggal_pengiriman" value="{{ $do->do_date }}">
+                                        name="tanggal_pengiriman" value="{{ old('tanggal_pengiriman', $do->do_date) }}" placeholder="Please insert this field after you add the item ...">
                                     @error('tanggal_pengiriman')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">No Packing List <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" name="packing_list"
+                                            class="form-control @error('packing_list') is-invalid @enderror"
+                                            placeholder="Please Insert Packing List Draft ..." value="{{ old('packing_list', $do->packing_list) }}">
+                                        @error('packing_list')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">No Delivery Order Document (DO NO) <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" name="delivery_order_no_doc"
+                                            class="form-control @error('delivery_order_no_doc') is-invalid @enderror"
+                                            placeholder="Please Insert Delivery Order Document ..." value="{{ old('delivery_order_no_doc', $do->delivery_order_no_doc) }}">
+                                        @error('delivery_order_no_doc')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
                                 <div class="mb-3">
-                                    <label class="form-label fw-semibold">Alamat Penerima</label>
+                                    <label class="form-label fw-semibold">Address Receiver</label>
                                     <textarea class="form-control @error('penerima') is-invalid @enderror"
-                                        name="penerima" rows="3">{{ $do->shipment_address }}</textarea>
+                                        name="penerima" rows="3" placeholder="Please insert this field after you add the item ...">{{ $do->shipment_address }}</textarea>
                                     @error('penerima')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label fw-semibold">Nama Project</label>
+                                    <label class="form-label fw-semibold">Name Project</label>
                                     <select class="form-select select-2 @error('project_id') is-invalid @enderror"
-                                        name="project_id" data-placeholder="Pilih Salah Satu">
+                                        name="project_id" data-placeholder="Choose this field if you add the item">
                                         <option></option>
                                         @foreach ($data_project as $data)
                                             <option value="{{ $data->id }}" {{ $do->project_id == $data->id ? 'selected' : '' }}>
@@ -76,11 +99,10 @@
                         </div>
                     </div>
 
-                    {{-- RIGHT: Form Tambah Item --}}
                     <div class="col-lg-6">
                         <div class="border rounded p-4 h-100">
                             <h6 class="fw-bold mb-3 text-secondary text-uppercase" style="letter-spacing:.05em">
-                                <i class='bx bx-package me-1'></i> Tambah Item
+                                <i class='bx bx-package me-1'></i> Add Item
                             </h6>
 
                             <form action="{{ route('delivery-order.store.item') }}" method="post">
@@ -88,17 +110,17 @@
                                 <input type="hidden" name="do_id" value="{{ $do->id }}">
 
                                 <div class="mb-3">
-                                    <label class="form-label fw-semibold">Deskripsi Barang</label>
+                                    <label class="form-label fw-semibold">Description Item</label>
                                     <input type="text" name="item_description"
                                         class="form-control @error('item_description') is-invalid @enderror"
-                                        placeholder="Masukkan deskripsi barang">
+                                        placeholder="Please Insert Description Item">
                                     @error('item_description')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label fw-semibold">Ukuran Barang</label>
+                                    <label class="form-label fw-semibold">Size Item</label>
                                     <input type="text" name="item_size"
                                         class="form-control @error('item_size') is-invalid @enderror"
                                         placeholder="123 X 123 X 123">
@@ -109,7 +131,7 @@
 
                                 <div class="row g-2 mb-3">
                                     <div class="col-6">
-                                        <label class="form-label fw-semibold">Jumlah</label>
+                                        <label class="form-label fw-semibold">Quantity</label>
                                         <input type="number" name="item_qty" min="1"
                                             class="form-control @error('item_qty') is-invalid @enderror"
                                             placeholder="0">
@@ -118,7 +140,7 @@
                                         @enderror
                                     </div>
                                     <div class="col-6">
-                                        <label class="form-label fw-semibold">Berat (Kg)</label>
+                                        <label class="form-label fw-semibold">Weight (Kg)</label>
                                         <input type="number" name="item_weight" step="0.01" min="0"
                                             class="form-control @error('item_weight') is-invalid @enderror"
                                             placeholder="0.00">
@@ -129,15 +151,15 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label fw-semibold">Satuan</label>
+                                    <label class="form-label fw-semibold">Type </label>
                                     <select class="form-select select-2 @error('satuan_barang') is-invalid @enderror"
-                                        name="satuan_barang" data-placeholder="Pilih Satuan">
+                                        name="satuan_barang" data-placeholder="Choose The Type">
                                         <option></option>
                                         <option value="Pcs">Pcs</option>
                                         <option value="Unit">Unit</option>
                                         <option value="Set">Set</option>
                                         <option value="Kg">Kg</option>
-                                        <option value="Lembar">Lembar</option>
+                                        <option value="Sheet">Sheet</option>
                                         <option value="EA">EA</option>
                                         <option value="Liter">Liter</option>
                                         <option value="Drum">Drum</option>
@@ -164,7 +186,6 @@
 
                 </div>
 
-                {{-- List Item --}}
                 <div class="mt-4">
                     <hr>
                     <h6 class="fw-bold mb-3 text-secondary text-uppercase" style="letter-spacing:.05em">
@@ -175,11 +196,11 @@
                             <thead class="table-light text-center">
                                 <tr>
                                     <th>No</th>
-                                    <th>Deskripsi</th>
-                                    <th>Ukuran</th>
+                                    <th>Description</th>
+                                    <th>Type</th>
                                     <th>Qty</th>
-                                    <th>Berat (Kg)</th>
-                                    <th>Satuan</th>
+                                    <th>Weight (Kg)</th>
+                                    <th>Type</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -194,7 +215,7 @@
                                         <td>{{ $detail->item_measurement }}</td>
                                         <td>
                                             <div class="d-flex justify-content-center gap-1">
-                                                <a href="{{ route('delivery-order.detail-updating', $detail->id) }}"
+                                                <a href="{{ route('delivery-order.edit-detail-item', $detail->id) }}"
                                                     class="btn btn-warning btn-sm">
                                                     <i class='bx bx-edit-alt'></i>
                                                 </a>
