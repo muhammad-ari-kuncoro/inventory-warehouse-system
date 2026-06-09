@@ -153,10 +153,10 @@
                             <label for="jenis_quantity" class="form-label">Type Quantity</label>
                             <select
                                 class="select-type-quantity rounded-top @error('jenis_quantity') is-invalid @enderror"
-                                name="select-type-quantity" required>
-                                <option selected disabled>Choose Jenis Quantity</option>
+                                name="jenis_quantity" required>
+                                <option selected disabled>Choose Jenis Quantity<    /option>
                                 <option value="Pcs">Pcs</option>
-                                <option value="LengthSelect an Choose Projectoption>
+                                <option value="Length">Length<option>
                                 <option value="Set">Set</option>
                                 <option value="Sack">Sack</option>
                                 <option value="Box">Box</option>

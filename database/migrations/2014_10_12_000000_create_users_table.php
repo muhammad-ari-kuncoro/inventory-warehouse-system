@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
@@ -19,16 +16,13 @@ return new class extends Migration
             $table->string('password');
             $table->string('posisi');
             $table->string('image')->default('1.png');
-            $table->enum('role', ['Administrator', 'Production', 'Warehouse Staff'])->default('Production');
+            $table->enum('role', ['Administrator', 'Production', 'Warehouse Staff','warehouse supervisor'])->default('Production');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');

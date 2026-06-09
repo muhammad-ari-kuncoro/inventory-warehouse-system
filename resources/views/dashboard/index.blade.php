@@ -1,9 +1,9 @@
 @extends('layouts.dashboard-layout')
 
 @section('container')
+@if (auth()->user()?->role == 'Administrator' || auth()->user()?->role == 'Warehouse Staff')
 <div class="container mt-4">
     <h4 class="mb-4">Kanban Dashboard Menu</h4>
-
     <div class="row flex-nowrap overflow-auto mb-5">
         <!-- Dashboard Section -->
         <div class="container-fluid mb-5">
@@ -275,6 +275,152 @@
     </div>
 </div>
 </div>
+@endif
+
+@if (auth()->user()->role == 'Production')
+    <div class="container-fluid px-4 mt-4">
+
+        <div class="mb-4">
+            <h4 class="fw-semibold mb-1">Selamat datang, {{ auth()->user()->name }} 👷</h4>
+            <p class="text-muted mb-0">PT. Armindo Jaya Mandiri — Divisi Fabrikasi & Engineering</p>
+        </div>
+
+        {{-- Quick Actions --}}
+        <p class="small text-uppercase text-muted fw-semibold mb-3" style="letter-spacing:.07em;">Quick Actions</p>
+        <div class="row g-3 mb-4">
+            <div class="col-xl-3 col-md-6 col-sm-6">
+                <a href="{{ route('consumable-issuance.index') }}" class="card shadow-sm border-0 text-decoration-none h-100">
+                    <div class="card-body d-flex align-items-center gap-3 p-3">
+                        <div class="rounded-3 p-3 d-flex align-items-center justify-content-center"
+                            style="background:#FAEEDA; min-width:48px; height:48px;">
+                            <i class="bx bx-basket fs-4" style="color:#854F0B;"></i>
+                        </div>
+                        <div>
+                            <p class="fw-semibold mb-0 text-body">Consumable Out</p>
+                            <small class="text-muted">Pengambilan consumable</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-xl-3 col-md-6 col-sm-6">
+                <a href="{{ route('material-issuance.index') }}" class="card shadow-sm border-0 text-decoration-none h-100">
+                    <div class="card-body d-flex align-items-center gap-3 p-3">
+                        <div class="rounded-3 p-3 d-flex align-items-center justify-content-center"
+                            style="background:#E1F5EE; min-width:48px; height:48px;">
+                            <i class="bx bx-package fs-4" style="color:#0F6E56;"></i>
+                        </div>
+                        <div>
+                            <p class="fw-semibold mb-0 text-body">Material Out</p>
+                            <small class="text-muted">Pengambilan material</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-xl-3 col-md-6 col-sm-6">
+                <a href="{{ route('check-out-tools.index') }}" class="card shadow-sm border-0 text-decoration-none h-100">
+                    <div class="card-body d-flex align-items-center gap-3 p-3">
+                        <div class="rounded-3 p-3 d-flex align-items-center justify-content-center"
+                            style="background:#E6F1FB; min-width:48px; height:48px;">
+                            <i class="bx bx-wrench fs-4" style="color:#185FA5;"></i>
+                        </div>
+                        <div>
+                            <p class="fw-semibold mb-0 text-body">Tools Out</p>
+                            <small class="text-muted">Peminjaman alat</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-xl-3 col-md-6 col-sm-6">
+                <a href="{{ route('check-in-tools.index') }}" class="card shadow-sm border-0 text-decoration-none h-100">
+                    <div class="card-body d-flex align-items-center gap-3 p-3">
+                        <div class="rounded-3 p-3 d-flex align-items-center justify-content-center"
+                            style="background:#FAECE7; min-width:48px; height:48px;">
+                            <i class="bx bx-log-in fs-4" style="color:#993C1D;"></i>
+                        </div>
+                        <div>
+                            <p class="fw-semibold mb-0 text-body">Tools In</p>
+                            <small class="text-muted">Pengembalian alat</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        {{-- Status Hari Ini --}}
+        <p class="small text-uppercase text-muted fw-semibold mb-3" style="letter-spacing:.07em;">Status Hari Ini</p>
+        <div class="row g-3 mb-4">
+            <div class="col-xl-3 col-md-6 col-sm-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body p-3">
+                        <p class="text-muted small mb-1">Consumable keluar</p>
+                        <h3 class="fw-semibold mb-1">{{ $consumableOutToday ?? 0 }}</h3>
+                        <span class="badge" style="background:#E1F5EE; color:#0F6E56;">Transaksi</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 col-sm-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body p-3">
+                        <p class="text-muted small mb-1">Material keluar</p>
+                        <h3 class="fw-semibold mb-1">{{ $materialOutToday ?? 0 }}</h3>
+                        <span class="badge" style="background:#E1F5EE; color:#0F6E56;">Transaksi</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 col-sm-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body p-3">
+                        <p class="text-muted small mb-1">Alat dipinjam</p>
+                        <h3 class="fw-semibold mb-1">{{ $toolsBorrowed ?? 0 }}</h3>
+                        <span class="badge" style="background:#FAEEDA; color:#854F0B;">Belum kembali</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 col-sm-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body p-3">
+                        <p class="text-muted small mb-1">Alat dikembalikan</p>
+                        <h3 class="fw-semibold mb-1">{{ $toolsReturned ?? 0 }}</h3>
+                        <span class="badge" style="background:#E1F5EE; color:#0F6E56;">Selesai</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Aktivitas Terkini --}}
+        <p class="small text-uppercase text-muted fw-semibold mb-3" style="letter-spacing:.07em;">Aktivitas Terkini</p>
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    @forelse ($recentActivities ?? [] as $activity)
+                    <li class="list-group-item d-flex align-items-center gap-3 px-4 py-3">
+                        <span class="rounded-circle" style="width:8px;height:8px;background:{{ $activity['color'] }};flex-shrink:0;"></span>
+                        <span class="flex-fill text-body" style="font-size:13px;">{{ $activity['description'] }}</span>
+                        <span class="text-muted" style="font-size:12px;">{{ $activity['time'] }}</span>
+                    </li>
+                    @empty
+                    <li class="list-group-item px-4 py-3 text-muted text-center" style="font-size:13px;">
+                        Belum ada aktivitas hari ini.
+                    </li>
+                    @endforelse
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+@else
+
+    {{-- ============================================= --}}
+    {{-- DASHBOARD ADMINISTRATOR & WAREHOUSE STAFF     --}}
+    {{-- ============================================= --}}
+    <div class="container mt-4">
+
+        {{-- ... paste isi dashboard lama lu di sini ... --}}
+
+    </div>
+
+@endif
 @endsection
 
 <script>

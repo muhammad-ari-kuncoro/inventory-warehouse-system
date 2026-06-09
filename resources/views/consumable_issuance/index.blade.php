@@ -1,195 +1,215 @@
 @extends('layouts.dashboard-layout')
+
 @section('container')
-<div class="card">
-    <h5 class="card-header text-center mb-3">
-        Dashboard Menu Pengambilan Consumable Saat ini
-        <br>
-        <span id="currentDateTime" class="ms-2 text-muted"></span>
-    </h5>
+    <div class="card shadow-sm border-0">
 
-    {{-- Session Notifikasi --}}
-    @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong class="text-dark">{!! session()->get('success') !!}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @elseif (session('delete'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong class="text-dark">Data Telah Dihapus</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @elseif (session('editSuccess'))
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong class="text-dark">{!! session()->get('editSuccess') !!}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
+        <div class="card-header bg-white border-bottom pb-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Consumable Issuance</li>
+                </ol>
+            </nav>
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div>
+                    <h5 class="mb-0 fw-semibold">Consumable Out</h5>
+                    <small class="text-muted" id="currentDateTime"></small>
+                </div>
 
-    <div class="card-body">
-        <div class="row align-items-center">
-            <!-- Print Button -->
+                <div class="d-flex align-items-center gap-3">
+                    @php
+                        // Cek jam operasional langsung di Blade untuk kebutuhan teks alert
+                        $currentHour = \Carbon\Carbon::now('Asia/Jakarta')->hour;
+                        $isOutsideHours = $currentHour >= 17 || $currentHour < 8;
+                    @endphp
 
-
-            <!-- Add Button -->
-            <div class="col-sm-auto mb-3">
-                <a href="{{ route('consumable-issuance.create') }}" class="btn btn-primary">Tambah Data</a>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-3">
-                <label for="projectFilter">Filter Nama Project:</label>
-                <select id="projectFilter" class="form-select select-2">
-                    <option value="">Semua Project</option>
-                    @foreach($projects as $data)
-                    <option value="{{ $data->nama_project }} | {{$data->sub_nama_project}}">{{ $data->nama_project }} |
-                        {{$data->sub_nama_project}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
-
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover display" id="myTable11">
-                <thead>
-                    <tr class="table-info text-center">
-                        <th>No</th>
-                        <th>Waktu Pengambilan</th>
-                        <th>Tanggal Pengambilan</th>
-                        <th>Nama Consumable</th>
-                        <th>Tipe Consumable</th>
-                        <th>Nama Pengambil</th>
-                        <th>Bagian Divisi</th>
-                        <th>Quantity</th>
-                        <th>Jenis Quantity</th>
-                        <th>Keperluan projet</th>
-                        <th>Keterangan Barang</th>
-                        <th>Aksi </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($datas as $data )
-
-                    <tr>
-                        <td class="text-center">{{$loop->iteration}} </td>
-                        <td>{{$data->created_at}} </td>
-                        <td class="text-center">{{$data->tanggal_pengambilan}}</td>
-                        <td>{{$data->consumable->nama_consumable}}</td>
-                        <td>{{$data->consumable->spesifikasi_consumable}}</td>
-                        <td>{{ $data->user->username }}</td>
-                        <td>{{ 'Staff Produksi' }}</td>
-                        <td class="text-center">{{$data->quantity}}</td>
-                        <td>{{$data->jenis_quantity}}</td>
-                        <td>{{$data->project->nama_project}} | {{ $data->project->sub_nama_project }}</td>
-                        <td class="text-center">{{$data->keterangan_consumable}}</td>
-                        <td>
-                            <div class="mb-1">
-                                <a href="{{route('consumable-issuance.show',$data->id)}}"><span class="btn btn-primary btn-sm">Detail</a></span>
+                    {{-- Tampilkan pesan alert sesuai kondisi penyebab error --}}
+                    @if (!$canCreate)
+                        @if ($isOutsideHours)
+                            <div class="alert alert-danger mb-0 py-2 px-3 small">
+                                <i class="bx bx-time-five me-1"></i>
+                                Sistem Tutup. Input data hanya bisa dilakukan jam 08:00 s/d 17:00 WIB.
                             </div>
-                        </td>
-                    </tr>
-                    @endforeach
+                        @elseif (isset($nextAllowedTime))
+                            <div class="alert alert-warning mb-0 py-2 px-3 small">
+                                <i class="bx bx-error-circle me-1"></i>
+                                Anda sudah melakukan pengambilan consumable hari ini.
+                                Berikutnya pada: <strong>{{ \Carbon\Carbon::parse($nextAllowedTime)->format('d-m-Y H:i') }}
+                                    WIB</strong>.
+                            </div>
+                        @endif
+                    @endif
 
-                </tbody>
-            </table>
+                    {{-- Tombol Aksi dinamis --}}
+                    @if ($canCreate)
+                        <a href="{{ route('consumable-issuance.create') }}" class="btn btn-primary">
+                            <i class="bx bx-plus me-1"></i> Buat Pengambilan
+                        </a>
+                    @else
+                        <button class="btn btn-secondary" disabled>
+                            <i class="bx bx-lock-alt me-1"></i> Pengambilan Terkunci
+                        </button>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+                <strong>{!! session('success') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @elseif (session('delete'))
+            <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+                <strong>{!! session('delete') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @elseif (session('forbidden'))
+            <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+                <strong>{!! session('forbidden') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @elseif (session('editSuccess'))
+            <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+                <strong>{!! session('editSuccess') !!}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-sm-3">
+                    <label class="form-label fw-semibold small">Filter Status</label>
+                    <select id="statusFilter" class="form-select form-select-sm select-2">
+                        <option value="">Semua Status</option>
+                        <option value="draft">Draft</option>
+                        <option value="submitted">Submitted</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover display" id="myTable11">
+                    <thead>
+                        <tr class="table-info text-center">
+                            <th>No</th>
+                            <th>Kode Transaksi</th>
+                            <th>Tanggal Transaksi</th>
+                            <th>Dibuat Oleh</th>
+                            <th>Total Item</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($datas as $data)
+                            <tr>
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td class="fw-semibold">{{ $data->kd_consumable_out }}</td>
+                                <td class="text-center">{{ $data->transaction_date_out }}</td>
+                                <td>{{ $data->user->username ?? '-' }}</td>
+                                <td class="text-center">{{ $data->details->count() ?? '-' }} item</td>
+                                <td class="text-center" data-search="{{ $data->status }}">
+                                    @if ($data->status == 'draft')
+                                        <span class="badge bg-warning text-dark">Draft</span>
+                                    @elseif ($data->status == 'submitted')
+                                        <span class="badge bg-success">Submitted</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    <a href="{{ route('consumable-issuance.show', $data->id) }}"
+                                        class="btn btn-primary btn-sm">
+                                        <i class="bx bx-show-alt me-1"></i> Detail
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
-
 @endsection
 
 @push('scripts')
-<script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-<script src="//cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
-<script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-<script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
-<script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const preloader = document.getElementById('preloader');
-        if (preloader) {
-            console.log('Preloader found. It will hide after 3 seconds...');
-            setTimeout(function () {
-                preloader.style.display = 'none'; // Sembunyikan preloader setelah 3 detik
-                console.log('Preloader hidden.');
-            }, 1500); // Durasi 3000 ms = 3 detik
-        } else {
-            console.error('Preloader element not found!');
-        }
-    });
+    <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+    <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
 
-</script>
-<script>
-    $(document).ready(function () {
-        // Inisialisasi DataTable
-
-        var table = $('#myTable11').DataTable({
-            dom: '<"d-flex justify-content-between"lBf>rtip', // Menempatkan tombol, filter, dan search secara sejajar
-            buttons: [
-                {
-                    extend: 'excel',
-                    text: 'Export Excel',
-                    className: 'btn btn-success btn-sm',
-                    exportOptions: {
-                        modifier: {
-                            search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
-                        }
-                    }
-                },
-                // {
-                //     extend: 'pdf',
-                //     text: 'Export PDF',
-                //     className: 'btn btn-danger btn-sm',
-                //     exportOptions: {
-                //         modifier: {
-                //             search: 'applied' // Hanya data yang terlihat (terfilter) yang diexport
-                //         }
-                //     }
-                // },
-            ],
-            layout: {
-                topStart: 'buttons'
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 1500);
             }
         });
 
-        // Event handler untuk dropdown filter Nama Project
-        $('#projectFilter').on('change', function () {
-            var projectFilter = $(this).val(); // Mendapatkan nilai Nama Project | Sub Nama Project
+        $(document).ready(function() {
+            var table = $('#myTable11').DataTable({
+                dom: '<"d-flex justify-content-between"lBf>rtip',
+                buttons: [{
+                    extend: 'excel',
+                    text: '<i class="bx bx-export me-1"></i> Export Excel',
+                    className: 'btn btn-success btn-sm',
+                    exportOptions: {
+                        modifier: {
+                            search: 'applied'
+                        }
+                    }
+                }],
+                layout: {
+                    topStart: 'buttons'
+                },
+                columnDefs: [{
+                    orderable: false,
+                    targets: [6]
+                }]
+            });
 
-            // Terapkan filter pada kolom Nama Project (kolom ke-5 di tabel)
-            table.column(9).search(projectFilter).draw();
+            // Filter status pakai data-search attribute
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                var filterVal = $('#statusFilter').val();
+                if (!filterVal) return true;
+                var rowNode = table.row(dataIndex).node();
+                var cellSearch = $(rowNode).find('td[data-search]').data('search');
+                return cellSearch == filterVal;
+            });
+
+            $('#statusFilter').on('change', function() {
+                table.draw();
+            });
         });
-    });
 
-    function updateDateTime() {
-        const now = new Date();
-        const options = {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-            hour: '2-digit', minute: '2-digit', second: '2-digit'
-        };
-        document.getElementById('currentDateTime').textContent = now.toLocaleDateString('id-ID', options);
-    }
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('currentDateTime').textContent =
+                now.toLocaleDateString('id-ID', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
 
-    // Jalankan fungsi pertama kali
-    updateDateTime();
-
-    // Perbarui waktu setiap detik
-    setInterval(updateDateTime, 1000);
-
-
-
-</script>
-<script>
-      $('.select-2').select2({
-        theme: "bootstrap-5",
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        placeholder: $(this).data('placeholder'),
-    });
-</script>
-
-
+    <script>
+        $('.select-2').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+        });
+    </script>
 @endpush

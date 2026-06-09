@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -65,6 +66,13 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
+        'operational.hours' => \App\Http\Middleware\CheckOperationalHours::class,
 
     ];
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->call(function () {
+        app(\App\Http\Controllers\ConsumableIssuanceController::class)->autoSubmit();
+        })->dailyAt('17:00');
+    }
 }

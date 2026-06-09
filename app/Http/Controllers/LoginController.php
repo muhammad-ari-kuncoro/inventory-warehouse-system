@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $data['title'] = 'Login Page AJM Warehouses';
@@ -21,17 +19,32 @@ class LoginController extends Controller
     public function authentication(Request $request)
     {
         $validateData = $request->validate([
-            'email' => 'required|email:dns',
-            'password' => 'required|min:5|max:20'
-        ]);
-        if (Auth::attempt($validateData)) {
+        'email' => 'required|email:dns',
+        'password' => 'required|min:5|max:20'
+    ]);
 
-            session()->regenerate();
-            return redirect()->intended('dashboard');
+    if (Auth::attempt($validateData)) {
 
+        $request->session()->regenerate();
 
+        $user = Auth::user();
+
+        if ($user->role == 'Administrator') {
+            return redirect()->route('dashboard');
         }
-        return back()->with('loginError','Login Failed');
+
+        if ($user->role == 'Warehouse Staff') {
+            return redirect()->route('dashboard');
+        }
+
+
+
+        if ($user->role == 'Production') {
+            return redirect()->route('dashboard');
+        }
+    }
+
+    return back()->with('loginError', 'Login Failed');
     }
 
 
