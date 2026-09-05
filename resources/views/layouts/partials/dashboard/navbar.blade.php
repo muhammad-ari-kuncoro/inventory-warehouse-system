@@ -7,15 +7,13 @@
     </div>
 
     <div class="navbar-nav-right d-flex align-items-center w-100" id="navbar-collapse">
-        <h5 class="text-white fw-bold me-auto mb-0">Dashboard Master Data</h5>
+        <h5 class="text-white fw-bold me-auto mb-0">{{__('message.dashboard')}} Master Data</h5>
 
         <div class="text-white me-auto ms-3">
             <span id="currentDateTime" class="fw-light"></span>
         </div>
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
-
-
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow text-white" href="javascript:void(0);"
                     data-bs-toggle="dropdown">

@@ -33,6 +33,12 @@ Route::get('/', function () {
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login_page', [LoginController::class, 'authentication'])->name('login_page_dasboard');
 Route::middleware(['auth'])->group(function () {
+      Route::get('/lang/{locale}', function ($locale) {
+        if (in_array($locale, ['id', 'en'])) {
+            session(['locale' => $locale]);
+        }
+        return back();
+    })->name('lang.switch');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/viewProfile', [DashboardController::class, 'viewProfil'])->name('viewProfile');
     Route::middleware(['role:Administrator'])->group(function () {

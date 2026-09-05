@@ -145,7 +145,7 @@
             <li class="menu-item {{ in_array($sub_title, ['Pengambilan Consumable', 'Pengambilan Material']) ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-layout"></i>
-                    <div data-i18n="Layouts">Produksi</div>
+                    <div data-i18n="Layouts">Production Menu</div>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item {{ $sub_title === 'Pengambilan Consumable' ? 'active' : '' }}">
@@ -170,7 +170,7 @@
             <li class="menu-item {{ in_array($sub_title, ['Peminjaman Alat', 'Pengembalian Alat']) ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bxs-wrench"></i>
-                    <div data-i18n="Layouts">Perlengkapan</div>
+                    <div data-i18n="Layouts">Equipment Menu</div>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item {{ $sub_title === 'Peminjaman Alat' ? 'active' : '' }}">
