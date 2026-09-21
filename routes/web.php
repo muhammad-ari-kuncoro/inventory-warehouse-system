@@ -19,6 +19,7 @@ use App\Http\Controllers\MaterialTemporaryController;
 use App\Http\Controllers\MenuProjectController;
 use App\Http\Controllers\ShippingItemController;
 use App\Http\Controllers\ToolsController;
+use App\Http\Controllers\WarehouseLocationController;
 use App\Models\ConsumableIssuance;
 use App\Models\Consumables;
 use App\Models\HydrotestMaterialLending;
@@ -33,7 +34,7 @@ Route::get('/', function () {
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login_page', [LoginController::class, 'authentication'])->name('login_page_dasboard');
 Route::middleware(['auth'])->group(function () {
-      Route::get('/lang/{locale}', function ($locale) {
+    Route::get('/lang/{locale}', function ($locale) {
         if (in_array($locale, ['id', 'en'])) {
             session(['locale' => $locale]);
         }
@@ -43,50 +44,60 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/viewProfile', [DashboardController::class, 'viewProfil'])->name('viewProfile');
     Route::middleware(['role:Administrator'])->group(function () {
         Route::prefix('project')->name('project.')->group(function () {
-                Route::get('/',                       [MenuProjectController::class, 'index'])->name('index');
-                Route::post('create',                 [MenuProjectController::class, 'store'])->name('create');
-                Route::get('edit/{id}',               [MenuProjectController::class, 'edit'])->name('edit');
-                Route::patch('update/{id}',           [MenuProjectController::class, 'update'])->name('update');
-                Route::get('/search',                 [MenuProjectController::class, 'index'])->name('search');
-                Route::get('/detail/{id}',            [MenuProjectController::class, 'show'])->name('detail');
-                Route::delete('/delete/project/{id}', [MenuProjectController::class, 'destroy'])->name('destroy');
-            });
+            Route::get('/',                       [MenuProjectController::class, 'index'])->name('index');
+            Route::post('create',                 [MenuProjectController::class, 'store'])->name('create');
+            Route::get('edit/{id}',               [MenuProjectController::class, 'edit'])->name('edit');
+            Route::patch('update/{id}',           [MenuProjectController::class, 'update'])->name('update');
+            Route::get('/search',                 [MenuProjectController::class, 'index'])->name('search');
+            Route::get('/detail/{id}',            [MenuProjectController::class, 'show'])->name('detail');
+            Route::delete('/delete/project/{id}', [MenuProjectController::class, 'destroy'])->name('destroy');
+        });
 
         Route::prefix('userData')->name('userData.')->group(function () {
-                Route::get('/',                      [CreatedUserController::class, 'index'])->name('index');
-                Route::post('/create',               [CreatedUserController::class, 'store'])->name('create');
-                Route::get('read-user/{id}',         [CreatedUserController::class, 'show'])->name('read-user');
-                Route::get('/edit-data/{id}',        [CreatedUserController::class, 'edit'])->name('edit-user');
-                Route::put('/update/{id}',           [CreatedUserController::class, 'update'])->name('update-user');
-                Route::delete('/delete/{id}',        [CreatedUserController::class, 'destroy'])->name('delete-user');
-            });
+            Route::get('/',                      [CreatedUserController::class, 'index'])->name('index');
+            Route::post('/create',               [CreatedUserController::class, 'store'])->name('create');
+            Route::get('read-user/{id}',         [CreatedUserController::class, 'show'])->name('read-user');
+            Route::get('/edit-data/{id}',        [CreatedUserController::class, 'edit'])->name('edit-user');
+            Route::put('/update/{id}',           [CreatedUserController::class, 'update'])->name('update-user');
+            Route::delete('/delete/{id}',        [CreatedUserController::class, 'destroy'])->name('delete-user');
+        });
 
         Route::prefix('material')->name('material.')->group(function () {
-                Route::get('/',                         [MaterialController::class, 'index'])->name('index');
-                Route::post('create',                   [MaterialController::class, 'store'])->name('create');
-                Route::get('/create-multiple',          [MaterialController::class, 'multipe_create'])->name('create.multiple');
-                Route::post('/store-multiple',          [MaterialController::class, 'multiple_data'])->name('store.multiple_data');
-                Route::get('edit/{id}',                 [MaterialController::class, 'edit'])->name('edit');
-                Route::patch('update{id}',              [MaterialController::class, 'update'])->name('update');
-                Route::get('/search',                   [MaterialController::class, 'index'])->name('search');
-                Route::get('/export-filter',            [MaterialController::class, 'exportPage'])->name('export');
-                Route::get('/material/export/download', [MaterialController::class, 'exportDownload'])->name('material.export.download');
-                Route::post('/import',                  [MaterialController::class, 'import'])->name('import');
-                Route::get('/show/{id}',                [MaterialController::class, 'show'])->name('show');
-            });
+            Route::get('/',                         [MaterialController::class, 'index'])->name('index');
+            Route::post('create',                   [MaterialController::class, 'store'])->name('create');
+            Route::get('/create-multiple',          [MaterialController::class, 'multipe_create'])->name('create.multiple');
+            Route::post('/store-multiple',          [MaterialController::class, 'multiple_data'])->name('store.multiple_data');
+            Route::get('edit/{id}',                 [MaterialController::class, 'edit'])->name('edit');
+            Route::patch('update{id}',              [MaterialController::class, 'update'])->name('update');
+            Route::get('/search',                   [MaterialController::class, 'index'])->name('search');
+            Route::get('/export-filter',            [MaterialController::class, 'exportPage'])->name('export');
+            Route::get('/material/export/download', [MaterialController::class, 'exportDownload'])->name('material.export.download');
+            Route::post('/import',                  [MaterialController::class, 'import'])->name('import');
+            Route::get('/show/{id}',                [MaterialController::class, 'show'])->name('show');
+        });
 
         Route::prefix('consumable')->name('consumable.')->group(function () {
-                Route::get('/',                         [ConsumableController::class, 'index'])->name('index');
-                Route::post('create',                   [ConsumableController::class, 'store'])->name('create');
-                Route::get('/create-multiple',          [ConsumableController::class, 'multiple_create'])->name('create.multiple');
-                Route::post('/store-multiple',          [ConsumableController::class, 'multiple_data'])->name('store.multiple_data');
-                Route::get('edit/{id}',                 [ConsumableController::class, 'edit'])->name('edit');
-                Route::patch('update{id}',              [ConsumableController::class, 'update'])->name('update');
-                Route::get('/show/{id}',                [ConsumableController::class, 'show'])->name('show');
-                Route::post('/import',                  [ConsumableController::class, 'import'])->name('import');
-                Route::get('/export-filter',            [ConsumableController::class, 'exportPage'])->name('export');
-                Route::get('/material/export/download', [ConsumableController::class, 'exportDownload'])->name('consumable.export.download');
-            });
+            Route::get('/',                         [ConsumableController::class, 'index'])->name('index');
+            Route::post('create',                   [ConsumableController::class, 'store'])->name('create');
+            Route::get('/create-multiple',          [ConsumableController::class, 'multiple_create'])->name('create.multiple');
+            Route::post('/store-multiple',          [ConsumableController::class, 'multiple_data'])->name('store.multiple_data');
+            Route::get('edit/{id}',                 [ConsumableController::class, 'edit'])->name('edit');
+            Route::patch('update{id}',              [ConsumableController::class, 'update'])->name('update');
+            Route::get('/show/{id}',                [ConsumableController::class, 'show'])->name('show');
+            Route::post('/import',                  [ConsumableController::class, 'import'])->name('import');
+            Route::get('/export-filter',            [ConsumableController::class, 'exportPage'])->name('export');
+            Route::get('/material/export/download', [ConsumableController::class, 'exportDownload'])->name('consumable.export.download');
+        });
+
+        Route::prefix('warehouses')->name('warehouses.')->group(function () {
+            Route::get('/',                         [WarehouseLocationController::class, 'index'])->name('index');
+            Route::get('/edit{id}',                 [WarehouseLocationController::class, 'edit'])->name('edit');
+            Route::patch('update{id}',              [WarehouseLocationController::class, 'update'])->name('update');
+            Route::post('/store',                   [WarehouseLocationController::class, 'store'])->name('store');
+            Route::get('/show/{id}',                [WarehouseLocationController::class, 'show'])->name('show');
+            Route::delete('/delete/{id}',           [WarehouseLocationController::class, 'destroy'])->name('destroy');
+        });
+
 
         Route::prefix('tools')
             ->name('tools.')
@@ -104,16 +115,16 @@ Route::middleware(['auth'])->group(function () {
             });
 
         Route::prefix('machine')->name('machine.')->group(function () {
-                Route::get('/',                         [MachinesController::class, 'index'])->name('index');
-                Route::post('/create',                  [MachinesController::class, 'store'])->name('create');
-                Route::get('/create-multiple',          [MachinesController::class, 'create_multiple'])->name('create.multiple');
-                Route::post('/store-multiple',          [MachinesController::class, 'store_multiple'])->name('store.multiple');
-                Route::get('edit/{id}',                 [MachinesController::class, 'edit'])->name('edit');
-                Route::get('/show/{id}',                [MachinesController::class, 'show'])->name('show');
-                Route::patch('update/{id}',             [MachinesController::class, 'update'])->name('update');
-                Route::get('/export-filter',            [MachinesController::class, 'exportPage'])->name('export');
-                Route::get('/machine/export/download',  [MachinesController::class, 'exportDownload'])->name('machine.export.download');
-            });
+            Route::get('/',                         [MachinesController::class, 'index'])->name('index');
+            Route::post('/create',                  [MachinesController::class, 'store'])->name('create');
+            Route::get('/create-multiple',          [MachinesController::class, 'create_multiple'])->name('create.multiple');
+            Route::post('/store-multiple',          [MachinesController::class, 'store_multiple'])->name('store.multiple');
+            Route::get('edit/{id}',                 [MachinesController::class, 'edit'])->name('edit');
+            Route::get('/show/{id}',                [MachinesController::class, 'show'])->name('show');
+            Route::patch('update/{id}',             [MachinesController::class, 'update'])->name('update');
+            Route::get('/export-filter',            [MachinesController::class, 'exportPage'])->name('export');
+            Route::get('/machine/export/download',  [MachinesController::class, 'exportDownload'])->name('machine.export.download');
+        });
 
         // Route::prefix('material-temporary')
         //     ->name('material-temporary.')
@@ -125,21 +136,21 @@ Route::middleware(['auth'])->group(function () {
         //     });
 
         Route::prefix('good-received')->name('good-received.')->group(function () {
-                Route::get('/',                            [GoodsReceivedController::class, 'index'])->name('index');
-                Route::get('create',                       [GoodsReceivedController::class, 'create'])->name('create');
-                Route::post('store',                       [GoodsReceivedController::class, 'store'])->name('store');
-                Route::post('store/item',                  [GoodsReceivedController::class, 'storeItem'])->name('store.item');
-                Route::post('store/item/update/{id}',      [GoodsReceivedController::class, 'storeItemUpdate'])->name('store.item.update');
-                Route::post('delete-draft',                [GoodsReceivedController::class, 'deleteDraft'])->name('delete-draft');
-                Route::get('edit/{id}',                    [GoodsReceivedController::class, 'edit'])->name('edit');
-                Route::get('show/{id}',                    [GoodsReceivedController::class, 'show'])->name('show');
-                Route::patch('update/{id}',                [GoodsReceivedController::class, 'update'])->name('update');
-                Route::delete('destroy/{id}',              [GoodsReceivedController::class, 'destroy'])->name('destroy');
-                Route::delete('delete/detail/{id}',        [GoodsReceivedController::class, 'destroyDetail'])->name('delete-detail');
-                Route::get('/export-filter',               [GoodsReceivedController::class, 'exportPage'])->name('export-filter');
-                Route::get('/export/download',             [GoodsReceivedController::class, 'exportDownload'])->name('export.download');
-                Route::get('/export-single/download/{id}', [GoodsReceivedController::class, 'printSinglePdfGR'])->name('export.single.download');
-            });
+            Route::get('/',                            [GoodsReceivedController::class, 'index'])->name('index');
+            Route::get('create',                       [GoodsReceivedController::class, 'create'])->name('create');
+            Route::post('store',                       [GoodsReceivedController::class, 'store'])->name('store');
+            Route::post('store/item',                  [GoodsReceivedController::class, 'storeItem'])->name('store.item');
+            Route::post('store/item/update/{id}',      [GoodsReceivedController::class, 'storeItemUpdate'])->name('store.item.update');
+            Route::post('delete-draft',                [GoodsReceivedController::class, 'deleteDraft'])->name('delete-draft');
+            Route::get('edit/{id}',                    [GoodsReceivedController::class, 'edit'])->name('edit');
+            Route::get('show/{id}',                    [GoodsReceivedController::class, 'show'])->name('show');
+            Route::patch('update/{id}',                [GoodsReceivedController::class, 'update'])->name('update');
+            Route::delete('destroy/{id}',              [GoodsReceivedController::class, 'destroy'])->name('destroy');
+            Route::delete('delete/detail/{id}',        [GoodsReceivedController::class, 'destroyDetail'])->name('delete-detail');
+            Route::get('/export-filter',               [GoodsReceivedController::class, 'exportPage'])->name('export-filter');
+            Route::get('/export/download',             [GoodsReceivedController::class, 'exportDownload'])->name('export.download');
+            Route::get('/export-single/download/{id}', [GoodsReceivedController::class, 'printSinglePdfGR'])->name('export.single.download');
+        });
 
         Route::prefix('delivery-order')
             ->name('delivery-order.')
@@ -160,19 +171,19 @@ Route::middleware(['auth'])->group(function () {
             });
 
         Route::prefix('shipping-items')->name('shipping-items.')->group(function () {
-                Route::get('/',                            [ShippingItemController::class, 'index'])->name('index');
-                Route::get('/create',                      [ShippingItemController::class, 'create'])->name('create');
-                Route::post('/store',                      [ShippingItemController::class, 'store'])->name('store');
-                Route::post('/store/item',                 [ShippingItemController::class, 'storeItem'])->name('store.item');
-                Route::get('/show/{id}',                   [ShippingItemController::class, 'show'])->name('show');
-                Route::get('/edit/{id}',                   [ShippingItemController::class, 'edit'])->name('edit');
-                Route::put('/update/{id}',                 [ShippingItemController::class, 'update'])->name('update');
-                Route::delete('/destroy/{id}',             [ShippingItemController::class, 'destroy'])->name('destroy');
-                Route::delete('/delete-draft',             [ShippingItemController::class, 'deleteDraft'])->name('delete-draft');
-                Route::get('/item/edit/{id}',              [ShippingItemController::class, 'editDetailItemInDraft'])->name('item.ship.edit');
-                Route::patch('/item/update/{id}',          [ShippingItemController::class, 'updateDetailItemInDraft'])->name('item.ship.update');
-                Route::delete('/item/delete/{id}',         [ShippingItemController::class, 'deleteItemInDraft'])->name('item.delete');
-            });
+            Route::get('/',                            [ShippingItemController::class, 'index'])->name('index');
+            Route::get('/create',                      [ShippingItemController::class, 'create'])->name('create');
+            Route::post('/store',                      [ShippingItemController::class, 'store'])->name('store');
+            Route::post('/store/item',                 [ShippingItemController::class, 'storeItem'])->name('store.item');
+            Route::get('/show/{id}',                   [ShippingItemController::class, 'show'])->name('show');
+            Route::get('/edit/{id}',                   [ShippingItemController::class, 'edit'])->name('edit');
+            Route::put('/update/{id}',                 [ShippingItemController::class, 'update'])->name('update');
+            Route::delete('/destroy/{id}',             [ShippingItemController::class, 'destroy'])->name('destroy');
+            Route::delete('/delete-draft',             [ShippingItemController::class, 'deleteDraft'])->name('delete-draft');
+            Route::get('/item/edit/{id}',              [ShippingItemController::class, 'editDetailItemInDraft'])->name('item.ship.edit');
+            Route::patch('/item/update/{id}',          [ShippingItemController::class, 'updateDetailItemInDraft'])->name('item.ship.update');
+            Route::delete('/item/delete/{id}',         [ShippingItemController::class, 'deleteItemInDraft'])->name('item.delete');
+        });
         // Route::prefix('hydrotest-material-lending')
         //     ->name('hydrotest-material-lending.')
         //     ->group(function () {
@@ -188,7 +199,7 @@ Route::middleware(['auth'])->group(function () {
             ->group(function () {
                 Route::get('/',                              [ConsumableIssuanceController::class, 'index'])->name('index');
                 Route::get('/{id}/show',                     [ConsumableIssuanceController::class, 'show'])->name('show');
-            Route::middleware(['operational.hours'])->group(function () {
+                Route::middleware(['operational.hours'])->group(function () {
                     Route::get('/create',                    [ConsumableIssuanceController::class, 'create'])->name('create');
                     Route::get('/{id}/edit',                 [ConsumableIssuanceController::class, 'edit'])->name('edit');
                     Route::post('/{headerId}/add-item',      [ConsumableIssuanceController::class, 'addItem'])->name('addItem');

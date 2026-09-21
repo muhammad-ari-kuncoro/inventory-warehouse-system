@@ -61,7 +61,7 @@
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text">Stock</span>
             </li>
-            <li class="menu-item {{ in_array($sub_title, ['Materials', 'Consumables']) ? 'active open' : '' }}">
+            <li class="menu-item {{ in_array($sub_title, ['Materials', 'Consumables', 'Warehouses']) ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-data"></i>
                     <div data-i18n="Layouts">Data Stok</div>
@@ -73,12 +73,22 @@
                             <div data-i18n="Layouts">Materials</div>
                         </a>
                     </li>
+
                     <li class="menu-item {{ $sub_title === 'Consumables' ? 'active' : '' }}">
                         <a href="{{ route('consumable.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-basket"></i>
                             <div data-i18n="Layouts">Consumables</div>
                         </a>
                     </li>
+
+                    <li class="menu-item {{ $sub_title === 'Warehouses' ? 'active' : '' }}">
+                        <a href="{{ route('warehouses.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-building"></i>
+                            <div data-i18n="Layouts">Warehouse</div>
+                        </a>
+                    </li>
+
+
                 </ul>
             </li>
 
